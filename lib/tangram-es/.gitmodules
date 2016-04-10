@@ -1,0 +1,36 @@
+[submodule "core/include/fontstash-es"]
+	path = core/include/fontstash-es
+	url = https://github.com/tangrams/fontstash-es.git
+[submodule "core/include/glm"]
+	path = core/include/glm
+	url = https://github.com/g-truc/glm.git
+[submodule "core/include/isect2d"]
+	path = core/include/isect2d
+	url = https://github.com/tangrams/isect2d.git
+[submodule "core/dependencies/csscolorparser"]
+	path = external/css-color-parser-cpp
+	url = https://github.com/tangrams/css-color-parser-cpp
+[submodule "core/include/variant"]
+	path = core/include/variant
+	url = https://github.com/tangrams/variant
+[submodule "core/include/earcut.hpp"]
+	path = core/include/earcut.hpp
+	url = https://github.com/tangrams/earcut.hpp
+[submodule "core/dependencies/geojson-vt-cpp"]
+	path = external/geojson-vt-cpp
+	url = https://github.com/tangrams/geojson-vt-cpp.git
+[submodule "core/dependencies/duktape"]
+	path = external/duktape
+	url = https://github.com/tangrams/duktape.git
+[submodule "external/yaml-cpp"]
+	path = external/yaml-cpp
+	url = https://github.com/tangrams/yaml-cpp
+[submodule "external/glfw"]
+	path = external/glfw
+	url = https://github.com/glfw/glfw
+[submodule "external/benchmark"]
+	path = external/benchmark
+	url = https://github.com/google/benchmark
+[submodule "external/alfons"]
+	path = external/alfons
+	url = https://github.com/hjanetzek/alfons

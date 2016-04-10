@@ -1,0 +1,145 @@
+#include "pointLight.h"
+
+#include "glm/gtx/string_cast.hpp"
+#include "platform.h"
+#include "gl/shaderProgram.h"
+#include "view/view.h"
+
+namespace Tangram {
+
+std::string PointLight::s_classBlock;
+std::string PointLight::s_typeName = "PointLight";
+
+PointLight::PointLight(const std::string& _name, bool _dynamic) :
+    Light(_name, _dynamic),
+    m_position(0.0),
+    m_attenuation(0.0),
+    m_innerRadius(0.0),
+    m_outerRadius(0.0) {
+
+    m_type = LightType::point;
+
+}
+
+PointLight::~PointLight() {}
+
+void PointLight::setPosition(const glm::vec3 &_pos) {
+    m_position.x = _pos.x;
+    m_position.y = _pos.y;
+    m_position.z = _pos.z;
+    m_position.w = 0.0;
+}
+
+void PointLight::setAttenuation(float _att){
+    m_attenuation = _att;
+}
+
+void PointLight::setRadius(float _outer){
+    m_innerRadius = 0.0;
+    m_outerRadius = _outer;
+}
+
+void PointLight::setRadius(float _inner, float _outer){
+    m_innerRadius = _inner;
+    m_outerRadius = _outer;
+}
+
+std::unique_ptr<LightUniforms> PointLight::injectOnProgram(ShaderProgram& _shader) {
+    injectSourceBlocks(_shader);
+
+    if (!m_dynamic) { return nullptr; }
+
+    return std::make_unique<Uniforms>(_shader, getUniformName());
+}
+
+void PointLight::setupProgram(const View& _view, LightUniforms& _uniforms) {
+    Light::setupProgram(_view, _uniforms);
+
+    glm::vec4 position = m_position;
+
+    if (m_origin == LightOrigin::world) {
+        // For world origin, format is: [longitude, latitude, meters (default) or pixels w/px units]
+
+        // Move light's world position into camera space
+        glm::dvec2 camSpace = _view.getMapProjection().LonLatToMeters(glm::dvec2(m_position.x, m_position.y));
+        position.x = camSpace.x - (_view.getPosition().x + _view.getEye().x);
+        position.y = camSpace.y - (_view.getPosition().y + _view.getEye().y);
+        position.z = position.z - _view.getEye().z;
+
+    } else if (m_origin == LightOrigin::ground) {
+        // Move light position relative to the eye position in world space
+        position -= glm::vec4(_view.getEye(), 0.0);
+    }
+
+    if (m_origin == LightOrigin::world || m_origin == LightOrigin::ground) {
+        // Light position is a vector from the camera to the light in world space;
+        // we can transform this vector into camera space the same way we would with normals
+        position = _view.getViewMatrix() * position;
+    }
+
+    auto& u = static_cast<Uniforms&>(_uniforms);
+
+    u.shader.setUniformf(u.position, position);
+
+    if (m_attenuation != 0.0) {
+        u.shader.setUniformf(u.attenuation, m_attenuation);
+    }
+
+    if (m_innerRadius != 0.0) {
+        u.shader.setUniformf(u.innerRadius, m_innerRadius);
+    }
+
+    if (m_outerRadius != 0.0) {
+        u.shader.setUniformf(u.outerRadius, m_outerRadius);
+    }
+}
+
+std::string PointLight::getClassBlock() {
+    if (s_classBlock.empty()) {
+        s_classBlock = stringFromFile("shaders/pointLight.glsl", PathType::internal)+"\n";
+    }
+    return s_classBlock;
+}
+
+std::string PointLight::getInstanceDefinesBlock() {
+    std::string defines = "";
+
+    if (m_attenuation!=0.0) {
+        defines += "#define TANGRAM_POINTLIGHT_ATTENUATION_EXPONENT\n";
+    }
+
+    if (m_innerRadius!=0.0) {
+        defines += "#define TANGRAM_POINTLIGHT_ATTENUATION_INNER_RADIUS\n";
+    }
+
+    if (m_outerRadius!=0.0) {
+        defines += "#define TANGRAM_POINTLIGHT_ATTENUATION_OUTER_RADIUS\n";
+    }
+    return defines;
+}
+
+std::string PointLight::getInstanceAssignBlock() {
+    std::string block = Light::getInstanceAssignBlock();
+    if (!m_dynamic) {
+        block += ", " + glm::to_string(m_position);
+        if (m_attenuation!=0.0) {
+            block += ", " + std::to_string(m_attenuation);
+        }
+        if (m_innerRadius!=0.0) {
+            block += ", " + std::to_string(m_innerRadius);
+        }
+        if (m_outerRadius!=0.0) {
+            block += ", " + std::to_string(m_outerRadius);
+        }
+        block += ")";
+    }
+    return block;
+}
+
+const std::string& PointLight::getTypeName() {
+
+    return s_typeName;
+
+}
+
+}
