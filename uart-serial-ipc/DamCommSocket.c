@@ -15,17 +15,17 @@
 #include <wiringSerial.h>
 
 /* DEFAULTS */
-#define DEFAULT_SOCKET_PORT       5000
-#define MAX_TX_RX_BUFFER_LENGTH   50
-#define DEFAULT_BAUD              115200
-#define DEFAULT_IPv4_LOOPBACK     "127.0.0.1"
-#define VERSION                   "1.0"
-#define DEFAULT_UART_LOCATION     "/dev/ttyS0"
+#define DEFAULT_SOCKET_PORT                   5000
+#define MAX_TX_RX_BUFFER_LENGTH               50
+#define DEFAULT_BAUD                          115200
+#define DEFAULT_IPv4_LOOPBACK                 "127.0.0.1"
+#define VERSION                               "1.0"
+#define DEFAULT_UART_LOCATION                 "/dev/ttyS0"
 
 /* Error Codes */
-#define ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE  -1
-#define ERROR_TO_START_WIRED_PI             -2
-#define ERROR_CLI_ARG_MISSING_OPTION        -3  
+#define ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE    -1
+#define ERROR_TO_START_WIRED_PI               -2
+#define ERROR_CLI_ARG_MISSING_OPTION          -3  
 
 
 /* Function Declarations */
