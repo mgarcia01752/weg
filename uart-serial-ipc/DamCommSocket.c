@@ -14,16 +14,32 @@
 #include <wiringPi.h>
 #include <wiringSerial.h>
 
+/* DEFAULTS */
 #define DEFAULT_SOCKET_PORT       5000
 #define MAX_TX_RX_BUFFER_LENGTH   50
-#define DEFAULT_BAUD              115200  
+#define DEFAULT_BAUD              115200
+#define DEFAULT_IPv4_LOOPBACK     "127.0.0.1"
+#define VERSION                   "1.0"
+#define DEFAULT_UART_LOCATION     "/dev/ttyS0"
+
+/* Error Codes */
+#define ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE  -1
+#define ERROR_TO_START_WIRED_PI             -2
+#define ERROR_CLI_ARG_MISSING_OPTION        -3  
 
 
+/* Function Declarations */
 void init_buf(char *buf, size_t size);
+void usage(void);
+
 
 int main(int argc, char * argv[]) {
 
+    /* CLI Options */
     int bInputCLICheck = FALSE;
+    int iLoopCliCount = 1;        //MUST BE = 1
+    char *cLoopCliCount = '\0';
+    
     int listenfd = 0, connfd = 0 , n = 0;
     struct sockaddr_in serv_addr;
 
@@ -31,30 +47,48 @@ int main(int argc, char * argv[]) {
     char caRxSocket[MAX_TX_RX_BUFFER_LENGTH];
     char caRxUart[MAX_TX_RX_BUFFER_LENGTH];
 
-    int opt = 0;
+    int iOpt = 0;
 
     char * cInputCommand = '\0';
 
-    while ((opt = getopt(argc, argv, "i:o:")) != -1) {
+    /*http://www.gnu.org/software/libc/manual/html_node/Using-Getopt.html#Using-Getopt*/
+    while ((iOpt = getopt(argc, argv, "i:t::h::v::l:")) != -1) {
 
-        switch (opt) {
+        switch (iOpt) {
 
-        case 'i':
+          case 'i':
             cInputCommand = optarg;
-            printf("\nInput -> %s", cInputCommand);
             bInputCLICheck = TRUE;
             break;
-
-        case '?':
-
-            if (optopt == 'i') {
-                printf("\nMissing mandatory input option");
-
-            } else {
-                printf("\nInvalid option received");
-            }
-
-            break;
+          
+          case 'l':
+            cLoopCliCount = optarg;
+            iLoopCliCount = atoi(cLoopCliCount); 
+            break;          
+            
+          case 'h':           
+            usage();
+            exit(0);
+          
+          case 'v':
+            cInputCommand = optarg;
+            printf("\n\nVersion: %s\n\n", VERSION);
+            exit(0);
+          
+          case '?':
+  
+              if (optopt == 'i') {
+                  printf("\nMissing mandatory input option\n\n");
+  
+              } else {
+                  usage();
+              }
+  
+              exit(ERROR_CLI_ARG_MISSING_OPTION);
+            
+            default:
+              /*nothing to see*/
+              break;
 
         }
     }
@@ -90,17 +124,17 @@ int main(int argc, char * argv[]) {
     int fd;
 
     /*Open Connection*/
-    if ((fd = serialOpen("/dev/ttyS0", DEFAULT_BAUD)) < 0) {
+    if ((fd = serialOpen(DEFAULT_UART_LOCATION, DEFAULT_BAUD)) < 0) {
         fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
-        return 1;
+        return ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE;
     }
 
-    printf("Open UART Connection\n");
+    //printf("Open UART Connection\n");
 
     /*Verify that WireingPI is Working*/
     if (wiringPiSetup() == -1) {
         fprintf(stdout, "Unable to start wiringPi: %s\n", strerror(errno));
-        return 1;
+        return ERROR_TO_START_WIRED_PI;
     }
 
     /****************************************************************************
@@ -153,7 +187,7 @@ int main(int argc, char * argv[]) {
             caRxUart[iIndex++] =  serialGetchar(fd);          
           }
           
-          printf("Sending Socket-3 -> Index: %d -> %s -> SizeOf: %d \n", iIndex , caRxUart,(unsigned long)strlen(caRxUart));
+          printf("Sending Socket-3 -> Index: %d -> %s -> SizeOf: %d \n", iIndex , caRxUart,(int)strlen(caRxUart));
           
           /* Send back to Socket Client */
           write(connfd, caRxUart, strlen(caRxUart)); 
@@ -170,20 +204,27 @@ int main(int argc, char * argv[]) {
 
     /* If command is sent via CLI */
     if (bInputCLICheck) {
-
-      serialPuts(fd, cInputCommand);
-
-      delay(3);
+    
+      while (iLoopCliCount>0) {
+      
+        printf("\nInput -> %s", cInputCommand);
+        
+        serialPuts(fd, cInputCommand);
   
-      printf(" Ouput -> ");
-  
-      while (serialDataAvail(fd)) {
-          printf("%c", serialGetchar(fd));
-          fflush(stdout);
+        delay(3);
+    
+        printf(" Ouput -> ");
+    
+        while (serialDataAvail(fd)) {
+            printf("%c", serialGetchar(fd));
+            fflush(stdout);
+        }
+    
+        printf("\n");
+        
+        iLoopCliCount--;
       }
-  
-      printf("\n");
-
+      
     }
 
     return 0;
@@ -194,4 +235,15 @@ void init_buf(char *buf, size_t size){
   for(i=0; i<size; i++){
     buf[i] = '\0';     
   }
+}
+
+void usage(void) {
+  
+  printf("\n\n\nData Aquaition Module IPC Ver: %s\n"
+         "Options are:\n"
+             "\t-i: Serial Input <command>\n"
+             "\t-l: Loop Input option <Number of Loops for option i>\n"
+             "\t-v: Version\n"
+             "\t-h: Usage an Exit\n\n\n\n",VERSION);
+
 }
