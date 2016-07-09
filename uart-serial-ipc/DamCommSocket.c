@@ -23,6 +23,7 @@
 #define DEFAULT_UART_LOCATION                 "/dev/ttyS0"
 
 /* Error Codes */
+#define ERROR_NONE                             0
 #define ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE    -1
 #define ERROR_TO_START_WIRED_PI               -2
 #define ERROR_CLI_ARG_MISSING_OPTION          -3
@@ -33,7 +34,15 @@
 
 
 /* Function Declarations */
-void init_buf(char *buf, size_t size);
+
+/*
+**  Loads Array with Nulls
+*/
+void initBuffer(char *buf, size_t size);
+
+/*
+**  Prints STDOUT usage of Program
+*/
 void usage(void);
 
 
@@ -73,7 +82,7 @@ int main(int argc, char * argv[]) {
             
           case 'h':           
             usage();
-            exit(0);
+            exit(ERROR_NONE);
           
           case 'd':           
             bDebug = DEBUG_ON;
@@ -82,7 +91,7 @@ int main(int argc, char * argv[]) {
           case 'v':
             cInputCommand = optarg;
             printf("\n\nVersion: %s\n\n", VERSION);
-            exit(0);
+            exit(ERROR_NONE);
           
           case '?':
   
@@ -115,10 +124,10 @@ int main(int argc, char * argv[]) {
   
       serv_addr.sin_family = AF_INET;
       
-      /* Loopback Address */
+      /* Use all ALL IP Address found on PI*/
       serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
       
-      /* Socket Port 5000 */
+      /* Socket Port 5000 = DEFAULT */
       serv_addr.sin_port = htons(DEFAULT_SOCKET_PORT);
   
       bind(listenfd, (struct sockaddr * ) & serv_addr, sizeof(serv_addr));
@@ -137,8 +146,6 @@ int main(int argc, char * argv[]) {
         fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
         exit(ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE);
     }
-
-    //printf("Open UART Connection\n");
 
     /*Verify that WireingPI is Working*/
     if (wiringPiSetup() == -1) {
@@ -160,7 +167,7 @@ int main(int argc, char * argv[]) {
         if (bDebug) printf("Listening Socket-1\n");
 
         /* Clear Buffer */
-        init_buf(caRxSocket, sizeof(caRxSocket));
+        initBuffer(caRxSocket, sizeof(caRxSocket));
 
         if (bDebug) printf("Listening Socket-2\n");
 
@@ -189,7 +196,7 @@ int main(int argc, char * argv[]) {
           
           int iIndex = 0;
           
-          init_buf(caRxUart, sizeof(caRxUart));
+          initBuffer(caRxUart, sizeof(caRxUart));
           while (serialDataAvail(fd)) {
           
             /* Load Charcaters into Array */
@@ -239,7 +246,7 @@ int main(int argc, char * argv[]) {
     return 0;
 }
 
-void init_buf(char *buf, size_t size){
+void initBuffer(char *buf, size_t size){
   int i;
   for(i=0; i<size; i++){
     buf[i] = '\0';     
