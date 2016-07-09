@@ -19,13 +19,17 @@
 #define MAX_TX_RX_BUFFER_LENGTH               50
 #define DEFAULT_BAUD                          115200
 #define DEFAULT_IPv4_LOOPBACK                 "127.0.0.1"
-#define VERSION                               "1.0"
+#define VERSION                               "1.0-pre"
 #define DEFAULT_UART_LOCATION                 "/dev/ttyS0"
 
 /* Error Codes */
 #define ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE    -1
 #define ERROR_TO_START_WIRED_PI               -2
-#define ERROR_CLI_ARG_MISSING_OPTION          -3  
+#define ERROR_CLI_ARG_MISSING_OPTION          -3
+
+/* DEBUG */
+#define DEBUG_ON                              TRUE  
+#define DEBUG_OFF                             FALSE  
 
 
 /* Function Declarations */
@@ -48,11 +52,12 @@ int main(int argc, char * argv[]) {
     char caRxUart[MAX_TX_RX_BUFFER_LENGTH];
 
     int iOpt = 0;
+    int bDebug = DEBUG_OFF;
 
     char * cInputCommand = '\0';
 
     /*http://www.gnu.org/software/libc/manual/html_node/Using-Getopt.html#Using-Getopt*/
-    while ((iOpt = getopt(argc, argv, "i:t::h::v::l:")) != -1) {
+    while ((iOpt = getopt(argc, argv, "i:t::h::v::l:d::")) != -1) {
 
         switch (iOpt) {
 
@@ -69,6 +74,10 @@ int main(int argc, char * argv[]) {
           case 'h':           
             usage();
             exit(0);
+          
+          case 'd':           
+            bDebug = DEBUG_ON;
+            break;
           
           case 'v':
             cInputCommand = optarg;
@@ -98,7 +107,7 @@ int main(int argc, char * argv[]) {
      ****************************************************************************/
     if (bInputCLICheck == FALSE) {
       
-      printf("Using Socket IPC\n");
+      if (bDebug) printf("Using Socket IPC\n");
     
       listenfd = socket(AF_INET, SOCK_STREAM, 0);
       memset( & serv_addr, '0', sizeof(serv_addr));
@@ -126,7 +135,7 @@ int main(int argc, char * argv[]) {
     /*Open Connection*/
     if ((fd = serialOpen(DEFAULT_UART_LOCATION, DEFAULT_BAUD)) < 0) {
         fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
-        return ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE;
+        exit(ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE);
     }
 
     //printf("Open UART Connection\n");
@@ -134,7 +143,7 @@ int main(int argc, char * argv[]) {
     /*Verify that WireingPI is Working*/
     if (wiringPiSetup() == -1) {
         fprintf(stdout, "Unable to start wiringPi: %s\n", strerror(errno));
-        return ERROR_TO_START_WIRED_PI;
+        exit(ERROR_TO_START_WIRED_PI);
     }
 
     /****************************************************************************
@@ -143,29 +152,29 @@ int main(int argc, char * argv[]) {
 
     while(!bInputCLICheck) {
     
-        printf("Listening Socket\n");
+        if (bDebug) printf("Listening Socket\n");
     
         /* Blocking - Waiting for Connection */
         connfd = accept(listenfd, (struct sockaddr*)NULL, NULL); 
 
-        printf("Listening Socket-1\n");
+        if (bDebug) printf("Listening Socket-1\n");
 
         /* Clear Buffer */
         init_buf(caRxSocket, sizeof(caRxSocket));
 
-        printf("Listening Socket-2\n");
+        if (bDebug) printf("Listening Socket-2\n");
 
         /* Get Command from Client */
         while ( (n = read(connfd, caRxSocket, sizeof(caRxSocket)-1)) > 0) {
 
-          printf("Listening Socket-3\n");
+          if (bDebug) printf("Listening Socket-3\n");
 
-          caRxSocket[n] = 0;
-          if(fputs(caRxSocket, stdout) == EOF) {
-              printf("\n Error : Fputs error\n");
-          }
+          //caRxSocket[n] = 0;
+          //if(fputs(caRxSocket, stdout) == EOF) {
+          //    printf("\n Error : Fputs error\n");
+          //}
           
-          printf("Sending To UART-1 -> %s" , caRxSocket);
+          if (bDebug) printf("Sending To UART-1 -> %s" , caRxSocket);
 
           /* Send command to UART */
           serialPuts(fd, caRxSocket);
@@ -176,7 +185,7 @@ int main(int argc, char * argv[]) {
           *         Get Result from UART and Concatenate -> caRxUart
           ************************************************************************/
           
-          printf("Receiving From UART-1\n");
+          if (bDebug) printf("Receiving From UART-1\n");
           
           int iIndex = 0;
           
@@ -187,7 +196,7 @@ int main(int argc, char * argv[]) {
             caRxUart[iIndex++] =  serialGetchar(fd);          
           }
           
-          printf("Sending Socket-3 -> Index: %d -> %s -> SizeOf: %d \n", iIndex , caRxUart,(int)strlen(caRxUart));
+          if (bDebug) printf("Sending Socket-3 -> Index: %d -> %s -> SizeOf: %d \n", iIndex , caRxUart,(int)strlen(caRxUart));
           
           /* Send back to Socket Client */
           write(connfd, caRxUart, strlen(caRxUart)); 
@@ -244,6 +253,7 @@ void usage(void) {
              "\t-i: Serial Input <command>\n"
              "\t-l: Loop Input option <Number of Loops for option i>\n"
              "\t-v: Version\n"
+             "\t-d: Enable Debug\n"
              "\t-h: Usage an Exit\n\n\n\n",VERSION);
 
 }
