@@ -116,7 +116,7 @@ int main(int argc, char * argv[]) {
      ****************************************************************************/
     if (bInputCLICheck == FALSE) {
       
-      if (bDebug) printf("Using Socket IPC\n");
+      printf("Starting Socket IPC -> use '-d' option for debuging\n");
     
       listenfd = socket(AF_INET, SOCK_STREAM, 0);
       memset( & serv_addr, '0', sizeof(serv_addr));
@@ -173,13 +173,6 @@ int main(int argc, char * argv[]) {
 
         /* Get Command from Client */
         while ( (n = read(connfd, caRxSocket, sizeof(caRxSocket)-1)) > 0) {
-
-          if (bDebug) printf("Listening Socket-3\n");
-
-          //caRxSocket[n] = 0;
-          //if(fputs(caRxSocket, stdout) == EOF) {
-          //    printf("\n Error : Fputs error\n");
-          //}
           
           if (bDebug) printf("Sending To UART-1 -> %s" , caRxSocket);
 
