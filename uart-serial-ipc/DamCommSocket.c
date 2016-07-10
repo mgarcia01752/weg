@@ -287,7 +287,7 @@ void initBuffer(char *buf, size_t size){
 
 void usage(void) {
   
-  printf("\n\n\nData Aquaition Module IPC Ver: %s\n"
+  printf("\n\n\nData Acquisition Module IPC Ver: %s\n"
          "Options are:\n"
              "\t-i: Serial Input <command>\n"
              "\t-l: Loop Input option <Number of Loops for option i>\n"
