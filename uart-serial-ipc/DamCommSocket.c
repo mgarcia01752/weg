@@ -30,10 +30,18 @@
 
 /* DEBUG */
 #define DEBUG_ON                              TRUE  
-#define DEBUG_OFF                             FALSE  
+#define DEBUG_OFF                             FALSE
+
+/* Data Module Protocol */
+#define GPS_COORDINATE                        "101"
+#define UV_SENSOR                             "201"
+#define TEMPERATURE                           "301"
+#define BAROMETER                             "302"
+#define SOLAR_POWER_VOLTAGE                   "400"
+                                     
 
 
-/* Function Declarations */
+                    /* Function Declarations */
 
 /*
 **  Loads Array with Nulls
@@ -66,7 +74,7 @@ int main(int argc, char * argv[]) {
     char * cInputCommand = '\0';
 
     /*http://www.gnu.org/software/libc/manual/html_node/Using-Getopt.html#Using-Getopt*/
-    while ((iOpt = getopt(argc, argv, "i:t::h::v::l:d::")) != -1) {
+    while ((iOpt = getopt(argc, argv, "i:t::h::v::l:d::GUBTS::")) != -1) {
 
         switch (iOpt) {
 
@@ -92,6 +100,37 @@ int main(int argc, char * argv[]) {
             cInputCommand = optarg;
             printf("\n\nVersion: %s\n\n", VERSION);
             exit(ERROR_NONE);
+            
+          case 'G':
+            printf("Get GPS Data\n");
+            bInputCLICheck = TRUE;
+            cInputCommand = GPS_COORDINATE;
+            break;
+
+          case 'U':
+            printf("Get Ultra Violet Data\n");
+            bInputCLICheck = TRUE;
+            cInputCommand = UV_SENSOR;
+            break;
+            
+          case 'B':
+            printf("Get Barometer Data\n");
+            bInputCLICheck = TRUE;
+            cInputCommand = BAROMETER;
+            break;
+          
+          case 'T':
+            printf("Get Temperature Data\n");
+            bInputCLICheck = TRUE;
+            cInputCommand = TEMPERATURE;
+            break;
+            
+          case 'S':
+            printf("Get Solar Data\n");
+            bInputCLICheck = TRUE;
+            cInputCommand = SOLAR_POWER_VOLTAGE;
+            break;                        
+            
           
           case '?':
   
@@ -254,6 +293,11 @@ void usage(void) {
              "\t-l: Loop Input option <Number of Loops for option i>\n"
              "\t-v: Version\n"
              "\t-d: Enable Debug\n"
+             "\t-G: GPS Data\n"
+             "\t-U: UltraViolet Data\n"
+             "\t-T: Temperature Data\n"
+             "\t-B: Barometer Data\n"
+             "\t-S: Solar Power Voltage Data\n"
              "\t-h: Usage an Exit\n\n\n\n",VERSION);
 
 }
