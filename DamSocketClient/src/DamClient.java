@@ -27,7 +27,7 @@ public class DamClient {
 
 			/* Receive DAM Message */
 			BufferedReader reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			System.out.println(reader.readLine() + " - Count -> " + iCount);
+			System.out.println("Read From DAM -> " + reader.readLine() + " - Count -> " + iCount);
 			reader.close();
 			bw.close();
 			
