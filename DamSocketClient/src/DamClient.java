@@ -12,6 +12,7 @@ public class DamClient {
 
 		String sServerAddress = "10.1.10.10";
 		int iPort = 5000;
+		String sSendCommand = "101";
 	
 		int iCount = 0;
 		
@@ -21,7 +22,7 @@ public class DamClient {
 
 			/* Send Command to DAM*/
 			BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-			bw.write("150");
+			bw.write(sSendCommand);
 			bw.newLine();
 			bw.flush();
 
