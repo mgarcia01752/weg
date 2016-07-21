@@ -1,11 +1,10 @@
-# WEG
-Wearable Excursion Gear
+# WEG Wearable Excursion Gear
 
-# Getting Started
+## Getting Started
 
 Before we start, you will need to do the following steps in the order laid out to ensure a clean installation of WEG
 
-# Raspberian
+##  Raspbian Version
 
 [OS Installation](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)
 
@@ -15,7 +14,7 @@ Before we start, you will need to do the following steps in the order laid out t
 
 `sudo apt-get upgrade`
 
-# Starting Point
+##  Starting Point
 
 **Force Baud Rate to 115200**
 
@@ -33,18 +32,11 @@ Before we start, you will need to do the following steps in the order laid out t
 
 `cd weg`
 
-# Download WEG
+##  Download WEG
 
 `git clone https://github.com/mgarcia01752/weg.git`
 
-# Set Up Environment Variables
-
-# Configure OS for no UI
-
-# Added WEG Application to start-up(init.d)
-
-
-# Java Oracle Hotspot
+## Java Oracle Hotspot
 
 `sudo apt-get --purge remove openjdk-7-jre` 
 
@@ -64,7 +56,7 @@ Java(TM) SE Runtime Environment (build 1.7.0_60-b19)
 
 Java HotSpot(TM) Client VM (build 24.60-b09, mixed mode)
 
-# Tangram-es
+##  Tangram-es
 
 `cd /home/pi/weg`
 
@@ -89,7 +81,7 @@ Java HotSpot(TM) Client VM (build 24.60-b09, mixed mode)
 `make rpi`
 
 
-# WiringPi
+##  WiringPi
 
 `cd /home/pi/weg`
 
@@ -101,7 +93,7 @@ Java HotSpot(TM) Client VM (build 24.60-b09, mixed mode)
 
 `./build`
 
-# UART Serial IPC
+##  UART Serial IPC
 
 `cd /home/pi/weg/weg/uart-serial-ipc`
 
