@@ -26,11 +26,7 @@ Before we start, you will need to do the following steps in the order laid out t
 
 `exit`
 
-**Create WEG Directory**
-
-`cd /home/pi`
-
-##  Download WEG
+##  Download and Install WEG
 
 `git clone https://github.com/mgarcia01752/weg.git`
 
@@ -56,7 +52,7 @@ Java(TM) SE Runtime Environment (build 1.7.0_60-b19)
 
 Java HotSpot(TM) Client VM (build 24.60-b09, mixed mode)
 
-##  Tangram-es
+##  Download and Install Tangram-es
 
 `cd /home/pi/weg`
 
@@ -81,7 +77,7 @@ Java HotSpot(TM) Client VM (build 24.60-b09, mixed mode)
 `make rpi`
 
 
-##  WiringPi
+##  Download and Install WiringPi
 
 `cd /home/pi/weg`
 
@@ -93,7 +89,7 @@ Java HotSpot(TM) Client VM (build 24.60-b09, mixed mode)
 
 `./build`
 
-##  UART Serial IPC
+##  Install UART Serial IPC
 
 `cd /home/pi/weg/uart-serial-ipc`
 
