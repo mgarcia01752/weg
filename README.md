@@ -16,7 +16,7 @@ Before we start, you will need to do the following steps in the order laid out t
 
 `sudo apt-get upgrade`
 
-`sudo reboot now`
+`sudo init 6`
 
 ##  Starting Point
 
