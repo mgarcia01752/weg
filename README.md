@@ -1,8 +1,10 @@
-# WEG Wearable Excursion Gear
+# WEG - Wearable Excursion Gear
 
 ## Getting Started
 
 Before we start, you will need to do the following steps in the order laid out to ensure a clean installation of WEG
+
+[Doenload Raspbian - Jessie - Build Data: 2016-03-18](http://downloads.raspberrypi.org/raspbian/images/raspbian-2016-03-18/)
 
 ##  Raspbian Version
 
