@@ -20,19 +20,23 @@ Before we start, you will need to do the following steps in the order laid out t
 
 ##  Starting Point
 
-**Force Baud Rate to 115200**
-
-`sudo su ` 
-
-`echo force_turbo=1 >> /boot/config.txt`
-
-`init 6`
-
 ##  Download and Install WEG
 
 `git clone https://github.com/mgarcia01752/weg.git`
 
 `cd weg`
+
+**Backup and Configure for WEG**
+
+`sudo su ` 
+
+`mv /boot/config.txt /boot/config.txt~`
+
+`mv /boot/cmdline.txt /boot/cmdline.txt~`
+
+`cp /home/pi/weg/RaspberryPiConfig/* /boot`
+
+`init 6`
 
 ## Java Oracle Hotspot
 
