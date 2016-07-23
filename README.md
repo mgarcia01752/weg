@@ -24,7 +24,7 @@ Before we start, you will need to do the following steps in the order laid out t
 
 `echo force_turbo=1 >> /boot/config.txt`
 
-`exit`
+`init 6`
 
 ##  Download and Install WEG
 
