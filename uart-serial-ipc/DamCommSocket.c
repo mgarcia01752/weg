@@ -60,6 +60,8 @@ int main(int argc, char * argv[]) {
     int bInputCLICheck = FALSE;
     int iLoopCliCount = 1;        //MUST BE = 1
     char *cLoopCliCount = '\0';
+    int iBaudRate = DEFAULT_BAUD;
+    char *cBaudRate;
     
     int listenfd = 0, connfd = 0 , n = 0;
     struct sockaddr_in serv_addr;
@@ -81,6 +83,11 @@ int main(int argc, char * argv[]) {
           case 'i':
             cInputCommand = optarg;
             bInputCLICheck = TRUE;
+            break;
+            
+          case 'b':
+            cBaudRate = optarg;
+            iBaudRate = atoi(cBaudRate);
             break;
           
           case 'l':
@@ -172,6 +179,8 @@ int main(int argc, char * argv[]) {
       bind(listenfd, (struct sockaddr * ) & serv_addr, sizeof(serv_addr));
   
       listen(listenfd, 10);
+      
+      if (bDebug) printf("Starting Socket IPC Listening on Port: %d\n", DEFAULT_SOCKET_PORT);
     }
 
     /****************************************************************************
@@ -180,16 +189,20 @@ int main(int argc, char * argv[]) {
 
     int fd;
 
-    /*Open Connection*/
-    if ((fd = serialOpen(DEFAULT_UART_LOCATION, DEFAULT_BAUD)) < 0) {
-        fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
-        exit(ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE);
-    }
-
+    if (bDebug) printf("Starting WiredPI API\n");
+    
     /*Verify that WireingPI is Working*/
     if (wiringPiSetup() == -1) {
         fprintf(stdout, "Unable to start wiringPi: %s\n", strerror(errno));
         exit(ERROR_TO_START_WIRED_PI);
+    }
+
+    if (bDebug) printf("Opening UART Connection of Device: %s\n", DEFAULT_UART_LOCATION);
+
+    /*Open Connection*/
+    if ((fd = serialOpen(DEFAULT_UART_LOCATION, DEFAULT_BAUD)) < 0) {
+        fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
+        exit(ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE);
     }
 
     /****************************************************************************
@@ -289,6 +302,7 @@ void usage(void) {
   
   printf("\n\n\nData Acquisition Module IPC Ver: %s\n"
          "Options are:\n"
+             "\t-b: Set BaudRate <9600|115200>\n"
              "\t-i: Serial Input <command>\n"
              "\t-l: Loop Input option <Number of Loops for option i>\n"
              "\t-v: Version\n"
