@@ -52,11 +52,11 @@ Before we start, you will need to do the following steps in the order laid out t
 
 **Response**
 
-java version "1.7.0_60"
+java version "1.8.0_65"
 
-Java(TM) SE Runtime Environment (build 1.7.0_60-b19)
+Java(TM) SE Runtime Environment (build 1.8.0_65-b17)
 
-Java HotSpot(TM) Client VM (build 24.60-b09, mixed mode)
+Java HotSpot(TM) Client VM (build 25.65-b01, mixed mode)
 
 ##  Download and Install Tangram-es
 
