@@ -6,7 +6,7 @@ Before we start, you will need to do the following steps in the order laid out t
 
 [Download Raspbian - Jessie - Build Data: 2016-03-18](http://downloads.raspberrypi.org/raspbian/images/raspbian-2016-03-18/)
 
-##  Raspbian Version
+##  Installing Raspbian 
 
 [OS Installation](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)
 
@@ -30,13 +30,11 @@ Before we start, you will need to do the following steps in the order laid out t
 
 `cd /home/pi`
 
-`mkdir weg`
-
-`cd weg`
-
 ##  Download WEG
 
 `git clone https://github.com/mgarcia01752/weg.git`
+
+`cd weg`
 
 ## Java Oracle Hotspot
 
@@ -97,10 +95,10 @@ Java HotSpot(TM) Client VM (build 24.60-b09, mixed mode)
 
 ##  UART Serial IPC
 
-`cd /home/pi/weg/weg/uart-serial-ipc`
+`cd /home/pi/weg/uart-serial-ipc`
 
 `make DamCommSocket`
 
-`cd /home/pi/weg/weg`
+
 
 
