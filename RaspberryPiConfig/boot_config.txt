@@ -1,0 +1,4 @@
+dtparam=audio=on
+hdmi_force_hotplug=1
+enable_uart=0
+force_turbo=1
