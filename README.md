@@ -16,6 +16,8 @@ Before we start, you will need to do the following steps in the order laid out t
 
 `sudo apt-get upgrade`
 
+`sudo reboot now`
+
 ##  Starting Point
 
 **Force Baud Rate to 115200**
