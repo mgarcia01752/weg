@@ -10,7 +10,7 @@ Before we start, you will need to do the following steps in the order laid out t
 
 [OS Installation](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)
 
-**Just in case to get the latest Updates**
+**Just in case to get the latest Updates (IGNORE STEP - 160723)**
 
 `sudo apt-get update`
 
@@ -67,8 +67,6 @@ Java HotSpot(TM) Client VM (build 25.65-b01, mixed mode)
 `sudo apt-get update`
 
 `sudo apt-get install cmake g++-4.7 libcurl4-openssl-dev`
-
-`cd ~`
 
 `git clone https://github.com/tangrams/tangram-es.git`
 
