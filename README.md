@@ -10,16 +10,6 @@ Before we start, you will need to do the following steps in the order laid out t
 
 [OS Installation](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)
 
-**Just in case to get the latest Updates**
-
-`sudo apt-get update`
-
-`sudo apt-get upgrade`
-
-`sudo init 6`
-
-##  Starting Point
-
 ##  Download and Install WEG
 
 `git clone https://github.com/mgarcia01752/weg.git`
@@ -52,11 +42,11 @@ Before we start, you will need to do the following steps in the order laid out t
 
 **Response**
 
-java version "1.7.0_60"
+java version "1.8.0_65"
 
-Java(TM) SE Runtime Environment (build 1.7.0_60-b19)
+Java(TM) SE Runtime Environment (build 1.8.0_65-b17)
 
-Java HotSpot(TM) Client VM (build 24.60-b09, mixed mode)
+Java HotSpot(TM) Client VM (build 25.65-b01, mixed mode)
 
 ##  Download and Install Tangram-es
 
@@ -67,8 +57,6 @@ Java HotSpot(TM) Client VM (build 24.60-b09, mixed mode)
 `sudo apt-get update`
 
 `sudo apt-get install cmake g++-4.7 libcurl4-openssl-dev`
-
-`cd ~`
 
 `git clone https://github.com/tangrams/tangram-es.git`
 
