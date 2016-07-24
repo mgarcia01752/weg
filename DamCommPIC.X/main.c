@@ -29,7 +29,7 @@ void main(void) {
     AD1PCFG = 0xFFFF; //Disable analog inputs, set all as digital I/O
     init_osc();
     UART1_init(9600); //UART1 = GPS module
-    UART2_init(115200); //UART2 = RPi comm
+    UART2_init(9600); //UART2 = RPi comm
     
     int command;
     
