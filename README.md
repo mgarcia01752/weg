@@ -10,16 +10,6 @@ Before we start, you will need to do the following steps in the order laid out t
 
 [OS Installation](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)
 
-**Just in case to get the latest Updates (IGNORE STEP - 160723)**
-
-`sudo apt-get update`
-
-`sudo apt-get upgrade`
-
-`sudo init 6`
-
-##  Starting Point
-
 ##  Download and Install WEG
 
 `git clone https://github.com/mgarcia01752/weg.git`
