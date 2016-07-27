@@ -61,6 +61,7 @@
 
 void GPS_init(void);
 void sendCommand(char *str);
+void getGPSsentence(char *GPS_String);
 
 #endif	/* GPS_H */
 

@@ -4,7 +4,12 @@
 
 #include <libpic30.h>
 #include <xc.h>
+#include <stdio.h>
 #include "TPsensor.h"
+
+
+
+  
 
 //Initialize I2C module with SCL set to 100 kHz
 void init_I2C(void){
@@ -316,4 +321,26 @@ void readUP16(char reg,  unsigned long *value){
     xlsb = read_ack_I2C();
     *value = (((unsigned long) msb << 16) + ((unsigned long) lsb << 8) + (unsigned long) xlsb) >> 8;
     reset_I2C();    
+}
+
+void getTempString(char *TempData,struct calib_data *value){
+    
+    char TemData;
+    long temp = getTemp(value);
+    
+    temp = (temp/10); //Temperature in Celsius
+    
+    TemData = (char)temp;
+    sprintf(TempData,"350:%d C\r\n",TemData);  
+}
+
+void getPressString(char *PressData,struct calib_data *value){
+    
+    unsigned int PreData;
+    long press = getPressure(value);
+    
+    press = (press/100); //Pressure in millibars
+    
+    PreData = (unsigned int)press;
+    sprintf(PressData,"350:%d mB\r\n",PreData);
 }

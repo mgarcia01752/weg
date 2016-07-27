@@ -21,17 +21,32 @@
 #include "PiComm.h"
 
 
+    
 void init_osc(void);
 
 void main(void) {
     
-    TRISBbits.TRISB1 = 1; //Set RB1 as input for RX
-    AD1PCFG = 0xFFFF; //Disable analog inputs, set all as digital I/O
+    
     init_osc();
-    UART1_init(9600); //UART1 = GPS module
-    UART2_init(9600); //UART2 = RPi comm
+    AD_Init();
     
     int command;
+    char GPS_data[255];
+    char Temp_data[20];
+    char Press_data[20];
+    char UV_data[10];
+    struct calib_data _bmp180_coeffs;
+    
+    
+    UART1_init(9600); //UART1 = GPS module
+    UART2_init(9600); //UART2 = RPi comm
+    GPS_init();
+    init_I2C();
+    
+    readCoefficients(&_bmp180_coeffs);
+   // __delay_ms(20000);
+    
+    
     
     while(1){
         
@@ -43,7 +58,8 @@ void main(void) {
                 sendPiCommand(GPS_OK);
                 break;
             case 101:
-                sendPiCommand("150:<NMEA Sentence>\0");
+                getGPSsentence(GPS_data);
+                sendPiCommand(GPS_data);
                 break;
             case 110:
                 sendPiCommand(GPS_OK);
@@ -52,7 +68,8 @@ void main(void) {
                 sendPiCommand(UV_OK);
                 break;
             case 201:
-                sendPiCommand("250:<UV Index>\0");
+                getUVindex(UV_data);
+                sendPiCommand(UV_data);
                 break;
             case 210:
                 sendPiCommand(UV_OK);
@@ -61,23 +78,23 @@ void main(void) {
                 sendPiCommand(TP_OK);
                 break;
             case 301:
-                sendPiCommand("350:<Temperature(C)>\0");
+                getTempString(Temp_data,&_bmp180_coeffs);
+                sendPiCommand(Temp_data);
                 break;
             case 302:
-                sendPiCommand("350:<Pressure(mB)>\0");
+                getPressString(Press_data,&_bmp180_coeffs);
+                sendPiCommand(Press_data);
                 break;
             case 310:
                 sendPiCommand(TP_OK);
                 break;
             case 400:
-                sendPiCommand("450:<SP Voltage>\0");
+                sendPiCommand("450:<SP Voltage>\r\n\0");
                 break;
             default:
-                sendPiCommand("TRANSMIT ERROR\0");
+                sendPiCommand("TRANSMIT ERROR\r\n\0");
         }
-    }
-    
-    
+    }  
 }
 
 void init_osc(void){
