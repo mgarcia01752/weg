@@ -45,6 +45,9 @@ void UART2_PutChar(char ch){
 char UART1_GetChar(void){
     
     char temp;  
+    if(U1STAbits.OERR == 1){
+        U1STAbits.OERR = 0;
+    }
     while(U1STAbits.URXDA == 0);
     temp = U1RXREG;
     return temp;
@@ -54,6 +57,9 @@ char UART1_GetChar(void){
 char UART2_GetChar(void){
     
     char temp; 
+    if(U2STAbits.OERR == 1){
+        U2STAbits.OERR = 0;
+    }
     while(U2STAbits.URXDA == 0);  
     temp = U2RXREG;
     return temp;

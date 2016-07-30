@@ -89,6 +89,32 @@ Java HotSpot(TM) Client VM (build 25.65-b01, mixed mode)
 
 `make DamCommSocket`
 
+## Test Communication Between PI and DAS
+
+	sudo ./DamCommSocket -h
+	
+	Data Acquisition Module IPC Ver: 1.0-pre
+	Options are:
+	        -b: Set BaudRate <9600|115200>
+	        -i: Serial Input <command>
+	        -l: Loop Input option <Number of Loops for option i>
+	        -r: Send Reset to PIC via GPIO 23
+	        -v: Version
+	        -d: Enable Debug
+	        -G: GPS Data
+	        -U: UltraViolet Data
+	        -T: Temperature Data
+	        -B: Barometer Data
+	        -S: Solar Power Voltage Data
+	        -h: Usage an Exit
+
+	Example:
+	
+	Check GPS
+	sudo ./DamCommSocket -G
+        
+        
+
 
 
 

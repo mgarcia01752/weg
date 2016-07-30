@@ -18,6 +18,7 @@
 #define DATA 0xF6   //BMP180 data register address
 
 
+
 //Structure to hold calibration coefficients
  struct calib_data{
     int ac1;
@@ -75,6 +76,8 @@ void readCast(char reg, unsigned int *value);
 void readSCast(char reg, int *value);
 void readSUP16(char reg, long *value);
 void readUP16(char reg, unsigned long *value);
+void getTempString(char* TempData, struct calib_data *value);
+void getPressString(char* PressData, struct calib_data *value);
 
 
 #endif	/* TPSENSOR_H */

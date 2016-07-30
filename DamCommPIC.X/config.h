@@ -41,7 +41,7 @@
 #pragma config MCLRE = ON               // MCLR Pin Enable bit (MCLR pin enabled; RA5 input pin disabled)
 
 // FICD
-#pragma config ICS = PGx2               // ICD Pin Placement Select bits (PGC2/PGD2 are used for programming and debugging the device)
+#pragma config ICS = PGx3               // ICD Pin Placement Select bits (PGC3/PGD3) are used for programming and debugging the device)
 
 // FDS
 #pragma config DSWDTPS = DSWDTPSF       // Deep Sleep Watchdog Timer Postscale Select bits (1:2,147,483,648 (25.7 Days))

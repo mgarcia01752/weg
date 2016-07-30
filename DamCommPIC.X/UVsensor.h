@@ -9,7 +9,7 @@
 #define	UVSENSOR_H
 
 void AD_Init (void);
-int getADconv(void);
+void getUVindex(char *UV_index);
 
 
 #endif	/* UVSENSOR_H */
