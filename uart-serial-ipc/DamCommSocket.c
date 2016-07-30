@@ -135,32 +135,37 @@ int main(int argc, char * argv[]) {
           case 'G':
             printf("Get GPS Data\n");
             bInputCLICheck = TRUE;
-            cInputCommand = GPS_COORDINATE;
+            cInputCommand = "101";
+			iLoopCliCount = 1;
             break;
 
           case 'U':
             printf("Get Ultra Violet Data\n");
             bInputCLICheck = TRUE;
             cInputCommand = UV_SENSOR;
-            break;
+            iLoopCliCount = 1;
+			break;
             
           case 'B':
             printf("Get Barometer Data\n");
             bInputCLICheck = TRUE;
             cInputCommand = BAROMETER;
-            break;
+            iLoopCliCount = 1;
+			break;
           
           case 'T':
             printf("Get Temperature Data\n");
             bInputCLICheck = TRUE;
             cInputCommand = TEMPERATURE;
-            break;
+            iLoopCliCount = 1;
+			break;
             
           case 'S':
             printf("Get Solar Data\n");
             bInputCLICheck = TRUE;
             cInputCommand = SOLAR_POWER_VOLTAGE;
-            break;                        
+            iLoopCliCount = 1;
+			break;                        
             
           
           case '?':
@@ -298,7 +303,7 @@ int main(int argc, char * argv[]) {
         printf("\nInput -> %s", cInputCommand);
      
 	    /* Strip CR and NL */
-		strip_CR_NL(cInputCommand, sizeof(caRxSocket));
+		strip_CR_NL(cInputCommand, sizeof(cInputCommand));
 	 
         serialPuts(fd, cInputCommand);
         fflush (stdout);
