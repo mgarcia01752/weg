@@ -69,7 +69,7 @@ int main(int argc, char * argv[]) {
     int bInputCLICheck = FALSE;
     int iLoopCliCount = 1;        //MUST BE = 1
     char *cLoopCliCount = '\0';
-    int iBaudRate;
+    int iBaudRate = DEFAULT_BAUD;
     char *cBaudRate;
     
     int listenfd = 0, connfd = 0 , n = 0;
@@ -121,11 +121,8 @@ int main(int argc, char * argv[]) {
 			printf("Reseting PIC via GPIO(23) Pin(%d) \n",GPIO_TO_PIC_RESET);
 			
 			wiringPiSetup () ;
-			//wpMode = WPI_MODE_PINS ;
 			
-			/* Set Pin to Ouput mode */
-			//pinMode(GPIO_TO_PIC_RESET,OUTPUT);
-			
+			/* Set Pin to Ouput mode */			
 			digitalWrite(4,LOW);
 			delay(UART_TX_TO_RX_DELAY);
 			digitalWrite(4,HIGH);
@@ -135,7 +132,7 @@ int main(int argc, char * argv[]) {
           case 'G':
             printf("Get GPS Data\n");
             bInputCLICheck = TRUE;
-            cInputCommand = "101";
+            cInputCommand = GPS_COORDINATE;
 			iLoopCliCount = 1;
             break;
 
@@ -229,7 +226,7 @@ int main(int argc, char * argv[]) {
     if (bDebug) printf("Opening UART Connection of Device: %s\n", DEFAULT_UART_LOCATION);
 
     /*Open Connection*/
-    if ((fd = serialOpen(DEFAULT_UART_LOCATION, DEFAULT_BAUD)) < 0) {
+    if ((fd = serialOpen(DEFAULT_UART_LOCATION, iBaudRate)) < 0) {
         fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
         exit(ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE);
     }
@@ -362,7 +359,7 @@ void usage(void) {
   
   printf("\n\n\nData Acquisition Module IPC Ver: %s\n"
          "Options are:\n"
-             "\t-b: Set BaudRate <9600|115200>\n"
+             "\t-b: Set BaudRate <9600|115200> DEFAULT: 9600 \n"
              "\t-i: Serial Input <command>\n"
              "\t-l: Loop Input option <Number of Loops for option i>\n"
 			 "\t-r: Send Reset to PIC via GPIO 23\n"
