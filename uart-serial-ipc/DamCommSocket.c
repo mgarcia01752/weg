@@ -309,6 +309,9 @@ int main(int argc, char * argv[]) {
     return 0;
 }
 
+/*
+*	Init Array with NULL elements
+*/
 void initBuffer(char *buf, size_t size){
   int i;
   for(i=0; i<size; i++){
@@ -316,13 +319,19 @@ void initBuffer(char *buf, size_t size){
   }
 }
 
+/*
+*	Remove CR and NL from Character Array
+*/
 void strip_CR_NL(char *buf, size_t size) {
 
 	int i = 0;
 	
 	for(i=0; i<size; i++){
 		if ((buf[i] == '\r') || (buf[i] == '\n')) {
+			
 			if (bDebug) printf("FOUND CR or NL at Index (%d)\n",i);
+			
+			/*Replace with NULL*/
 			buf[i] = '\0';
 		}   
 	}
