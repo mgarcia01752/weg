@@ -22,6 +22,7 @@
 #define VERSION                               "1.0-pre"
 #define DEFAULT_UART_LOCATION                 "/dev/ttyS0"
 #define UART_TX_TO_RX_DELAY                   1000
+#define GPIO_TO_PIC_RESET					  4					/* Broadcom GPIO = 23 - WiringPI = 4 */
 
 /* Error Codes */
 #define ERROR_NONE                             0
@@ -84,7 +85,7 @@ int main(int argc, char * argv[]) {
     char * cInputCommand = '\0';
 
     /*http://www.gnu.org/software/libc/manual/html_node/Using-Getopt.html#Using-Getopt*/
-    while ((iOpt = getopt(argc, argv, "i:t::h::v::l:d::GUBTS::")) != -1) {
+    while ((iOpt = getopt(argc, argv, "i:t::h::v::l:d::GUBTSr::")) != -1) {
 
         switch (iOpt) {
 
@@ -115,6 +116,21 @@ int main(int argc, char * argv[]) {
             cInputCommand = optarg;
             printf("\n\nVersion: %s\n\n", VERSION);
             exit(ERROR_NONE);
+			
+		  case 'r':
+			printf("Reseting PIC via GPIO(23) Pin(%d) \n",GPIO_TO_PIC_RESET);
+			
+			wiringPiSetup () ;
+			//wpMode = WPI_MODE_PINS ;
+			
+			/* Set Pin to Ouput mode */
+			//pinMode(GPIO_TO_PIC_RESET,OUTPUT);
+			
+			digitalWrite(4,LOW);
+			delay(UART_TX_TO_RX_DELAY);
+			digitalWrite(4,HIGH);
+			exit(0);
+			break;
             
           case 'G':
             printf("Get GPS Data\n");
@@ -344,6 +360,7 @@ void usage(void) {
              "\t-b: Set BaudRate <9600|115200>\n"
              "\t-i: Serial Input <command>\n"
              "\t-l: Loop Input option <Number of Loops for option i>\n"
+			 "\t-r: Send Reset to PIC via GPIO 23\n"
              "\t-v: Version\n"
              "\t-d: Enable Debug\n"
              "\t-G: GPS Data\n"
