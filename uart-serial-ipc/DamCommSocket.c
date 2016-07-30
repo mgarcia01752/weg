@@ -37,8 +37,9 @@
 /* Data Module Protocol */
 #define GPS_COORDINATE                        "101"
 #define UV_SENSOR                             "201"
-#define TEMPERATURE                           "301"
-#define BAROMETER                             "302"
+#define TEMPERATURE_C                         "301"
+#define TEMPERATURE_F                         "302"
+#define BAROMETER                             "303"
 #define SOLAR_POWER_VOLTAGE                   "400"
                                      
 
@@ -81,11 +82,10 @@ int main(int argc, char * argv[]) {
 
     int iOpt = 0;
     
-
     char * cInputCommand = '\0';
 
     /*http://www.gnu.org/software/libc/manual/html_node/Using-Getopt.html#Using-Getopt*/
-    while ((iOpt = getopt(argc, argv, "i:t::h::v::l:d::GUBTSr::")) != -1) {
+    while ((iOpt = getopt(argc, argv, "i::l::b::T::GUBSrhvd::")) != -1) {
 
         switch (iOpt) {
 
@@ -126,7 +126,7 @@ int main(int argc, char * argv[]) {
 			digitalWrite(4,LOW);
 			delay(UART_TX_TO_RX_DELAY);
 			digitalWrite(4,HIGH);
-			exit(0);
+			exit(ERROR_NONE);
 			break;
             
           case 'G':
@@ -151,9 +151,16 @@ int main(int argc, char * argv[]) {
 			break;
           
           case 'T':
-            printf("Get Temperature Data\n");
+		  
+			printf("Get Temperature Data\n");
+		  
+			if (optarg == 'c') {
+				cInputCommand = TEMPERATURE_C;
+			} else {
+				cInputCommand = TEMPERATURE_F;
+			}
+			
             bInputCLICheck = TRUE;
-            cInputCommand = TEMPERATURE;
             iLoopCliCount = 1;
 			break;
             
@@ -307,7 +314,7 @@ int main(int argc, char * argv[]) {
         
         delay(UART_TX_TO_RX_DELAY);
     
-        printf(" Ouput -> ");
+        printf(" Output -> ");
     
         while (serialDataAvail(fd)) {
             printf("%c", serialGetchar(fd));
@@ -367,7 +374,7 @@ void usage(void) {
              "\t-d: Enable Debug\n"
              "\t-G: GPS Data\n"
              "\t-U: UltraViolet Data\n"
-             "\t-T: Temperature Data\n"
+             "\t-T: Temperature Data <c|f> Default: Fahrenheit\n"
              "\t-B: Barometer Data\n"
              "\t-S: Solar Power Voltage Data\n"
              "\t-h: Usage an Exit\n\n\n\n",VERSION);

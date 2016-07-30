@@ -10,7 +10,7 @@ public class DamClient {
 
 	public static void main(String[] args) throws UnknownHostException, IOException {
 
-		String sServerAddress = "10.1.10.10";
+		String sServerAddress = "10.1.10.16";
 		int iPort = 5000;
 		String sSendCommand = "101";
 	
