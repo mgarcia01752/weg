@@ -17,10 +17,11 @@
 /* DEFAULTS */
 #define DEFAULT_SOCKET_PORT                   5000
 #define MAX_TX_RX_BUFFER_LENGTH               50
-#define DEFAULT_BAUD                          115200
+#define DEFAULT_BAUD                          9600
 #define DEFAULT_IPv4_LOOPBACK                 "127.0.0.1"
 #define VERSION                               "1.0-pre"
 #define DEFAULT_UART_LOCATION                 "/dev/ttyS0"
+#define UART_TX_TO_RX_DELAY                   1000
 
 /* Error Codes */
 #define ERROR_NONE                             0
@@ -53,6 +54,13 @@ void initBuffer(char *buf, size_t size);
 */
 void usage(void);
 
+/*
+**	String Carriage Returns and NewLine
+*/
+void strip_CR_NL(char *buf, size_t size);
+
+/* DEBUG GLOBAL */
+int bDebug = DEBUG_OFF;
 
 int main(int argc, char * argv[]) {
 
@@ -60,7 +68,7 @@ int main(int argc, char * argv[]) {
     int bInputCLICheck = FALSE;
     int iLoopCliCount = 1;        //MUST BE = 1
     char *cLoopCliCount = '\0';
-    int iBaudRate = DEFAULT_BAUD;
+    int iBaudRate;
     char *cBaudRate;
     
     int listenfd = 0, connfd = 0 , n = 0;
@@ -71,7 +79,7 @@ int main(int argc, char * argv[]) {
     char caRxUart[MAX_TX_RX_BUFFER_LENGTH];
 
     int iOpt = 0;
-    int bDebug = DEBUG_OFF;
+    
 
     char * cInputCommand = '\0';
 
@@ -205,53 +213,56 @@ int main(int argc, char * argv[]) {
         exit(ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE);
     }
 
+    if (bDebug) printf("Opened UART Connection of Device: %s\n", DEFAULT_UART_LOCATION);
+
     /****************************************************************************
      *             Start Socket monitoring or execute CLI 
      ****************************************************************************/
 
     while(!bInputCLICheck) {
     
-        if (bDebug) printf("Listening Socket\n");
+        if (bDebug) printf("+-------------------------Listening Socket---------------------------+\n");
     
         /* Blocking - Waiting for Connection */
         connfd = accept(listenfd, (struct sockaddr*)NULL, NULL); 
 
-        if (bDebug) printf("Listening Socket-1\n");
+        if (bDebug) printf("Incomming Connection Open\n");
 
         /* Clear Buffer */
         initBuffer(caRxSocket, sizeof(caRxSocket));
 
-        if (bDebug) printf("Listening Socket-2\n");
-
         /* Get Command from Client */
-        while ( (n = read(connfd, caRxSocket, sizeof(caRxSocket)-1)) > 0) {
+        while ((n = read(connfd, caRxSocket, sizeof(caRxSocket)-1)) > 0) {
           
-          if (bDebug) printf("Sending To UART-1 -> %s" , caRxSocket);
-
+          /* Strip CR and NL */
+		  strip_CR_NL(caRxSocket, sizeof(caRxSocket));
+          
+          if (bDebug) printf("Socket -> UART -> (%s)\n" , caRxSocket);
+          		  
           /* Send command to UART */
           serialPuts(fd, caRxSocket);
-        
-          delay(5);
+          
+          delay(UART_TX_TO_RX_DELAY);
 
           /*********************************************************************** 
           *         Get Result from UART and Concatenate -> caRxUart
-          ************************************************************************/
-          
-          if (bDebug) printf("Receiving From UART-1\n");
-          
+          ************************************************************************/         
           int iIndex = 0;
           
           initBuffer(caRxUart, sizeof(caRxUart));
           while (serialDataAvail(fd)) {
           
             /* Load Charcaters into Array */
-            caRxUart[iIndex++] =  serialGetchar(fd);          
+            caRxUart[iIndex++] =  serialGetchar(fd);
+      
           }
           
-          if (bDebug) printf("Sending Socket-3 -> Index: %d -> %s -> SizeOf: %d \n", iIndex , caRxUart,(int)strlen(caRxUart));
+          if (bDebug) printf("Response From UART -> Index: %d -> %s -> SizeOf: %d \n", iIndex , caRxUart,(int)strlen(caRxUart));
           
           /* Send back to Socket Client */
           write(connfd, caRxUart, strlen(caRxUart)); 
+          
+          if (bDebug) printf("UART -> Socket-> %s\n" , caRxUart);
           
           /* Close Connection */
           close(connfd);
@@ -269,10 +280,14 @@ int main(int argc, char * argv[]) {
       while (iLoopCliCount>0) {
       
         printf("\nInput -> %s", cInputCommand);
-        
+     
+	    /* Strip CR and NL */
+		strip_CR_NL(cInputCommand, sizeof(caRxSocket));
+	 
         serialPuts(fd, cInputCommand);
-  
-        delay(3);
+        fflush (stdout);
+        
+        delay(UART_TX_TO_RX_DELAY);
     
         printf(" Ouput -> ");
     
@@ -286,6 +301,9 @@ int main(int argc, char * argv[]) {
         iLoopCliCount--;
       }
       
+      serialClose(fd);
+      
+      if (bDebug) printf("Closed UART Connection of Device: %s\n", DEFAULT_UART_LOCATION);
     }
 
     return 0;
@@ -296,6 +314,18 @@ void initBuffer(char *buf, size_t size){
   for(i=0; i<size; i++){
     buf[i] = '\0';     
   }
+}
+
+void strip_CR_NL(char *buf, size_t size) {
+
+	int i = 0;
+	
+	for(i=0; i<size; i++){
+		if ((buf[i] == '\r') || (buf[i] == '\n')) {
+			if (bDebug) printf("FOUND CR or NL at Index (%d)\n",i);
+			buf[i] = '\0';
+		}   
+	}
 }
 
 void usage(void) {
