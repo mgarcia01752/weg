@@ -112,6 +112,15 @@ Java HotSpot(TM) Client VM (build 25.65-b01, mixed mode)
 	
 	Check GPS
 	sudo ./DamCommSocket -G
+	
+	To Test via Telnet
+	
+	Example from PI terminal:
+	
+	telnet 127.0.0.1 5000
+	101
+	150:$GPRMC,190826.000,A,4009.4024,N,07452.0107,W,0.06,357.50,300716,,,A*74
+	
         
         
 
