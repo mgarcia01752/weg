@@ -92,7 +92,9 @@ Java HotSpot(TM) Client VM (build 25.65-b01, mixed mode)
 ## Test Communication Between PI and DAS
 
 	sudo ./DamCommSocket -h
-	
+
+**Response**
+
 	Data Acquisition Module IPC Ver: 1.0-pre
 	Options are:
 	        -b: Set BaudRate <9600|115200>
@@ -108,13 +110,22 @@ Java HotSpot(TM) Client VM (build 25.65-b01, mixed mode)
 	        -S: Solar Power Voltage Data
 	        -h: Usage an Exit
 
-	Example:
-	
-	Check GPS
+**Example: Check GPS**
+
 	sudo ./DamCommSocket -G
-        
-        
 
+**Response**
+	
+	Get GPS Data
+	Input -> 101 Output -> 150:$GPRMC,191927.000,A,4009.3964,N,07452.0041,W,0.17,298.73,300716,,,A*7F
 
+**Example from PI terminal:**
+	
+	telnet 127.0.0.1 5000
+	101
+
+**Response**
+
+	150:$GPRMC,190826.000,A,4009.4024,N,07452.0107,W,0.06,357.50,300716,,,A*74
 
 
