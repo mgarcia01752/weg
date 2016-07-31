@@ -1,6 +1,7 @@
 */nbproject/*
 */build/*
 */bin/*
+*/dist/*
 *.o
 *.d
 *.elf
