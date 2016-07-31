@@ -20,13 +20,14 @@
 #include "UVsensor.h"
 #include "PiComm.h"
 
-
+#define RECEIVE_ERROR "900:"
+#define UART_1_BAUD_RATE 9600
+#define UART_2_BAUD_RATE 9600
     
 void init_osc(void);
 
 void main(void) {
-    
-    
+      
     init_osc();
     AD_Init();
     
@@ -38,15 +39,13 @@ void main(void) {
     struct calib_data _bmp180_coeffs;
     
     
-    UART1_init(9600); //UART1 = GPS module
-    UART2_init(9600); //UART2 = RPi comm
+    UART1_init(UART_1_BAUD_RATE); //UART1 = GPS module
+    UART2_init(UART_2_BAUD_RATE); //UART2 = RPi comm
     GPS_init();
     init_I2C();
     
     readCoefficients(&_bmp180_coeffs);
    // __delay_ms(20000);
-    
-    
     
     while(1){
         
@@ -92,7 +91,8 @@ void main(void) {
                 sendPiCommand("450:<SP Voltage>\r\n\0");
                 break;
             default:
-                sendPiCommand("TRANSMIT ERROR\r\n\0");
+                //sprintf(command,"%s%s\r\n\0",RECEIVE_ERROR,command,command)
+                sendPiCommand(RECEIVE_ERROR);
         }
     }  
 }
