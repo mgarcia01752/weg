@@ -1,4 +1,6 @@
-/JavaDasUI/nbproject/private/
+*/nbproject/*
+*/build/*
+*/bin/*
 *.o
 *.d
 *.elf
