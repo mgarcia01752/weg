@@ -16,6 +16,8 @@
 #define TEMP 0x2E   //BMP180 initialize temperature reading
 #define PRES 0x34   //BMP180 initialize pressure reading
 #define DATA 0xF6   //BMP180 data register address
+#define FAHRENHEIT 1
+#define CELSIUS 2
 
 
 
@@ -76,7 +78,7 @@ void readCast(char reg, unsigned int *value);
 void readSCast(char reg, int *value);
 void readSUP16(char reg, long *value);
 void readUP16(char reg, unsigned long *value);
-void getTempString(char* TempData, struct calib_data *value);
+void getTempString(char* TempData, struct calib_data *value, char units);
 void getPressString(char* PressData, struct calib_data *value);
 
 
