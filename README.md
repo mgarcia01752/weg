@@ -2,9 +2,23 @@
 
 ## Getting Started
 
-**Note: DO NOT USE** 5" Display until you get to Java Oracle Hotspot Step
+DO NOT USE 5" Display until you get to Java Oracle Hotspot Step
 
-Before we start, you will need to do the following steps in the order laid out to ensure a clean installation of WEG
+### Remote Setup Instructions
+
+Configure the Raspberry PI to connect to your local WiFI or Ethernet Connection
+
+[Download Putty for Remote IP Connection](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html)
+
+Obtain IPv4 address of the RPI
+
+Start Putty and login into RPI using SSH
+
+**User:** pi
+
+**Password:** raspberry
+
+### Obtain Raspbian OS
 
 [Download Raspbian - Jessie - Build Data: 2016-03-18](http://downloads.raspberrypi.org/raspbian/images/raspbian-2016-03-18/)
 
