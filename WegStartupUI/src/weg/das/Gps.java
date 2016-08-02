@@ -5,6 +5,7 @@
  */
 package weg.das;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class Gps {
      */
     public Gps(String sGPSDataFormat) {
         this.sGPSDataFormat = sGPSDataFormat;
+        processGpsData();
     }
     
     /**
@@ -100,12 +102,12 @@ public class Gps {
     public List<String> getGpsData() {
         return this.lsGpsDataFormat;
     }
-      
+        
     /**
      * $GPGGA,064951.000,2307.1256,N,12016.4438,E,1,8,0.95,39.9,M,17.8,M,,*65 
      */
     private void processGpsData() {
-       this.lsGpsDataFormat = Arrays.asList(this.sGPSDataFormat.split(",")); 
+       this.lsGpsDataFormat = new ArrayList<String>(Arrays.asList(this.sGPSDataFormat.split(","))); 
     }
     
 }

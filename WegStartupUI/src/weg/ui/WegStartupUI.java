@@ -5,9 +5,13 @@
  */
 package weg.ui;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import weg.das.DasCommands;
 import weg.das.DasConnection;
+import weg.das.Gps;
 
 /**
  *
@@ -28,18 +32,31 @@ public class WegStartupUI {
          */
         public void run () {
             
-            DasConnection dc = new DasConnection();
-            
-            while (true) {
+            try {
+                DasConnection dc;
+                dc = new DasConnection(InetAddress.getByName("10.1.10.16"),DasConnection.IPC_PORT);
                 
-                dc.get(0)
-                
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException ex) {
-                    Logger.getLogger(WegMainUI.class.getName()).log(Level.SEVERE, null, ex);
+                while (true) {
+                    
+                    String sCommandResponse = dc.get(DasCommands.GPS);
+                    
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(WegMainUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                    Gps gps = new Gps(sCommandResponse);
+                    
+                    System.out.println("GPS Raw -> " + sCommandResponse);
+                    System.out.println("GPS ToStrig -> " + gps.getGpsData());
+                    System.out.println("GPS Lat -> " + gps.getLatitude());
+                    System.out.println("GPS Lng -> " + gps.getLongitude());
+                    
+                    this.wmu.updateGPS(gps);
                 }
-                
+            } catch (UnknownHostException ex) {
+                Logger.getLogger(WegStartupUI.class.getName()).log(Level.SEVERE, null, ex);
             }
             
         }

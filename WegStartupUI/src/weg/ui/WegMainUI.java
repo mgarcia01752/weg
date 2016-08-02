@@ -5,12 +5,16 @@
  */
 package weg.ui;
 
+import weg.das.Gps;
+
 /**
  *
  * @author Maurice
  */
 public class WegMainUI extends javax.swing.JFrame {
 
+    private Gps gps = null;
+    
     /**
      * Creates new form WegMainUI
      */
@@ -18,6 +22,17 @@ public class WegMainUI extends javax.swing.JFrame {
         initComponents();
     }
 
+    public void updateGPS(Gps gps) {
+        
+        this.gps = gps;
+        
+        this.jLabelLatiData.setText(gps.getLatitude());
+        this.jLabelLongData.setText(gps.getLongitude());
+        this.jLabelUTCData.setText(gps.getUTC());
+        this.jLabelNumSatData.setText(gps.getNumSatellites().toString());
+        
+    } 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -31,16 +46,16 @@ public class WegMainUI extends javax.swing.JFrame {
         jButtonSettings = new javax.swing.JButton();
         jButtonAbout = new javax.swing.JButton();
         jPanelGPS = new javax.swing.JPanel();
+        jLabelLatitude = new javax.swing.JLabel();
         jLabelLongitude = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         jLabelGPSFix = new javax.swing.JLabel();
         jLabelGpsFixIndicator = new javax.swing.JLabel();
         jLabelNumSatData = new javax.swing.JLabel();
         jLabelLatiData = new javax.swing.JLabel();
-        jLabelLatData = new javax.swing.JLabel();
+        jLabelLongData = new javax.swing.JLabel();
         jLabelNumSatellites1 = new javax.swing.JLabel();
         jLabelUTC = new javax.swing.JLabel();
-        jLabelUTC1 = new javax.swing.JLabel();
+        jLabelUTCData = new javax.swing.JLabel();
         jLabelLocalTime = new javax.swing.JLabel();
         jLabelLocalTimeData = new javax.swing.JLabel();
         jButtonGotoTangram = new javax.swing.JButton();
@@ -94,11 +109,11 @@ public class WegMainUI extends javax.swing.JFrame {
 
         jPanelGPS.setBorder(javax.swing.BorderFactory.createTitledBorder("GPS"));
 
-        jLabelLongitude.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabelLongitude.setText("Latitude:");
+        jLabelLatitude.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelLatitude.setText("Latitude:");
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setText("Longitude: ");
+        jLabelLongitude.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelLongitude.setText("Longitude: ");
 
         jLabelGPSFix.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabelGPSFix.setText("GPS Fixed");
@@ -113,8 +128,8 @@ public class WegMainUI extends javax.swing.JFrame {
         jLabelLatiData.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabelLatiData.setText("N 2307.1256");
 
-        jLabelLatData.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabelLatData.setText("E 12016.4438");
+        jLabelLongData.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelLongData.setText("E 12016.4438");
 
         jLabelNumSatellites1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabelNumSatellites1.setText("Satellites: ");
@@ -122,8 +137,8 @@ public class WegMainUI extends javax.swing.JFrame {
         jLabelUTC.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabelUTC.setText("UTC:");
 
-        jLabelUTC1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabelUTC1.setText("064951.000");
+        jLabelUTCData.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelUTCData.setText("064951.000");
 
         jLabelLocalTime.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabelLocalTime.setText("Local Time: ");
@@ -147,7 +162,7 @@ public class WegMainUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelGPSLayout.createSequentialGroup()
-                        .addComponent(jLabelLongitude, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLabelLatitude, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabelLatiData, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
@@ -156,7 +171,7 @@ public class WegMainUI extends javax.swing.JFrame {
                             .addGroup(jPanelGPSLayout.createSequentialGroup()
                                 .addComponent(jLabelUTC)
                                 .addGap(18, 18, 18)
-                                .addComponent(jLabelUTC1))
+                                .addComponent(jLabelUTCData))
                             .addGroup(jPanelGPSLayout.createSequentialGroup()
                                 .addComponent(jLabelLocalTime)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -165,9 +180,9 @@ public class WegMainUI extends javax.swing.JFrame {
                     .addGroup(jPanelGPSLayout.createSequentialGroup()
                         .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jPanelGPSLayout.createSequentialGroup()
-                                .addComponent(jLabel3)
+                                .addComponent(jLabelLongitude)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabelLatData))
+                                .addComponent(jLabelLongData))
                             .addGroup(jPanelGPSLayout.createSequentialGroup()
                                 .addComponent(jLabelGPSFix)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -187,12 +202,12 @@ public class WegMainUI extends javax.swing.JFrame {
                     .addGroup(jPanelGPSLayout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabelLongitude)
+                            .addComponent(jLabelLatitude)
                             .addComponent(jLabelLatiData))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabelLatData))
+                            .addComponent(jLabelLongitude)
+                            .addComponent(jLabelLongData))
                         .addGap(18, 18, 18)
                         .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jLabelGPSFix)
@@ -208,7 +223,7 @@ public class WegMainUI extends javax.swing.JFrame {
                         .addGap(18, 18, 18)))
                 .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelUTC)
-                    .addComponent(jLabelUTC1))
+                    .addComponent(jLabelUTCData))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelLocalTime)
@@ -378,21 +393,21 @@ public class WegMainUI extends javax.swing.JFrame {
     private javax.swing.JButton jButtonGotoCamera;
     private javax.swing.JButton jButtonGotoTangram;
     private javax.swing.JButton jButtonSettings;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabelBarometer;
     private javax.swing.JLabel jLabelCompass;
     private javax.swing.JLabel jLabelGPSFix;
     private javax.swing.JLabel jLabelGpsFixIndicator;
-    private javax.swing.JLabel jLabelLatData;
     private javax.swing.JLabel jLabelLatiData;
+    private javax.swing.JLabel jLabelLatitude;
     private javax.swing.JLabel jLabelLocalTime;
     private javax.swing.JLabel jLabelLocalTimeData;
+    private javax.swing.JLabel jLabelLongData;
     private javax.swing.JLabel jLabelLongitude;
     private javax.swing.JLabel jLabelNumSatData;
     private javax.swing.JLabel jLabelNumSatellites1;
     private javax.swing.JLabel jLabelTemerature;
     private javax.swing.JLabel jLabelUTC;
-    private javax.swing.JLabel jLabelUTC1;
+    private javax.swing.JLabel jLabelUTCData;
     private javax.swing.JPanel jPanel4TempBaro;
     private javax.swing.JPanel jPanelCamera;
     private javax.swing.JPanel jPanelGPS;

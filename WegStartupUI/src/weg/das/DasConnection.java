@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  */
 public class DasConnection {
     
-    public final int IPC_PORT = 5000;  
+    public static final int IPC_PORT = 5000;  
     private InetAddress iaDAS = null;
     private int iPort = 0;
     
@@ -116,6 +116,14 @@ public class DasConnection {
             Logger.getLogger(DasConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
         
+        String sResponse = "";
+        
+        try {
+            sResponse = reader.readLine();
+        } catch (IOException ex) {
+            Logger.getLogger(DasConnection.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         try {
             reader.close();
         } catch (IOException ex) {
@@ -134,7 +142,9 @@ public class DasConnection {
             Logger.getLogger(DasConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        return reader.toString();
+
+        
+        return sResponse;
     }
 
 }

@@ -133,7 +133,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" attributes="0">
-                          <Component id="jLabelLongitude" min="-2" pref="79" max="-2" attributes="0"/>
+                          <Component id="jLabelLatitude" min="-2" pref="79" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="jLabelLatiData" min="-2" pref="235" max="-2" attributes="0"/>
                           <EmptySpace max="32767" attributes="0"/>
@@ -143,7 +143,7 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabelUTC" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="jLabelUTC1" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelUTCData" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jLabelLocalTime" min="-2" max="-2" attributes="0"/>
@@ -156,9 +156,9 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelLongitude" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jLabelLatData" min="-2" max="-2" attributes="0"/>
+                                  <Component id="jLabelLongData" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Group type="102" attributes="0">
                                   <Component id="jLabelGPSFix" min="-2" max="-2" attributes="0"/>
@@ -186,13 +186,13 @@
                       <Group type="102" attributes="0">
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabelLongitude" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelLatitude" alignment="3" min="-2" max="-2" attributes="0"/>
                               <Component id="jLabelLatiData" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="jLabelLatData" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelLongitude" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabelLongData" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
@@ -214,7 +214,7 @@
                   </Group>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="jLabelUTC" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="jLabelUTC1" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="jLabelUTCData" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -227,7 +227,7 @@
         </DimensionLayout>
       </Layout>
       <SubComponents>
-        <Component class="javax.swing.JLabel" name="jLabelLongitude">
+        <Component class="javax.swing.JLabel" name="jLabelLatitude">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="14" style="1"/>
@@ -235,7 +235,7 @@
             <Property name="text" type="java.lang.String" value="Latitude:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabel3">
+        <Component class="javax.swing.JLabel" name="jLabelLongitude">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="14" style="1"/>
@@ -278,7 +278,7 @@
             <Property name="text" type="java.lang.String" value="N 2307.1256"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabelLatData">
+        <Component class="javax.swing.JLabel" name="jLabelLongData">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="14" style="1"/>
@@ -302,7 +302,7 @@
             <Property name="text" type="java.lang.String" value="UTC:"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="jLabelUTC1">
+        <Component class="javax.swing.JLabel" name="jLabelUTCData">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Tahoma" size="14" style="1"/>
