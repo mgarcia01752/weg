@@ -44,6 +44,10 @@ Start Putty and login into RPI using SSH
 
 `init 6`
 
+## Disable Serial Port
+
+Raspberry PI Configuration -> Interface -> Disable Serial
+
 ## Java Oracle Hotspot
 
 `sudo apt-get --purge remove openjdk-7-jre` 
@@ -63,6 +67,10 @@ java version "1.8.0_65"
 Java(TM) SE Runtime Environment (build 1.8.0_65-b17)
 
 Java HotSpot(TM) Client VM (build 25.65-b01, mixed mode)
+
+## Set RPI for Expanded File System
+
+Raspberry PI Configuration -> Expanded File System
 
 ##  Download and Install Tangram-es
 
