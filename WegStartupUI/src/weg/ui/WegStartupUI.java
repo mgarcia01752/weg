@@ -7,6 +7,7 @@ package weg.ui;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import weg.das.DasConnection;
 
 /**
  *
@@ -27,9 +28,11 @@ public class WegStartupUI {
          */
         public void run () {
             
+            DasConnection dc = new DasConnection();
+            
             while (true) {
                 
-                /* Start IPC connection to PIC-DAS */
+                dc.get(0)
                 
                 try {
                     Thread.sleep(1000);
