@@ -35,7 +35,14 @@ public class WegMainUI extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jLabelGPSFix = new javax.swing.JLabel();
         jLabelGpsFixIndicator = new javax.swing.JLabel();
-        jLabelNumSatellites = new javax.swing.JLabel();
+        jLabelNumSatData = new javax.swing.JLabel();
+        jLabelLatiData = new javax.swing.JLabel();
+        jLabelLatData = new javax.swing.JLabel();
+        jLabelNumSatellites1 = new javax.swing.JLabel();
+        jLabelUTC = new javax.swing.JLabel();
+        jLabelUTC1 = new javax.swing.JLabel();
+        jLabelLocalTime = new javax.swing.JLabel();
+        jLabelLocalTimeData = new javax.swing.JLabel();
         jPanelCamera = new javax.swing.JPanel();
         jButtonGotoCamera = new javax.swing.JButton();
         jPanel4TempBaro = new javax.swing.JPanel();
@@ -87,10 +94,10 @@ public class WegMainUI extends javax.swing.JFrame {
         jPanelGPS.setBorder(javax.swing.BorderFactory.createTitledBorder("GPS"));
 
         jLabelLongitude.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabelLongitude.setText("Latitude");
+        jLabelLongitude.setText("Latitude:");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setText("Longitude ");
+        jLabel3.setText("Longitude: ");
 
         jLabelGPSFix.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabelGPSFix.setText("GPS Fixed");
@@ -99,8 +106,29 @@ public class WegMainUI extends javax.swing.JFrame {
         jLabelGpsFixIndicator.setForeground(new java.awt.Color(51, 153, 0));
         jLabelGpsFixIndicator.setText("•");
 
-        jLabelNumSatellites.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabelNumSatellites.setText("Satellites: ");
+        jLabelNumSatData.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelNumSatData.setText("99");
+
+        jLabelLatiData.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelLatiData.setText("N 2307.1256");
+
+        jLabelLatData.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelLatData.setText("E 12016.4438");
+
+        jLabelNumSatellites1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelNumSatellites1.setText("Satellites: ");
+
+        jLabelUTC.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelUTC.setText("UTC:");
+
+        jLabelUTC1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelUTC1.setText("064951.000");
+
+        jLabelLocalTime.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelLocalTime.setText("Local Time: ");
+
+        jLabelLocalTimeData.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabelLocalTimeData.setText("Tue Oct 15 12:19:40 ");
 
         javax.swing.GroupLayout jPanelGPSLayout = new javax.swing.GroupLayout(jPanelGPS);
         jPanelGPS.setLayout(jPanelGPSLayout);
@@ -110,33 +138,65 @@ public class WegMainUI extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelGPSLayout.createSequentialGroup()
-                        .addComponent(jLabelNumSatellites, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanelGPSLayout.createSequentialGroup()
                         .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabelLongitude, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanelGPSLayout.createSequentialGroup()
+                                .addComponent(jLabelLongitude, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabelLatiData, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanelGPSLayout.createSequentialGroup()
                                 .addComponent(jLabelGPSFix)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jLabelGpsFixIndicator)))
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(jLabelGpsFixIndicator)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabelNumSatellites1, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabelNumSatData)))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanelGPSLayout.createSequentialGroup()
+                        .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanelGPSLayout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabelLatData))
+                            .addGroup(jPanelGPSLayout.createSequentialGroup()
+                                .addComponent(jLabelUTC)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabelUTC1))
+                            .addGroup(jPanelGPSLayout.createSequentialGroup()
+                                .addComponent(jLabelLocalTime)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabelLocalTimeData)))
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         jPanelGPSLayout.setVerticalGroup(
             jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelGPSLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelLongitude, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
                 .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabelGPSFix)
-                    .addComponent(jLabelGpsFixIndicator, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelGPSLayout.createSequentialGroup()
+                        .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabelLongitude)
+                            .addComponent(jLabelLatiData))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabelLatData))
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabelGPSFix)
+                            .addComponent(jLabelGpsFixIndicator, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabelNumSatellites1)
+                        .addComponent(jLabelNumSatData)))
                 .addGap(18, 18, 18)
-                .addComponent(jLabelNumSatellites)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelUTC)
+                    .addComponent(jLabelUTC1))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelLocalTime)
+                    .addComponent(jLabelLocalTimeData))
+                .addContainerGap())
         );
 
         jPanelCamera.setBorder(javax.swing.BorderFactory.createTitledBorder("Camera"));
@@ -204,12 +264,12 @@ public class WegMainUI extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelGpsDirectionLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabelCompass)
-                .addGap(134, 134, 134))
+                .addGap(133, 133, 133))
         );
         jPanelGpsDirectionLayout.setVerticalGroup(
             jPanelGpsDirectionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelGpsDirectionLayout.createSequentialGroup()
-                .addGap(52, 52, 52)
+                .addGap(36, 36, 36)
                 .addComponent(jLabelCompass)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -243,7 +303,7 @@ public class WegMainUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanelGPS, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanelGpsDirection, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(72, 72, 72))
+                .addGap(48, 48, 48))
         );
 
         pack();
@@ -301,9 +361,16 @@ public class WegMainUI extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelCompass;
     private javax.swing.JLabel jLabelGPSFix;
     private javax.swing.JLabel jLabelGpsFixIndicator;
+    private javax.swing.JLabel jLabelLatData;
+    private javax.swing.JLabel jLabelLatiData;
+    private javax.swing.JLabel jLabelLocalTime;
+    private javax.swing.JLabel jLabelLocalTimeData;
     private javax.swing.JLabel jLabelLongitude;
-    private javax.swing.JLabel jLabelNumSatellites;
+    private javax.swing.JLabel jLabelNumSatData;
+    private javax.swing.JLabel jLabelNumSatellites1;
     private javax.swing.JLabel jLabelTemerature;
+    private javax.swing.JLabel jLabelUTC;
+    private javax.swing.JLabel jLabelUTC1;
     private javax.swing.JPanel jPanel4TempBaro;
     private javax.swing.JPanel jPanelCamera;
     private javax.swing.JPanel jPanelGPS;
