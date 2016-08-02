@@ -36,9 +36,15 @@ public class WegStartupUI {
                 DasConnection dc;
                 dc = new DasConnection(InetAddress.getByName("10.1.10.16"),DasConnection.IPC_PORT);
                 
+                Gps gps = new Gps();
+                
                 while (true) {
                     
                     String sCommandResponse = dc.get(DasCommands.GPS);
+                    
+                    if (!gps.parse(sCommandResponse)) {
+                        continue;
+                    }
                     
                     try {
                         Thread.sleep(1000);
@@ -46,10 +52,10 @@ public class WegStartupUI {
                         Logger.getLogger(WegMainUI.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     
-                    Gps gps = new Gps(sCommandResponse);
+                    
                     
                     System.out.println("GPS Raw -> " + sCommandResponse);
-                    System.out.println("GPS ToStrig -> " + gps.getGpsData());
+                    System.out.println("GPS ToStrig -> " + gps.getCurrentGpsData());
                     System.out.println("GPS Lat -> " + gps.getLatitude());
                     System.out.println("GPS Lng -> " + gps.getLongitude());
                     

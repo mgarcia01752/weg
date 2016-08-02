@@ -18,15 +18,19 @@ import java.util.List;
 public class Gps {
     
     private String sGPSDataFormat;
+    private List<String> lsGpsDataRMCFormat;
+    private List<String> lsGpsDataGGAFormat;
     private List<String> lsGpsDataFormat;
     
-    private final Integer UTC =            1;
-    private final Integer LATITUDE =       2;
-    private final Integer NS_INDICATOR =   3;
-    private final Integer LONGITUDE =      4;
-    private final Integer EW_INDICATOR =   5;
-    private final Integer POSITION_FIX =   6;
-    private final Integer SATELLITE_NUM =  7;
+    private final Integer   GPS_FORMAT =        0;
+    private final Integer   UTC =               1;
+    private final Integer   LATITUDE =          2;
+    private final Integer   NS_INDICATOR =      3;
+    private final Integer   LONGITUDE =         4;
+    private final Integer   EW_INDICATOR =      5;
+    private final Integer   POSITION_FIX =      6;
+    private final Integer   SATELLITE_NUM =     7;
+    private final int       GPSGGA_LENGTH =     15;
     
     private final String GPS_MODE_GPRMC = "150:$GPRMC";
     private final String GPS_MODE_GPGGA = "150:$GPGGA";
@@ -35,9 +39,9 @@ public class Gps {
      * Format: 
      * @param sGPSDataFormat 
      */
-    public Gps(String sGPSDataFormat) {
+    public boolean parse(String sGPSDataFormat) {
         this.sGPSDataFormat = sGPSDataFormat;
-        processGpsData();
+        return processGpsData();
     }
     
     /**
@@ -45,7 +49,7 @@ public class Gps {
      * @return 
      */
     public String getUTC() {
-        return lsGpsDataFormat.get(UTC);
+        return lsGpsDataGGAFormat.get(UTC);
     }
     
     /**
@@ -53,7 +57,7 @@ public class Gps {
      * @return 
      */
     public String getLatitude() {
-        return lsGpsDataFormat.get(LATITUDE);
+        return lsGpsDataGGAFormat.get(LATITUDE);
     }
     
     /**
@@ -61,7 +65,7 @@ public class Gps {
      * @return 
      */
     public String getLongitude() {
-        return lsGpsDataFormat.get(LONGITUDE);
+        return lsGpsDataGGAFormat.get(LONGITUDE);
     }
     
     /**
@@ -69,7 +73,7 @@ public class Gps {
      * @return 
      */
     public String getNSIndicator() {
-        return lsGpsDataFormat.get(NS_INDICATOR); 
+        return lsGpsDataGGAFormat.get(NS_INDICATOR); 
     }
     
     /**
@@ -77,7 +81,7 @@ public class Gps {
      * @return 
      */
     public String getEWIndicator() {
-        return lsGpsDataFormat.get(EW_INDICATOR); 
+        return lsGpsDataGGAFormat.get(EW_INDICATOR); 
     }
     
     /**
@@ -85,7 +89,7 @@ public class Gps {
      * @return 
      */
     public Integer getNumSatellites() {
-        return Integer.parseInt(lsGpsDataFormat.get(SATELLITE_NUM));
+        return Integer.parseInt(lsGpsDataGGAFormat.get(SATELLITE_NUM));
     }
  
    /**
@@ -94,14 +98,14 @@ public class Gps {
      * 
      */
     public Integer getFixIndicator() {
-       return Integer.parseInt(lsGpsDataFormat.get(POSITION_FIX)); 
+       return Integer.parseInt(lsGpsDataGGAFormat.get(POSITION_FIX)); 
     }
     
     /**
      * 
      * @return 
      */
-    public List<String> getGpsData() {
+    public List<String> getCurrentGpsData() {
         return this.lsGpsDataFormat;
     }
         
@@ -109,8 +113,39 @@ public class Gps {
      * $GPGGA,064951.000,2307.1256,N,12016.4438,E,1,8,0.95,39.9,M,17.8,M,,*65
      * $GPRMC,070325.000,A,4009.3977,N,07452.0034,W,0.22,129.43,020816,,,A*7B
      */
-    private void processGpsData() {
-       this.lsGpsDataFormat = new ArrayList<String>(Arrays.asList(this.sGPSDataFormat.split(","))); 
+    private boolean processGpsData() {
+        
+        boolean boolParseStatus = false;
+        
+        if (this.sGPSDataFormat == null) {
+            return boolParseStatus;
+        }
+        
+        this.lsGpsDataFormat = Arrays.asList(this.sGPSDataFormat.split(","));
+        
+        System.out.println("GPS-DATA-LENGTH: " + this.lsGpsDataFormat.size());
+        
+        if (this.lsGpsDataFormat.get(GPS_FORMAT).equalsIgnoreCase(GPS_MODE_GPRMC)) {
+          
+            System.out.println("GPS-RMC-DATA: " + this.lsGpsDataFormat);   
+        
+        } else if (this.lsGpsDataFormat.get(GPS_FORMAT).equalsIgnoreCase(GPS_MODE_GPGGA)) {
+            
+            if (this.lsGpsDataFormat.size() == GPSGGA_LENGTH) {           
+                this.lsGpsDataGGAFormat = new ArrayList<String>();
+                this.lsGpsDataGGAFormat.addAll(this.lsGpsDataFormat);
+                boolParseStatus = true;
+            } else {
+                System.out.println("GPS-GGA-DATA-ERROR: " + this.lsGpsDataFormat);     
+            }
+            
+        } else {
+            System.out.println("GPS-DATA: " + this.lsGpsDataFormat);
+        }
+        
+       return boolParseStatus; 
     }
+    
+    
     
 }
