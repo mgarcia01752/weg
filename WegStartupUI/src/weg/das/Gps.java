@@ -106,7 +106,8 @@ public class Gps {
     }
         
     /**
-     * $GPGGA,064951.000,2307.1256,N,12016.4438,E,1,8,0.95,39.9,M,17.8,M,,*65 
+     * $GPGGA,064951.000,2307.1256,N,12016.4438,E,1,8,0.95,39.9,M,17.8,M,,*65
+     * $GPRMC,070325.000,A,4009.3977,N,07452.0034,W,0.22,129.43,020816,,,A*7B
      */
     private void processGpsData() {
        this.lsGpsDataFormat = new ArrayList<String>(Arrays.asList(this.sGPSDataFormat.split(","))); 
