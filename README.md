@@ -2,6 +2,8 @@
 
 ## Getting Started
 
+**Note: DO NOT USE** 5" Display until you get to Java Oracle Hotspot Step
+
 Before we start, you will need to do the following steps in the order laid out to ensure a clean installation of WEG
 
 [Download Raspbian - Jessie - Build Data: 2016-03-18](http://downloads.raspberrypi.org/raspbian/images/raspbian-2016-03-18/)

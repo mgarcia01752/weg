@@ -9,17 +9,11 @@ Command:
   dist/default/production/DamCommPIC.X.production.elf \
   -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/.. \
   -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib \
-  -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib/PIC24E \
   -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../support/PIC24E/gld \
-  -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib/PIC24F \
   -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../support/PIC24F/gld \
-  -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib/PIC24H \
   -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../support/PIC24H/gld \
-  -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib/dsPIC30F \
   -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../support/dsPIC30F/gld \
-  -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib/dsPIC33E \
   -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../support/dsPIC33E/gld \
-  -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib/dsPIC33F \
   -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../support/dsPIC33F/gld \
   build/default/production/main.o \
   build/default/production/UART.o \
@@ -50,6 +44,8 @@ Command:
   --library=lega-c-elf \
   -end-group \
 
+
+Optional library libpPIC24Fxxx.a not found
 Archive member included because of file (symbol)
 
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
@@ -227,14 +223,14 @@ Program Memory  [Origin = 0x200, Length = 0x2a00]
 section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200              0x1aa0          0x27f0  (10224)
-.const                      0x1ca0                0xa2            0xf3  (243)
-.text                       0x1d42               0x938           0xdd4  (3540)
-.dinit                      0x267a                0xc0           0x120  (288)
-.text                       0x273a               0x12a           0x1bf  (447)
-.init.delay32               0x2864                0x1c            0x2a  (42)
-.shared.dinit               0x2880                 0x2             0x3  (3)
+.const                      0x1ca0                0x9e            0xed  (237)
+.text                       0x1d3e               0x938           0xdd4  (3540)
+.dinit                      0x2676                0xc0           0x120  (288)
+.text                       0x2736               0x12a           0x1bf  (447)
+.init.delay32               0x2860                0x1c            0x2a  (42)
+.shared.dinit               0x287c                 0x2             0x3  (3)
 
-                 Total program memory used (bytes):         0x39c3  (14787) 91%
+                 Total program memory used (bytes):         0x39bd  (14781) 91%
 
 
 Data Memory  [Origin = 0x800, Length = 0x600]
@@ -360,57 +356,57 @@ External Symbols in Program Memory (by address):
                   0x001bdc                  __dunpack
                   0x001c2a                  ___floatdidf
                   0x001c4a                  ___floatundidf
-                  0x001d42                  _init_I2C
-                  0x001d5a                  _restart_I2C
-                  0x001d88                  _start_I2C
-                  0x001dbe                  _reset_I2C
-                  0x001df4                  _sendByte_I2C
-                  0x001e54                  _read_I2C
-                  0x001e82                  _read_ack_I2C
-                  0x001eb8                  _poll_I2C
-                  0x001ed2                  _readSCast
-                  0x001eea                  _readCast
-                  0x001efc                  _readS16
-                  0x001f12                  _read16
-                  0x001f56                  _getTemp
-                  0x001fdc                  _getPressure
-                  0x0022ba                  _getUT
-                  0x0022de                  _getUP
-                  0x002302                  _readCoefficients
-                  0x002374                  _readSUP16
-                  0x00238a                  _readUP16
-                  0x0023e4                  _getTempString
-                  0x002464                  _getPressString
-                  0x002490                  _main
-                  0x002598                  _init_osc
-                  0x0025a8                  _UART1_init
-                  0x0025c8                  _UART2_init
-                  0x0025e8                  _UART1_PutChar
-                  0x002600                  _UART2_PutChar
-                  0x002618                  _UART1_GetChar
-                  0x00263a                  _UART2_GetChar
-                  0x00265c                  _sendArray
-                  0x00273a                  _AD_Init
-                  0x002754                  _getUVindex
-                  0x0027aa                  _GPS_init
-                  0x0027ba                  _getGPSsentence
-                  0x0027f4                  _sendCommand
-                  0x002812                  _sendPiCommand
-                  0x002830                  _getPiCommand
-                  0x002864                  ___delay32
+                  0x001d3e                  _init_I2C
+                  0x001d56                  _restart_I2C
+                  0x001d84                  _start_I2C
+                  0x001dba                  _reset_I2C
+                  0x001df0                  _sendByte_I2C
+                  0x001e50                  _read_I2C
+                  0x001e7e                  _read_ack_I2C
+                  0x001eb4                  _poll_I2C
+                  0x001ece                  _readSCast
+                  0x001ee6                  _readCast
+                  0x001ef8                  _readS16
+                  0x001f0e                  _read16
+                  0x001f52                  _getTemp
+                  0x001fd8                  _getPressure
+                  0x0022b6                  _getUT
+                  0x0022da                  _getUP
+                  0x0022fe                  _readCoefficients
+                  0x002370                  _readSUP16
+                  0x002386                  _readUP16
+                  0x0023e0                  _getTempString
+                  0x002460                  _getPressString
+                  0x00248c                  _main
+                  0x002594                  _init_osc
+                  0x0025a4                  _UART1_init
+                  0x0025c4                  _UART2_init
+                  0x0025e4                  _UART1_PutChar
+                  0x0025fc                  _UART2_PutChar
+                  0x002614                  _UART1_GetChar
+                  0x002636                  _UART2_GetChar
+                  0x002658                  _sendArray
+                  0x002736                  _AD_Init
+                  0x002750                  _getUVindex
+                  0x0027a6                  _GPS_init
+                  0x0027b6                  _getGPSsentence
+                  0x0027f0                  _sendCommand
+                  0x00280e                  _sendPiCommand
+                  0x00282c                  _getPiCommand
+                  0x002860                  ___delay32
                   0xf80000                  __FBS.sec
                   0xf80004                  __FGS.sec
 
 External Symbols in Program Memory (by name):
 
-                  0x00273a                  _AD_Init
-                  0x0027aa                  _GPS_init
-                  0x002618                  _UART1_GetChar
-                  0x0025e8                  _UART1_PutChar
-                  0x0025a8                  _UART1_init
-                  0x00263a                  _UART2_GetChar
-                  0x002600                  _UART2_PutChar
-                  0x0025c8                  _UART2_init
+                  0x002736                  _AD_Init
+                  0x0027a6                  _GPS_init
+                  0x002614                  _UART1_GetChar
+                  0x0025e4                  _UART1_PutChar
+                  0x0025a4                  _UART1_init
+                  0x002636                  _UART2_GetChar
+                  0x0025fc                  _UART2_PutChar
+                  0x0025c4                  _UART2_init
                   0x0002ac                  __DefaultInterrupt
                   0x0014c6                  __Dnorm
                   0xf80000                  __FBS.sec
@@ -439,7 +435,7 @@ External Symbols in Program Memory (by name):
                   0x0008f0                  ___Putfld_s
                   0x001a50                  ___adddf3
                   0x0002b2                  ___addsf3
-                  0x002864                  ___delay32
+                  0x002860                  ___delay32
                   0x001572                  ___divdf3
                   0x001994                  ___divdi3
                   0x00036c                  ___divsf3
@@ -496,39 +492,39 @@ External Symbols in Program Memory (by name):
                   0x00076e                  __sprintf_fF
                   0x00076e                  __sprintf_s
                   0x001012                  _div
-                  0x0027ba                  _getGPSsentence
-                  0x002830                  _getPiCommand
-                  0x002464                  _getPressString
-                  0x001fdc                  _getPressure
-                  0x001f56                  _getTemp
-                  0x0023e4                  _getTempString
-                  0x0022de                  _getUP
-                  0x0022ba                  _getUT
-                  0x002754                  _getUVindex
-                  0x001d42                  _init_I2C
-                  0x002598                  _init_osc
+                  0x0027b6                  _getGPSsentence
+                  0x00282c                  _getPiCommand
+                  0x002460                  _getPressString
+                  0x001fd8                  _getPressure
+                  0x001f52                  _getTemp
+                  0x0023e0                  _getTempString
+                  0x0022da                  _getUP
+                  0x0022b6                  _getUT
+                  0x002750                  _getUVindex
+                  0x001d3e                  _init_I2C
+                  0x002594                  _init_osc
                   0x000736                  _isspace
                   0x001028                  _ldiv
-                  0x002490                  _main
+                  0x00248c                  _main
                   0x001052                  _memchr
                   0x001066                  _memcpy
-                  0x001eb8                  _poll_I2C
-                  0x001f12                  _read16
-                  0x001eea                  _readCast
-                  0x002302                  _readCoefficients
-                  0x001efc                  _readS16
-                  0x001ed2                  _readSCast
-                  0x002374                  _readSUP16
-                  0x00238a                  _readUP16
-                  0x001e54                  _read_I2C
-                  0x001e82                  _read_ack_I2C
-                  0x001dbe                  _reset_I2C
-                  0x001d5a                  _restart_I2C
-                  0x00265c                  _sendArray
-                  0x001df4                  _sendByte_I2C
-                  0x0027f4                  _sendCommand
-                  0x002812                  _sendPiCommand
-                  0x001d88                  _start_I2C
+                  0x001eb4                  _poll_I2C
+                  0x001f0e                  _read16
+                  0x001ee6                  _readCast
+                  0x0022fe                  _readCoefficients
+                  0x001ef8                  _readS16
+                  0x001ece                  _readSCast
+                  0x002370                  _readSUP16
+                  0x002386                  _readUP16
+                  0x001e50                  _read_I2C
+                  0x001e7e                  _read_ack_I2C
+                  0x001dba                  _reset_I2C
+                  0x001d56                  _restart_I2C
+                  0x002658                  _sendArray
+                  0x001df0                  _sendByte_I2C
+                  0x0027f0                  _sendCommand
+                  0x00280e                  _sendPiCommand
+                  0x001d84                  _start_I2C
                   0x001074                  _strchr
                   0x00108c                  _strlen
                   0x000746                  _tolower
@@ -563,7 +559,7 @@ LOAD build/default/production/UVsensor.o
 LOAD build/default/production/TPsensor.o
 LOAD build/default/production/PiComm.o
                     0x0001                  __MPLAB_BUILD = 0x1
-LOAD c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib/PIC24F\libpPIC24Fxxx-elf.a
+LOAD pPIC24Fxxx
 LOAD c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libfx-elf.a
                     0xf80000                  __FBS = 0xf80000
                     0xf80004                  __FGS = 0xf80004
@@ -815,14 +811,14 @@ __FDS
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x23f0
+.debug_info       0x000000       0x2426
  *(.debug_info)
- .debug_info      0x000000        0x31e build/default/production/main.o
- .debug_info      0x00031e        0xa49 build/default/production/UART.o
- .debug_info      0x000d67        0x1f7 build/default/production/GPS.o
- .debug_info      0x000f5e        0x424 build/default/production/UVsensor.o
- .debug_info      0x001382        0xec3 build/default/production/TPsensor.o
- .debug_info      0x002245        0x1ab build/default/production/PiComm.o
+ .debug_info      0x000000        0x327 build/default/production/main.o
+ .debug_info      0x000327        0xa52 build/default/production/UART.o
+ .debug_info      0x000d79        0x200 build/default/production/GPS.o
+ .debug_info      0x000f79        0x42d build/default/production/UVsensor.o
+ .debug_info      0x0013a6        0xecc build/default/production/TPsensor.o
+ .debug_info      0x002272        0x1b4 build/default/production/PiComm.o
  *(.gnu.linkonce.wi.*)
 
 .debug_abbrev     0x000000        0x586
@@ -1487,65 +1483,65 @@ __c30_signature
 .config_IESO      0xf80006          0x2
  .config_IESO     0xf80006          0x2 build/default/production/main.o
 
-.const              0x9ca0         0xa2 load address 0x001ca0  
+.const              0x9ca0         0x9e load address 0x001ca0  
  .const             0x9ca0         0x3c build/default/production/GPS.o
- .const             0x9cdc         0x38 build/default/production/main.o
- .const             0x9d14         0x26 build/default/production/TPsensor.o
- .const             0x9d3a          0x8 build/default/production/UVsensor.o
+ .const             0x9cdc         0x34 build/default/production/main.o
+ .const             0x9d10         0x26 build/default/production/TPsensor.o
+ .const             0x9d36          0x8 build/default/production/UVsensor.o
 
-.text             0x001d42        0x938
- .text            0x001d42        0x74e build/default/production/TPsensor.o
-                  0x001d42                  _init_I2C
-                  0x001d5a                  _restart_I2C
-                  0x001d88                  _start_I2C
-                  0x001dbe                  _reset_I2C
-                  0x001df4                  _sendByte_I2C
-                  0x001e54                  _read_I2C
-                  0x001e82                  _read_ack_I2C
-                  0x001eb8                  _poll_I2C
-                  0x001ed2                  _readSCast
-                  0x001eea                  _readCast
-                  0x001efc                  _readS16
-                  0x001f12                  _read16
-                  0x001f56                  _getTemp
-                  0x001fdc                  _getPressure
-                  0x0022ba                  _getUT
-                  0x0022de                  _getUP
-                  0x002302                  _readCoefficients
-                  0x002374                  _readSUP16
-                  0x00238a                  _readUP16
-                  0x0023e4                  _getTempString
-                  0x002464                  _getPressString
- .text            0x002490        0x118 build/default/production/main.o
-                  0x002490                  _main
-                  0x002598                  _init_osc
- .text            0x0025a8         0xd2 build/default/production/UART.o
-                  0x0025a8                  _UART1_init
-                  0x0025c8                  _UART2_init
-                  0x0025e8                  _UART1_PutChar
-                  0x002600                  _UART2_PutChar
-                  0x002618                  _UART1_GetChar
-                  0x00263a                  _UART2_GetChar
-                  0x00265c                  _sendArray
+.text             0x001d3e        0x938
+ .text            0x001d3e        0x74e build/default/production/TPsensor.o
+                  0x001d3e                  _init_I2C
+                  0x001d56                  _restart_I2C
+                  0x001d84                  _start_I2C
+                  0x001dba                  _reset_I2C
+                  0x001df0                  _sendByte_I2C
+                  0x001e50                  _read_I2C
+                  0x001e7e                  _read_ack_I2C
+                  0x001eb4                  _poll_I2C
+                  0x001ece                  _readSCast
+                  0x001ee6                  _readCast
+                  0x001ef8                  _readS16
+                  0x001f0e                  _read16
+                  0x001f52                  _getTemp
+                  0x001fd8                  _getPressure
+                  0x0022b6                  _getUT
+                  0x0022da                  _getUP
+                  0x0022fe                  _readCoefficients
+                  0x002370                  _readSUP16
+                  0x002386                  _readUP16
+                  0x0023e0                  _getTempString
+                  0x002460                  _getPressString
+ .text            0x00248c        0x118 build/default/production/main.o
+                  0x00248c                  _main
+                  0x002594                  _init_osc
+ .text            0x0025a4         0xd2 build/default/production/UART.o
+                  0x0025a4                  _UART1_init
+                  0x0025c4                  _UART2_init
+                  0x0025e4                  _UART1_PutChar
+                  0x0025fc                  _UART2_PutChar
+                  0x002614                  _UART1_GetChar
+                  0x002636                  _UART2_GetChar
+                  0x002658                  _sendArray
 
-.dinit            0x00267a         0xc0
- .dinit           0x00267a         0xc0 data_init
+.dinit            0x002676         0xc0
+ .dinit           0x002676         0xc0 data_init
 
-.text             0x00273a        0x12a
- .text            0x00273a         0x70 build/default/production/UVsensor.o
-                  0x00273a                  _AD_Init
-                  0x002754                  _getUVindex
- .text            0x0027aa         0x68 build/default/production/GPS.o
-                  0x0027aa                  _GPS_init
-                  0x0027ba                  _getGPSsentence
-                  0x0027f4                  _sendCommand
- .text            0x002812         0x52 build/default/production/PiComm.o
-                  0x002812                  _sendPiCommand
-                  0x002830                  _getPiCommand
+.text             0x002736        0x12a
+ .text            0x002736         0x70 build/default/production/UVsensor.o
+                  0x002736                  _AD_Init
+                  0x002750                  _getUVindex
+ .text            0x0027a6         0x68 build/default/production/GPS.o
+                  0x0027a6                  _GPS_init
+                  0x0027b6                  _getGPSsentence
+                  0x0027f0                  _sendCommand
+ .text            0x00280e         0x52 build/default/production/PiComm.o
+                  0x00280e                  _sendPiCommand
+                  0x00282c                  _getPiCommand
 
-.init.delay32     0x002864         0x1c
- .init.delay32    0x002864         0x1c c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
-                  0x002864                  ___delay32
+.init.delay32     0x002860         0x1c
+ .init.delay32    0x002860         0x1c c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
+                  0x002860                  ___delay32
 
-.shared.dinit     0x002880          0x2
- .shared.dinit    0x002880          0x2 shared_data_init
+.shared.dinit     0x00287c          0x2
+ .shared.dinit    0x00287c          0x2 shared_data_init
