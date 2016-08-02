@@ -11,7 +11,7 @@
 //Initialize GPS module by sending commands to module
 void GPS_init(void){
     
-    sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA); //outputs only RMC sentences
+    sendCommand(PMTK_SET_NMEA_OUTPUT_GGAONLY); //outputs only RMC sentences
     __delay_us(1000);  
 }
 

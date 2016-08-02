@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  *
- * $GPGGA,064951.000,2307.1256,N,12016.4438,E,1,8,0.95,39.9,M,17.8,M,,*65 
+ * 150:$GPGGA,070024.000,4009.3988,N,07452.0023,W,1,07,1.26,65.1,M,-34.0,M,,*67 
  * 
  * @author Maurice
  */
@@ -28,6 +28,8 @@ public class Gps {
     private final Integer POSITION_FIX =   6;
     private final Integer SATELLITE_NUM =  7;
     
+    private final String GPS_MODE_GPRMC = "150:$GPRMC";
+    private final String GPS_MODE_GPGGA = "150:$GPGGA";
     
     /**
      * Format: 
