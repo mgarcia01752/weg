@@ -145,7 +145,9 @@ Raspberry PI Configuration -> Expanded File System
 	Get GPS Data
 	Input -> 101 Output -> 150:$GPRMC,191927.000,A,4009.3964,N,07452.0041,W,0.17,298.73,300716,,,A*7F
 
-**Example from PI terminal:**
+**Example from PI terminal (optional)**
+	
+	sudo apt-get install telnet
 	
 	telnet 127.0.0.1 5000
 	101

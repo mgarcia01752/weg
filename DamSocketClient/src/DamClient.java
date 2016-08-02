@@ -16,7 +16,7 @@ public class DamClient {
 	
 		int iCount = 0;
 		
-		while (iCount < 3) {
+		while (iCount < 5) {
 			
 			Socket socket = new Socket(sServerAddress, iPort);
 
