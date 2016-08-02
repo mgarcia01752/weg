@@ -19,13 +19,13 @@ public class Gps {
     private String sGPSDataFormat;
     private List<String> lsGpsDataFormat;
     
-    private static Integer UTC =            1;
-    private static Integer LATITUDE =       2;
-    private static Integer NS_INDICATOR =   3;
-    private static Integer LONGITUDE =      4;
-    private static Integer EW_INDICATOR =   5;
-    private static Integer POSITION_FIX =   6;
-    private static Integer SATELLITE_NUM =  7;
+    private final Integer UTC =            1;
+    private final Integer LATITUDE =       2;
+    private final Integer NS_INDICATOR =   3;
+    private final Integer LONGITUDE =      4;
+    private final Integer EW_INDICATOR =   5;
+    private final Integer POSITION_FIX =   6;
+    private final Integer SATELLITE_NUM =  7;
     
     
     /**
@@ -41,7 +41,7 @@ public class Gps {
      * @return 
      */
     public String getUTC() {
-        return lsGpsDataFormat.get(1);
+        return lsGpsDataFormat.get(UTC);
     }
     
     /**
@@ -83,6 +83,15 @@ public class Gps {
     public Integer getNumSatellites() {
         return Integer.parseInt(lsGpsDataFormat.get(SATELLITE_NUM));
     }
+ 
+   /**
+     * 
+     * @return 0 Fix not available; 1 GPS fix; 2 Differential GPS fix
+     * 
+     */
+    public Integer getFixIndicator() {
+       return Integer.parseInt(lsGpsDataFormat.get(POSITION_FIX)); 
+    }
     
     /**
      * 
@@ -91,16 +100,12 @@ public class Gps {
     public List<String> getGpsData() {
         return this.lsGpsDataFormat;
     }
-    
+      
     /**
      * $GPGGA,064951.000,2307.1256,N,12016.4438,E,1,8,0.95,39.9,M,17.8,M,,*65 
      */
     private void processGpsData() {
-       
        this.lsGpsDataFormat = Arrays.asList(this.sGPSDataFormat.split(",")); 
-       
-       
-        
     }
     
 }
