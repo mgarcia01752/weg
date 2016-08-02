@@ -28,21 +28,21 @@ Start Putty and login into RPI using SSH
 
 ##  Download and Install WEG
 
-`git clone https://github.com/mgarcia01752/weg.git`
-
-`cd weg`
+	git clone https://github.com/mgarcia01752/weg.git
+	
+	cd weg
 
 **Backup and Configure for WEG**
 
-`sudo su ` 
-
-`mv /boot/config.txt /boot/config.txt~`
-
-`mv /boot/cmdline.txt /boot/cmdline.txt~`
-
-`cp /home/pi/weg/RaspberryPiConfig/* /boot`
-
-`init 6`
+	sudo su  
+	
+	mv /boot/config.txt /boot/config.txt~
+	
+	mv /boot/cmdline.txt /boot/cmdline.txt~
+	
+	cp /home/pi/weg/RaspberryPiConfig/* /boot
+	
+	init 6
 
 ## Disable Serial Port
 
@@ -50,15 +50,15 @@ Raspberry PI Configuration -> Interface -> Disable Serial
 
 ## Java Oracle Hotspot
 
-`sudo apt-get --purge remove openjdk-7-jre` 
-
-`sudo apt-get --purge remove openjdk-7-jdk`
-
-`sudo apt-get install oracle-java7-jdk`
+	sudo apt-get --purge remove openjdk-7-jre 
+	
+	sudo apt-get --purge remove openjdk-7-jdk
+	
+	sudo apt-get install oracle-java7-jdk
 
 **Check Installation**
 
-`java -version`
+	java -version
 
 **Response**
 
@@ -74,44 +74,46 @@ Raspberry PI Configuration -> Expanded File System
 
 ##  Download and Install Tangram-es
 
-`cd /home/pi/weg`
-
-`sudo apt-get install cmake`
-
-`sudo apt-get update`
-
-`sudo apt-get install cmake g++-4.7 libcurl4-openssl-dev`
-
-`git clone https://github.com/tangrams/tangram-es.git`
-
-`export CXX=/usr/bin/g++-4.9`
-
-`cd tangram-es`
-
-`git submodule init && git submodule update`
-
-`git submodule update --init --recursive`
-
-`make rpi`
+	cd /home/pi/weg
+	
+	sudo apt-get install cmake
+	
+	sudo apt-get update
+	
+	sudo apt-get install cmake g++-4.7 libcurl4-openssl-dev
+	
+	git clone https://github.com/tangrams/tangram-es.git
+	
+	export CXX=/usr/bin/g++-4.9
+	
+	cd tangram-es
+	
+	git submodule init && git submodule update
+	
+	git submodule update --init --recursive
+	
+** At this point, the build will take ~30 minutes. You can Skip to the next step and come back later **
+	
+	make rpi
 
 
 ##  Download and Install WiringPi
 
-`cd /home/pi/weg`
-
-`git clone git://git.drogon.net/wiringPi`
-
-`cd wiringPi`
-
-`git pull origin`
-
-`./build`
+	cd /home/pi/weg
+	
+	git clone git://git.drogon.net/wiringPi
+	
+	cd wiringPi
+	
+	git pull origin
+	
+	./build
 
 ##  Install UART Serial IPC
 
-`cd /home/pi/weg/uart-serial-ipc`
-
-`make DamCommSocket`
+	cd /home/pi/weg/uart-serial-ipc
+	
+	make DamCommSocket
 
 ## Test Communication Between PI and DAS
 
