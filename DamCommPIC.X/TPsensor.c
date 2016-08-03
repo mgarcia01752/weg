@@ -323,15 +323,29 @@ void readUP16(char reg,  unsigned long *value){
     reset_I2C();    
 }
 
-void getTempString(char *TempData,struct calib_data *value){
+void getTempString(char *TempData,struct calib_data *value, char units){
     
-    char TemData;
-    long temp = getTemp(value);
+    if(units == CELSIUS){
+        //char TemData;
+        long temp = getTemp(value);
+
+        double Tdata = (double)temp;
+
+        Tdata = (Tdata/10);
+        //temp = (temp/10); //Temperature in Celsius
+
+        //TemData = (char)temp;
+        sprintf(TempData,"350:%.1f C\r\n",Tdata); 
+    }
     
-    temp = (temp/10); //Temperature in Celsius
-    
-    TemData = (char)temp;
-    sprintf(TempData,"350:%d C\r\n",TemData);  
+    if(units == FAHRENHEIT){
+        
+        long temp = getTemp(value);
+        double Tdata = (double)temp;
+        Tdata = ((Tdata/10) * 1.8) + 32; //Temp in Fahrenheit
+        
+        sprintf(TempData,"350:%.1f F\r\n",Tdata);
+    }
 }
 
 void getPressString(char *PressData,struct calib_data *value){

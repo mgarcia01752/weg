@@ -21,6 +21,9 @@
 #include "PiComm.h"
 
 
+#define UART_1_BAUD_RATE 9600
+#define UART_2_BAUD_RATE 9600
+
     
 void init_osc(void);
 
@@ -38,8 +41,8 @@ void main(void) {
     struct calib_data _bmp180_coeffs;
     
     
-    UART1_init(9600); //UART1 = GPS module
-    UART2_init(9600); //UART2 = RPi comm
+    UART1_init(UART_1_BAUD_RATE); //UART1 = GPS module
+    UART2_init(UART_2_BAUD_RATE); //UART2 = RPi comm
     GPS_init();
     init_I2C();
     
@@ -78,10 +81,14 @@ void main(void) {
                 sendPiCommand(TP_OK);
                 break;
             case 301:
-                getTempString(Temp_data,&_bmp180_coeffs);
+                getTempString(Temp_data,&_bmp180_coeffs,CELSIUS);
                 sendPiCommand(Temp_data);
                 break;
             case 302:
+                getTempString(Temp_data,&_bmp180_coeffs,FAHRENHEIT);
+                sendPiCommand(Temp_data);
+                break;
+            case 303:
                 getPressString(Press_data,&_bmp180_coeffs);
                 sendPiCommand(Press_data);
                 break;
@@ -92,7 +99,7 @@ void main(void) {
                 sendPiCommand("450:<SP Voltage>\r\n\0");
                 break;
             default:
-                sendPiCommand("TRANSMIT ERROR\r\n\0");
+                sendPiCommand(RECEIVE_ERROR);
         }
     }  
 }
