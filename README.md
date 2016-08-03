@@ -155,5 +155,38 @@ Raspberry PI Configuration -> Expanded File System
 **Response**
 
 	150:$GPRMC,190826.000,A,4009.4024,N,07452.0107,W,0.06,357.50,300716,,,A*74
+	
+## Update WEG from GitHub
+
+**Update from Master**
+
+	cd /home/pi/weg
+	
+	git pull
+	
+	git merge origin
+
+**Update from Branch, Example v0.2**
+
+	cd /home/pi/weg
+	
+	git pull
+	
+	git merge origin/v0.2
+	
+## Starting WEG Manually
+
+**Start DAS IPC**	
+	
+	cd /home/pi/weg/uart-serial-ipc/
+	
+	sudo ./DamCommSocket -d
+	
+**Start WEG GUI**	
+
+	cd /home/pi/weg/WegStartupUI/dist
+	
+	java -jar WegStartupUI.jar
+
 
 
