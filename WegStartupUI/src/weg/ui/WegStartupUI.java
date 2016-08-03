@@ -5,13 +5,16 @@
  */
 package weg.ui;
 
+import com.sun.javafx.TempState;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import weg.das.Barometer;
 import weg.das.DasCommands;
 import weg.das.DasConnection;
 import weg.das.Gps;
+import weg.das.Temperature;
 
 /**
  *
@@ -32,41 +35,65 @@ public class WegStartupUI {
          */
         public void run () {
             
-            try {
-                DasConnection dc;
-                dc = new DasConnection(InetAddress.getByName("10.1.10.16"),DasConnection.IPC_PORT);
+            Gps gps = new Gps();
+            
+            while(true) {
                 
-                Gps gps = new Gps();
-                
-                while (true) {
-                    
-                    String sCommandResponse = dc.get(DasCommands.GPS);
-                    
-                    if (!gps.parse(sCommandResponse)) {
-                        continue;
-                    }
-                    
+                /*Wait till Connect Button is selected */
+                while (!this.wmu.isDasConnectSelected()) {
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(WegMainUI.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(WegStartupUI.class.getName()).log(Level.SEVERE, null, ex);
                     }
                     
+                    System.out.println("Connect Button Toogled - Disconnected from DAS.....");
                     
-                    
-                    System.out.println("GPS Raw -> " + sCommandResponse);
-                    System.out.println("GPS ToStrig -> " + gps.getCurrentGpsData());
-                    System.out.println("GPS Lat -> " + gps.getLatitude());
-                    System.out.println("GPS Lng -> " + gps.getLongitude());
-                    
-                    this.wmu.updateGPS(gps);
                 }
-            } catch (UnknownHostException ex) {
-                Logger.getLogger(WegStartupUI.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            
+                
+                System.out.println("Connect Button Toogled - Connected to DAS.....");
+                
+                DasConnection dc;
+                
+                try {
+                  
+                  /* if useing in remote mode get IP Addresses */
+                  if (this.wmu.isRemoteDasSelected()) {
+                    dc = new DasConnection(this.wmu.getRemoteDasInetAddress(),DasConnection.IPC_PORT);  
+                  } else {
+                     dc = new DasConnection(this.wmu.getLocalDasInetAddress(),DasConnection.IPC_PORT); 
+                  }
+              
+                  while (true) {
+
+                      String sCommandResponse = dc.get(DasCommands.GPS);
+
+                      if (gps.parse(sCommandResponse)) {              
+                          System.out.println("GPS Raw -> " + sCommandResponse);
+                          System.out.println("GPS ToStrig -> " + gps.getCurrentGpsData());
+                          System.out.println("GPS Lat -> " + gps.getLatitude());
+                          System.out.println("GPS Lng -> " + gps.getLongitude());
+
+                          this.wmu.updateGPS(gps);
+                      }
+
+                      sCommandResponse = dc.get(DasCommands.TEMP_F);
+
+                      this.wmu.updateTemperture(Temperature.getTemp(sCommandResponse));
+
+                      sCommandResponse = dc.get(DasCommands.BaROMETER);
+
+                      this.wmu.updateBarometer(Barometer.getBarometer(sCommandResponse));
+                      
+                      /* When Connect is not selcted exit Loop and wait till it is selected again */
+                      if (!this.wmu.isDasConnectSelected())break;
+
+                  }
+              } catch (UnknownHostException ex) {
+                  Logger.getLogger(WegStartupUI.class.getName()).log(Level.SEVERE, null, ex);
+              }      
+            }            
         }
-        
     }
     
     /**

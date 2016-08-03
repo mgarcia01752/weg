@@ -32,6 +32,13 @@ public class Gps {
     private final Integer   SATELLITE_NUM =     7;
     private final int       GPSGGA_LENGTH =     15;
     
+    private final Integer   RMC_LATITUDE =      3;
+    private final Integer   RMC_NS_INDICATOR =  4;
+    private final Integer   RMC_LONGITUDE =     5;
+    private final Integer   RMC_EW_INDICATOR =  6;
+    private final Integer   RMC_DATE =          9;
+    private final int       RMC_GPS_LENGTH =   13;
+    
     private final String GPS_MODE_GPRMC = "150:$GPRMC";
     private final String GPS_MODE_GPGGA = "150:$GPGGA";
     
@@ -127,7 +134,16 @@ public class Gps {
         
         if (this.lsGpsDataFormat.get(GPS_FORMAT).equalsIgnoreCase(GPS_MODE_GPRMC)) {
           
-            System.out.println("GPS-RMC-DATA: " + this.lsGpsDataFormat);   
+            System.out.println("GPS-RMC-DATA: " + this.lsGpsDataFormat);
+            
+            this.lsGpsDataRMCFormat = new ArrayList<String>();
+            this.lsGpsDataRMCFormat.addAll(this.lsGpsDataFormat);
+            
+            if (this.lsGpsDataGGAFormat != null) {       
+                this.lsGpsDataGGAFormat.set(UTC,this.lsGpsDataFormat.get(UTC));
+                this.lsGpsDataGGAFormat.set(LATITUDE,this.lsGpsDataFormat.get(RMC_LATITUDE));
+                this.lsGpsDataGGAFormat.set(LONGITUDE,this.lsGpsDataFormat.get(RMC_LONGITUDE));
+            }
         
         } else if (this.lsGpsDataFormat.get(GPS_FORMAT).equalsIgnoreCase(GPS_MODE_GPGGA)) {
             
