@@ -92,7 +92,7 @@ Raspberry PI Configuration -> Expanded File System
 	
 	git submodule update --init --recursive
 	
-** At this point, the build will take ~30 minutes. You can Skip to the next step and come back later **
+**At this point, the build will take ~30 minutes. You can Skip to the next step and come back later**
 	
 	make rpi
 
