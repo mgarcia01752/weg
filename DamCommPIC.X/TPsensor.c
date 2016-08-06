@@ -8,9 +8,6 @@
 #include "TPsensor.h"
 
 
-
-  
-
 //Initialize I2C module with SCL set to 100 kHz
 void init_I2C(void){
     
@@ -174,22 +171,18 @@ unsigned char poll_I2C(char addr){
 
 //Reads signed integer over I2C 
 void readSCast(char reg, int *value){
-    
     unsigned int i;
     readCast(reg,&i);
     *value = (int)i;
 }
 
 //Reads unsigned integer over I2C
-void readCast(char reg, unsigned int *value){
-    
-    
+void readCast(char reg, unsigned int *value){    
     read16(reg,(unsigned long*)value);
 }
 
 //Reads signed long value over I2C
 void readS16(char reg,long *value){
-    
     unsigned long i;
     read16(reg, &i);
     *value = (long)i;
@@ -335,16 +328,15 @@ void getTempString(char *TempData,struct calib_data *value, char units){
         //temp = (temp/10); //Temperature in Celsius
 
         //TemData = (char)temp;
-        sprintf(TempData,"350:%.1f C\r\n",Tdata); 
-    }
+        sprintf(TempData,"350:%.1f\r\n",Tdata); 
     
-    if(units == FAHRENHEIT){
+    } else if(units == FAHRENHEIT){
         
         long temp = getTemp(value);
         double Tdata = (double)temp;
         Tdata = ((Tdata/10) * 1.8) + 32; //Temp in Fahrenheit
         
-        sprintf(TempData,"350:%.1f F\r\n",Tdata);
+        sprintf(TempData,"350:%.1f\r\n",Tdata);
     }
 }
 
@@ -356,5 +348,5 @@ void getPressString(char *PressData,struct calib_data *value){
     press = (press/100); //Pressure in millibars
     
     PreData = (unsigned int)press;
-    sprintf(PressData,"350:%d mB\r\n",PreData);
+    sprintf(PressData,"350:%d\r\n",PreData);
 }

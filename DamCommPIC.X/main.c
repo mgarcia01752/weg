@@ -49,8 +49,7 @@ void main(void) {
     readCoefficients(&_bmp180_coeffs);
    // __delay_ms(20000);
     
-    
-    
+ 
     while(1){
         
         command = getPiCommand();
