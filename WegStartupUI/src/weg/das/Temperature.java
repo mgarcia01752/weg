@@ -13,12 +13,17 @@ public class Temperature {
     
     public static String getTemp(String sTemp) {
         
+        String sDefaultRtn = "---.- -";
+        
+        if (sTemp == null) {
+            return sDefaultRtn;
+        }
+        
         if (sTemp.matches("\\d\\d\\d\\:\\d+\\.\\d\\s\\D")) {
           return sTemp.split(":")[1];  
         } else  {
-            return "---.- -";
+            return sDefaultRtn;
         }
-        
-        
+          
     }
 }
