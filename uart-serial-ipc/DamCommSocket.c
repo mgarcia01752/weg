@@ -85,7 +85,7 @@ int main(int argc, char * argv[]) {
     char * cInputCommand = '\0';
 
     /*http://www.gnu.org/software/libc/manual/html_node/Using-Getopt.html#Using-Getopt*/
-    while ((iOpt = getopt(argc, argv, "i::l::b::T::GUBSrhvd::")) != -1) {
+    while ((iOpt = getopt(argc, argv, "i::l::b::T::GUBSrhvd:")) != -1) {
 
         switch (iOpt) {
 
