@@ -5,8 +5,6 @@
  */
 package weg.ui;
 
-import com.sun.javafx.TempState;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -83,7 +81,7 @@ public class WegStartupUI {
 
                       sCommandResponse = dc.get(DasCommands.BaROMETER);
 
-                      this.wmu.updateBarometer(Barometer.getBarometer(sCommandResponse));
+                      this.wmu.updateBarometer(Barometer.getBarometer(sCommandResponse).toString());
                       
                       /* When Connect is not selcted exit Loop and wait till it is selected again */
                       if (!this.wmu.isDasConnectSelected())break;

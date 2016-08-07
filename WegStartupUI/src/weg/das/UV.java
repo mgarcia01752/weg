@@ -9,21 +9,20 @@ package weg.das;
  *
  * @author Maurice
  */
-public class Temperature {
+public class UV {
     
-    public static String getTemp(String sTemp) {
+    public static Integer getUV(String sUV) {
         
-        String sDefaultRtn = "---.- -";
-        
-        if (sTemp == null) {
+        Integer sDefaultRtn = 0;
+
+        if (sUV == null) {
             return sDefaultRtn;
         }
-        
-        if (sTemp.matches("\\d\\d\\d\\:\\d+\\.\\d")) {
-          return sTemp.split(":")[1];  
+
+        if (sUV.matches("\\d\\d\\d\\:\\d+")) {
+          return Integer.parseInt(sUV.split(":")[1]);  
         } else  {
             return sDefaultRtn;
         }
-          
     }
 }

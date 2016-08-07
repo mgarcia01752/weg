@@ -71,6 +71,8 @@ public class DasConnection {
         
         Socket socket = null;
         
+        System.out.println("InetAddress: " + this.iaDAS.toString() + " Port: " + this.iPort);
+        
         try {
             socket = new Socket(this.iaDAS, this.iPort);
         } catch (IOException ex) {
