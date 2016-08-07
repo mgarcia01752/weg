@@ -119,10 +119,10 @@ int main(int argc, char * argv[]) {
 			
 		  case 'r':
 			printf("Reseting PIC via GPIO(23) Pin(%d) \n",GPIO_TO_PIC_RESET);
-			
-			wiringPiSetup () ;
-			
-			/* Set Pin to Ouput mode */			
+      			
+      		wiringPiSetup () ;
+      			
+      		/* Set Pin to Ouput mode */			
 			digitalWrite(4,LOW);
 			delay(UART_TX_TO_RX_DELAY);
 			digitalWrite(4,HIGH);
@@ -153,13 +153,7 @@ int main(int argc, char * argv[]) {
           case 'T':
 		  
 			printf("Get Temperature Data\n");
-		  
-			if (optarg == 'c') {
-				cInputCommand = TEMPERATURE_C;
-			} else {
-				cInputCommand = TEMPERATURE_F;
-			}
-			
+			cInputCommand = TEMPERATURE_F;
             bInputCLICheck = TRUE;
             iLoopCliCount = 1;
 			break;
