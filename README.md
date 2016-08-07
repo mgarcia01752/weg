@@ -189,4 +189,16 @@ Raspberry PI Configuration -> Expanded File System
 	java -jar WegStartupUI.jar
 
 
+## Kiosk Screen Instructions
+
+This is needed so not to use the RPI Desktop enviroment.  These steps puts it in Kiosk Mode.
+
+[Online Instructions](https://www.danpurdy.co.uk/web-development/raspberry-pi-kiosk-screen-tutorial/)
+
+These commands will update the package list and upgrade any packages on your device.
+Next we install the chromium browser, x11 server utilities and unclutter(removes the cursor from the screen).
+To do this type in:
+
+	sudo apt-get install chromium x11-xserver-utils unclutter
+
 

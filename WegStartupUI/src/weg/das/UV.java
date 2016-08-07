@@ -10,15 +10,17 @@ package weg.das;
  * @author Maurice
  */
 public class UV {
-    public static String getUV(String sUV) {
-        String sDefaultRtn = "0";
+    
+    public static Integer getUV(String sUV) {
+        
+        Integer sDefaultRtn = 0;
 
         if (sUV == null) {
             return sDefaultRtn;
         }
 
         if (sUV.matches("\\d\\d\\d\\:\\d+")) {
-          return sUV.split(":")[1];  
+          return Integer.parseInt(sUV.split(":")[1]);  
         } else  {
             return sDefaultRtn;
         }

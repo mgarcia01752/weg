@@ -19,7 +19,7 @@ public class Temperature {
             return sDefaultRtn;
         }
         
-        if (sTemp.matches("\\d\\d\\d\\:\\d+\\.\\d\\s\\D")) {
+        if (sTemp.matches("\\d\\d\\d\\:\\d+\\.\\d")) {
           return sTemp.split(":")[1];  
         } else  {
             return sDefaultRtn;
