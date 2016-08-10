@@ -43,11 +43,11 @@ void main(void) {
     
     UART1_init(UART_1_BAUD_RATE); //UART1 = GPS module
     UART2_init(UART_2_BAUD_RATE); //UART2 = RPi comm
-    GPS_init();
+    
     init_I2C();
     
     readCoefficients(&_bmp180_coeffs);
-   // __delay_ms(20000);
+  
     
  
     while(1){
@@ -60,7 +60,11 @@ void main(void) {
                 sendPiCommand(GPS_OK);
                 break;
             case 101:
-                getGPSsentence(GPS_data);
+                getGPSsentence(GPS_data,GGA);
+                sendPiCommand(GPS_data);
+                break;
+            case 102:
+                getGPSsentence(GPS_data,RMC);
                 sendPiCommand(GPS_data);
                 break;
             case 110:
