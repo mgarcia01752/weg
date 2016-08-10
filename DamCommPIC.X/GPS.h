@@ -64,10 +64,12 @@
 // request for updates on antenna status 
 #define PGCMD_ANTENNA "$PGCMD,33,1*6C\r\n" 
 #define PGCMD_NOANTENNA "$PGCMD,33,0*6D\r\n" 
+#define GGA 1
+#define RMC 2
 
 void GPS_init(void);
 void sendCommand(char *str);
-void getGPSsentence(char *GPS_String);
+void getGPSsentence(char *GPS_String, char sentType);
 
 #endif	/* GPS_H */
 
