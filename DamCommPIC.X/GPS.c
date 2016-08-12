@@ -15,7 +15,16 @@ void GPS_init(void){
     __delay_us(1000);  
 }
 
-void getGPSsentence(char *GPS_String){
+void getGPSsentence(char *GPS_String, char sentType){
+    
+    if(sentType == GGA){
+        sendCommand(PMTK_SET_NMEA_OUTPUT_GGAONLY);
+        __delay_us(100000);
+    }
+    if(sentType == RMC){
+         sendCommand(PMTK_SET_NMEA_OUTPUT_RMCONLY);
+        __delay_us(100000);
+    }
     
     char i;
     char GPS_data[255];
