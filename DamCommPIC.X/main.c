@@ -60,7 +60,11 @@ void main(void) {
                 sendPiCommand(GPS_OK);
                 break;
             case 101:
-                getGPSsentence(GPS_data);
+                getGPSsentence(GPS_data,GGA);
+                sendPiCommand(GPS_data);
+                break;
+            case 102:
+                getGPSsentence(GPS_data,RMC);
                 sendPiCommand(GPS_data);
                 break;
             case 110:
