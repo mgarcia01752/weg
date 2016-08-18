@@ -20,16 +20,15 @@ void AD_Init(void){
 
 void getUVindex(char *UV_index){
     
-    char ADCValue;
-    char UVindex;
-    char UV_PA[] = "250:";
+    unsigned int ADCValue;
+    unsigned int UVindex;
     AD1CON1bits.SAMP = 1; // Start Sampling
     __delay_ms(1);
     AD1CON1bits.SAMP = 0;
     while(!AD1CON1bits.DONE); //Wait for conversion to be completed
     ADCValue = ADC1BUF0; //Store ADC value
-    UVindex = (ADCValue * 0.00322) / 0.1;
-    sprintf(UV_index,"%s%d\r\n",UV_PA,UVindex);
+    UVindex = ((ADCValue * 3.3) / 1024) / 0.1;
+    sprintf(UV_index,"250:%d\r\n",UVindex);
 }
 
 
