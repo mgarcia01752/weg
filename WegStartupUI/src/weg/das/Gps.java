@@ -8,6 +8,8 @@ package weg.das;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Pattern;
+import java.util.regex.Matcher;
 
 /**
  *
@@ -64,6 +66,17 @@ public class Gps {
      * @return 
      */
     public String getLatitude() {
+        
+        Pattern pattern = Pattern.compile("(\\d\\d)(\\d\\d)\\.(\\d+)");
+        
+        Matcher matcher = pattern.matcher(lsGpsDataGGAFormat.get(LATITUDE));
+        if (matcher.find()) {
+            System.out.println("MATCH: " + matcher.group(0)); //prints /{item}/
+        } else {
+            System.out.println("Match not found");
+        }
+        
+        
         return lsGpsDataGGAFormat.get(LATITUDE);
     }
     
