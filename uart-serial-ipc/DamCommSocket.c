@@ -41,6 +41,7 @@
 #define TEMPERATURE_F                         "302"
 #define BAROMETER                             "303"
 #define SOLAR_POWER_VOLTAGE                   "400"
+#define PIC_RESET							  "800:"
                                      
 
 
@@ -60,6 +61,12 @@ void usage(void);
 **	String Carriage Returns and NewLine
 */
 void strip_CR_NL(char *buf, size_t size);
+
+/*
+*
+*/
+void setResetToPIC();
+
 
 /* DEBUG GLOBAL */
 int bDebug = DEBUG_OFF;
@@ -128,14 +135,8 @@ int main(int argc, char * argv[]) {
             exit(ERROR_NONE);
 			
 		  case 'r':
-			printf("Reseting PIC via GPIO(23) Pin(%d) \n",GPIO_TO_PIC_RESET);
-      			
-      		wiringPiSetup () ;
-      			
-      		/* Set Pin to Ouput mode */			
-			digitalWrite(4,LOW);
-			delay(UART_TX_TO_RX_DELAY);
-			digitalWrite(4,HIGH);
+			printf("Reseting PIC via GPIO(23) Pin(%d) \n",GPIO_TO_PIC_RESET);     			
+			setResetToPIC();			
 			exit(ERROR_NONE);
 			break;
             
@@ -267,7 +268,14 @@ int main(int argc, char * argv[]) {
 		  strip_CR_NL(caRxSocket, sizeof(caRxSocket));
           
           if (bDebug) printf("Socket -> UART -> (%s)\n" , caRxSocket);
-          		  
+          
+		  /* end Reset to PIC */
+		  if (strcmp(caRxSocket,PIC_RESET)) {
+			  if (bDebug) printf("Sending PIC Reset Via Socket Command");
+			  setResetToPIC();
+			  continue;
+		  }
+		  
           /* Send command to UART */
           serialPuts(fd, caRxSocket);
           
@@ -364,6 +372,19 @@ void strip_CR_NL(char *buf, size_t size) {
 			buf[i] = '\0';
 		}   
 	}
+}
+
+/*
+**	Send Reset to PIC Via GPIO
+*/
+void setResetToPIC() {
+	
+	wiringPiSetup () ;
+      			
+	/* Set Pin to Ouput mode */			
+	digitalWrite(4,LOW);
+	delay(UART_TX_TO_RX_DELAY);
+	digitalWrite(4,HIGH);	
 }
 
 void usage(void) {
