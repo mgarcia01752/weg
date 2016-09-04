@@ -19,7 +19,7 @@
 #define MAX_TX_RX_BUFFER_LENGTH               50
 #define DEFAULT_BAUD                          9600
 #define DEFAULT_IPv4_LOOPBACK                 "127.0.0.1"
-#define VERSION                               "1.0-pre"
+#define VERSION                               "1.1"
 #define DEFAULT_UART_LOCATION                 "/dev/ttyS0"
 #define UART_TX_TO_RX_DELAY                   1000
 #define GPIO_TO_PIC_RESET					  4					/* Broadcom GPIO = 23 - WiringPI = 4 */
@@ -68,10 +68,15 @@ int main(int argc, char * argv[]) {
 
     /* CLI Options */
     int bInputCLICheck = FALSE;
-    int iLoopCliCount = 1;        //MUST BE = 1
+    
+	int iLoopCliCount = 1;        //MUST BE = 1
     char *cLoopCliCount = '\0';
-    int iBaudRate = DEFAULT_BAUD;
+    
+	int iBaudRate = DEFAULT_BAUD;
     char *cBaudRate;
+	
+	char *cSocketPort;
+	int iSocketPort = DEFAULT_SOCKET_PORT;
     
     int listenfd = 0, connfd = 0 , n = 0;
     struct sockaddr_in serv_addr;
@@ -85,10 +90,15 @@ int main(int argc, char * argv[]) {
     char * cInputCommand = '\0';
 
     /*http://www.gnu.org/software/libc/manual/html_node/Using-Getopt.html#Using-Getopt*/
-    while ((iOpt = getopt(argc, argv, "i::l::b::T::GUBSrhvd::")) != -1) {
+    while ((iOpt = getopt(argc, argv, "p::i::l::b::T::GUBSrhvd::")) != -1) {
 
         switch (iOpt) {
 
+          case 'p':
+            cSocketPort = optarg;
+            iSocketPort = atoi(cSocketPort);
+            break;		
+		
           case 'i':
             cInputCommand = optarg;
             bInputCLICheck = TRUE;
@@ -201,13 +211,13 @@ int main(int argc, char * argv[]) {
       serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
       
       /* Socket Port 5000 = DEFAULT */
-      serv_addr.sin_port = htons(DEFAULT_SOCKET_PORT);
+      serv_addr.sin_port = htons(iSocketPort);
   
       bind(listenfd, (struct sockaddr * ) & serv_addr, sizeof(serv_addr));
   
       listen(listenfd, 10);
       
-      if (bDebug) printf("Starting Socket IPC Listening on Port: %d\n", DEFAULT_SOCKET_PORT);
+      if (bDebug) printf("Starting Socket IPC Listening on Port: %d\n", iSocketPort);
     }
 
     /****************************************************************************
@@ -363,6 +373,7 @@ void usage(void) {
              "\t-b: Set BaudRate <9600|115200> DEFAULT: 9600 \n"
              "\t-i: Serial Input <command>\n"
              "\t-l: Loop Input option <Number of Loops for option i>\n"
+			 "\t-p: Socket Port DEFAULT = 5000\n"
 			 "\t-r: Send Reset to PIC via GPIO 23\n"
              "\t-v: Version\n"
              "\t-d: Enable Debug\n"
