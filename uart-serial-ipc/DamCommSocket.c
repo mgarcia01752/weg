@@ -161,8 +161,7 @@ int main(int argc, char * argv[]) {
             iLoopCliCount = 1;
 			break;
           
-          case 'T':
-		  
+          case 'T':  
 			printf("Get Temperature Data\n");
 			cInputCommand = TEMPERATURE_F;
             bInputCLICheck = TRUE;
