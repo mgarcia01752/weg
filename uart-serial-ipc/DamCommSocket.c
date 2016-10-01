@@ -19,7 +19,7 @@
 #define MAX_TX_RX_BUFFER_LENGTH               50
 #define DEFAULT_BAUD                          9600
 #define DEFAULT_IPv4_LOOPBACK                 "127.0.0.1"
-#define VERSION                               "1.0-pre"
+#define VERSION                               "1.1"
 #define DEFAULT_UART_LOCATION                 "/dev/ttyS0"
 #define UART_TX_TO_RX_DELAY                   1000
 #define GPIO_TO_PIC_RESET					  4					/* Broadcom GPIO = 23 - WiringPI = 4 */
@@ -41,6 +41,7 @@
 #define TEMPERATURE_F                         "302"
 #define BAROMETER                             "303"
 #define SOLAR_POWER_VOLTAGE                   "400"
+#define PIC_RESET							  "800:"
                                      
 
 
@@ -61,6 +62,12 @@ void usage(void);
 */
 void strip_CR_NL(char *buf, size_t size);
 
+/*
+*
+*/
+void setResetToPIC();
+
+
 /* DEBUG GLOBAL */
 int bDebug = DEBUG_OFF;
 
@@ -68,10 +75,15 @@ int main(int argc, char * argv[]) {
 
     /* CLI Options */
     int bInputCLICheck = FALSE;
-    int iLoopCliCount = 1;        //MUST BE = 1
+    
+	int iLoopCliCount = 1;        //MUST BE = 1
     char *cLoopCliCount = '\0';
-    int iBaudRate = DEFAULT_BAUD;
+    
+	int iBaudRate = DEFAULT_BAUD;
     char *cBaudRate;
+	
+	char *cSocketPort;
+	int iSocketPort = DEFAULT_SOCKET_PORT;
     
     int listenfd = 0, connfd = 0 , n = 0;
     struct sockaddr_in serv_addr;
@@ -85,10 +97,15 @@ int main(int argc, char * argv[]) {
     char * cInputCommand = '\0';
 
     /*http://www.gnu.org/software/libc/manual/html_node/Using-Getopt.html#Using-Getopt*/
-    while ((iOpt = getopt(argc, argv, "i::l::b::T::GUBSrhvd::")) != -1) {
+    while ((iOpt = getopt(argc, argv, "p::i::l::b::T::GUBSrhvd::")) != -1) {
 
         switch (iOpt) {
 
+          case 'p':
+            cSocketPort = optarg;
+            iSocketPort = atoi(cSocketPort);
+            break;		
+		
           case 'i':
             cInputCommand = optarg;
             bInputCLICheck = TRUE;
@@ -118,14 +135,8 @@ int main(int argc, char * argv[]) {
             exit(ERROR_NONE);
 			
 		  case 'r':
-			printf("Reseting PIC via GPIO(23) Pin(%d) \n",GPIO_TO_PIC_RESET);
-      			
-      		wiringPiSetup () ;
-      			
-      		/* Set Pin to Ouput mode */			
-			digitalWrite(4,LOW);
-			delay(UART_TX_TO_RX_DELAY);
-			digitalWrite(4,HIGH);
+			printf("Reseting PIC via GPIO(23) Pin(%d) \n",GPIO_TO_PIC_RESET);     			
+			setResetToPIC();			
 			exit(ERROR_NONE);
 			break;
             
@@ -150,8 +161,7 @@ int main(int argc, char * argv[]) {
             iLoopCliCount = 1;
 			break;
           
-          case 'T':
-		  
+          case 'T':  
 			printf("Get Temperature Data\n");
 			cInputCommand = TEMPERATURE_F;
             bInputCLICheck = TRUE;
@@ -201,13 +211,13 @@ int main(int argc, char * argv[]) {
       serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
       
       /* Socket Port 5000 = DEFAULT */
-      serv_addr.sin_port = htons(DEFAULT_SOCKET_PORT);
+      serv_addr.sin_port = htons(iSocketPort);
   
       bind(listenfd, (struct sockaddr * ) & serv_addr, sizeof(serv_addr));
   
       listen(listenfd, 10);
       
-      if (bDebug) printf("Starting Socket IPC Listening on Port: %d\n", DEFAULT_SOCKET_PORT);
+      if (bDebug) printf("Starting Socket IPC Listening on Port: %d\n", iSocketPort);
     }
 
     /****************************************************************************
@@ -257,7 +267,14 @@ int main(int argc, char * argv[]) {
 		  strip_CR_NL(caRxSocket, sizeof(caRxSocket));
           
           if (bDebug) printf("Socket -> UART -> (%s)\n" , caRxSocket);
-          		  
+          
+		  /* end Reset to PIC */
+		  if (strcmp(caRxSocket,PIC_RESET)) {
+			  if (bDebug) printf("Sending PIC Reset Via Socket Command");
+			  setResetToPIC();
+			  continue;
+		  }
+		  
           /* Send command to UART */
           serialPuts(fd, caRxSocket);
           
@@ -356,6 +373,19 @@ void strip_CR_NL(char *buf, size_t size) {
 	}
 }
 
+/*
+**	Send Reset to PIC Via GPIO
+*/
+void setResetToPIC() {
+	
+	wiringPiSetup () ;
+      			
+	/* Set Pin to Ouput mode */			
+	digitalWrite(4,LOW);
+	delay(UART_TX_TO_RX_DELAY);
+	digitalWrite(4,HIGH);	
+}
+
 void usage(void) {
   
   printf("\n\n\nData Acquisition Module IPC Ver: %s\n"
@@ -363,6 +393,7 @@ void usage(void) {
              "\t-b: Set BaudRate <9600|115200> DEFAULT: 9600 \n"
              "\t-i: Serial Input <command>\n"
              "\t-l: Loop Input option <Number of Loops for option i>\n"
+			 "\t-p: Socket Port DEFAULT = 5000\n"
 			 "\t-r: Send Reset to PIC via GPIO 23\n"
              "\t-v: Version\n"
              "\t-d: Enable Debug\n"

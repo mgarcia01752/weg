@@ -77,7 +77,7 @@ public class Gps {
         }
         
         
-        return lsGpsDataGGAFormat.get(LATITUDE);
+        return decimalToDMS(Double.parseDouble(lsGpsDataGGAFormat.get(LATITUDE)));
     }
     
     /**
@@ -85,7 +85,7 @@ public class Gps {
      * @return 
      */
     public String getLongitude() {
-        return lsGpsDataGGAFormat.get(LONGITUDE);
+        return decimalToDMS(Double.parseDouble(lsGpsDataGGAFormat.get(LONGITUDE)));
     }
     
     /**
@@ -175,6 +175,23 @@ public class Gps {
        return boolParseStatus; 
     }
     
+    /**
+     * https://community.oracle.com/thread/3619431
+     * 
+     * @param value
+     * @return 
+     */
+    public static String decimalToDMS(double value) {
+        String result = null;
+        double degValue = value / 100;
+        int degrees = (int) degValue;
+        double decMinutesSeconds = ((degValue - degrees)) / .60;
+        double minuteValue = decMinutesSeconds * 60;
+        int minutes = (int) minuteValue;
+        double secsValue = (minuteValue - minutes) * 60;
+        result = degrees + "\u00B0" + " " + minutes + "' " + String.format("%.1f", secsValue) + "\" ";
+        return result;
+    }
     
     
 }
