@@ -13,6 +13,7 @@ import weg.das.DasCommands;
 import weg.das.DasConnection;
 import weg.das.Gps;
 import weg.das.Temperature;
+import weg.das.UV;
 
 /**
  *
@@ -82,6 +83,10 @@ public class WegStartupUI {
                       sCommandResponse = dc.get(DasCommands.BaROMETER);
 
                       this.wmu.updateBarometer(Barometer.getBarometer(sCommandResponse).toString());
+                      
+                      sCommandResponse = dc.get(DasCommands.UV);
+
+                      this.wmu.updateUV(UV.getUV(sCommandResponse).toString());
                       
                       /* When Connect is not selcted exit Loop and wait till it is selected again */
                       if (!this.wmu.isDasConnectSelected())break;

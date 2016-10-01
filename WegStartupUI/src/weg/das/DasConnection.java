@@ -73,11 +73,14 @@ public class DasConnection {
         
         System.out.println("InetAddress: " + this.iaDAS.toString() + " Port: " + this.iPort);
         
-        try {
-            socket = new Socket(this.iaDAS, this.iPort);
-        } catch (IOException ex) {
-            Logger.getLogger(DasConnection.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        do {
+          try {
+              socket = new Socket(this.iaDAS, this.iPort);
+          } catch (IOException ex) {
+              Logger.getLogger(DasConnection.class.getName()).log(Level.SEVERE, null, ex);
+          }          
+        } while (socket == null);
+
 
         /*********************************************************************** 
                                     Send DAS Message 

@@ -189,6 +189,16 @@ Raspberry PI Configuration -> Expanded File System
 	java -jar WegStartupUI.jar
 
 
+## PIC Reset Via GPIO via wiringPi
+
+	sudo gpio mode 4 out
+	
+	sudo gpio write 4 0
+	
+Wait 3 seconds
+	
+	sudo gpio write 4 1
+
 ## Kiosk Screen Instructions
 
 This is needed so not to use the RPI Desktop enviroment.  These steps puts it in Kiosk Mode.

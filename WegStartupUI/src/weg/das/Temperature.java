@@ -11,18 +11,21 @@ package weg.das;
  */
 public class Temperature {
     
+    private static String sLastTempValue = "---.- -";
+    
     public static String getTemp(String sTemp) {
         
         String sDefaultRtn = "---.- -";
-        
+         
         if (sTemp == null) {
             return sDefaultRtn;
         }
         
-        if (sTemp.matches("\\d\\d\\d\\:\\d+\\.\\d")) {
-          return sTemp.split(":")[1];  
+        if (sTemp.matches("\\d\\d\\d\\:\\d+\\.\\d")) { 
+            sLastTempValue = sTemp.split(":")[1];
+            return sLastTempValue + "\u00b0";  
         } else  {
-            return sDefaultRtn;
+            return sLastTempValue + "\u00b0";
         }
           
     }
