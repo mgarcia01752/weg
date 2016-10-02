@@ -67,6 +67,7 @@ void strip_CR_NL(char *buf, size_t size);
 *
 */
 void setResetToPIC();
+void setResetToPICNoWiringPIStartup();
 
 
 /* DEBUG GLOBAL */
@@ -236,7 +237,7 @@ int main(int argc, char * argv[]) {
     }
 
 	printf("Sending PIC Reset");
-	setResetToPIC();
+	setResetToPICNoWiringPIStartup();
 		
     if (bDebug) printf("Opening UART Connection of Device: %s\n", DEFAULT_UART_LOCATION);
 
@@ -387,6 +388,14 @@ void setResetToPIC() {
 	
 	wiringPiSetup () ;
       			
+	/* Set Pin to Ouput mode */			
+	digitalWrite(4,LOW);
+	delay(UART_TX_TO_RX_DELAY);
+	digitalWrite(4,HIGH);	
+}
+
+void setResetToPICNoWiringPIStartup() {
+	     			
 	/* Set Pin to Ouput mode */			
 	digitalWrite(4,LOW);
 	delay(UART_TX_TO_RX_DELAY);
