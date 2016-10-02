@@ -194,7 +194,7 @@ int main(int argc, char * argv[]) {
 
         }
     }
-
+	
     /****************************************************************************
      *  This section is setting up the socket for IPC interaction   
      ****************************************************************************/
@@ -243,6 +243,9 @@ int main(int argc, char * argv[]) {
         exit(ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE);
     }
 
+	printf("Sending PIC Reset");
+	setResetToPIC();
+		
     if (bDebug) printf("Opened UART Connection of Device: %s\n", DEFAULT_UART_LOCATION);
 
     /****************************************************************************
