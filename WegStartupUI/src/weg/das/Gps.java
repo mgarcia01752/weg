@@ -44,6 +44,9 @@ public class Gps {
     private final String GPS_MODE_GPRMC = "150:$GPRMC";
     private final String GPS_MODE_GPGGA = "150:$GPGGA";
     
+    private String sLastLatGpsDMS = "W 40° 9' 24.4";
+    private String sLastLongGpsDMS = "N 74° 52' 0.7";
+    
     /**
      * Format: 
      * @param sGPSDataFormat 
@@ -76,8 +79,16 @@ public class Gps {
             System.out.println("Match not found");
         }
         
+        String sDMSDec = "0.0";
         
-        return decimalToDMS(Double.parseDouble(lsGpsDataGGAFormat.get(LATITUDE)));
+        if (!lsGpsDataGGAFormat.get(LATITUDE).isEmpty()) {
+            sDMSDec = lsGpsDataGGAFormat.get(LATITUDE);
+        }
+        
+        String sLastLtGpsDMS =   lsGpsDataGGAFormat.get(EW_INDICATOR) + " " +
+                                decimalToDMS(Double.parseDouble(sDMSDec));
+        
+        return sLastLtGpsDMS;
     }
     
     /**
@@ -85,7 +96,17 @@ public class Gps {
      * @return 
      */
     public String getLongitude() {
-        return decimalToDMS(Double.parseDouble(lsGpsDataGGAFormat.get(LONGITUDE)));
+        
+        String sDMSDec = "0.0";
+        
+        if (!lsGpsDataGGAFormat.get(LONGITUDE).isEmpty()) {
+            sDMSDec = lsGpsDataGGAFormat.get(LONGITUDE);
+        }
+        
+        String sLastLogGpsDMS =   lsGpsDataGGAFormat.get(NS_INDICATOR) + " " +
+                                decimalToDMS(Double.parseDouble(sDMSDec));
+        
+        return sLastLogGpsDMS;
     }
     
     /**
@@ -217,6 +238,74 @@ public class Gps {
         }
         
         return sUtcClockFormat;
+    }
+    
+    /**
+     * 
+     * @param sLatLast
+     * @param sLongLast
+     * @param sLatNew
+     * @param sLongNew
+     * @return 
+     */
+    public String compassUpdate(String sLatNew, String sLongNew) {
+        
+        String sCompassDirection = "--";
+        
+        String sNewLatDir = "";
+        String sNewLongDir = "";        
+        
+        String sGetLat = this.getLatitude();
+        String sGetLong = getLongitude();
+        
+        double dLatLastSec = getGpsSecond(this.sLastLatGpsDMS);
+        double dLatNewSec = getGpsSecond(sLatNew);
+        double dLongLastSec = getGpsSecond(this.sLastLongGpsDMS);
+        double dLongNewSec = getGpsSecond(sLongNew);
+       
+        if (dLatNewSec > dLatLastSec) {
+            sNewLatDir = "N";
+        } else if (dLatNewSec < dLatLastSec) {
+            sNewLatDir = "S";
+        } else {
+            sNewLatDir = "-";
+        }
+        
+        if (dLongNewSec > dLongLastSec) {
+            sNewLatDir = "W";
+        } else if (dLongNewSec < dLongLastSec) {
+            sNewLatDir = "E";
+        } else {
+            sNewLatDir = "-";
+        }
+        sCompassDirection = (sNewLatDir+sNewLongDir);
+        
+        this.sLastLatGpsDMS = sGetLat;
+        this.sLastLongGpsDMS = sGetLong;
+        
+        return sCompassDirection;
+        
+    }
+    
+    /**
+     * 
+     * @param sGpsDMS
+     * @return 
+     */
+    private double getGpsSecond (String sGpsDMS) {
+        
+        /* N 74° 52' 0.7 */
+        Pattern pattern = Pattern.compile(".*\\d+.\\s+\\d+\\'\\s+(\\d+\\.\\d+)");
+        
+        double dGpsDmsSecond = 0.0;
+        
+        Matcher matcher = pattern.matcher(sGpsDMS);
+        
+        if (matcher.find()) {
+           dGpsDmsSecond = Double.parseDouble(matcher.group(1));
+        }
+        
+        return dGpsDmsSecond;
     }
     
     

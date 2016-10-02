@@ -81,6 +81,9 @@ public class WegStartupUI {
                           System.out.println("GPS Lng -> " + gps.getLongitude());
 
                           this.wmu.updateGPS(gps);
+                          
+                          this.wmu.updateCompass();
+                          
                       }
 
                       sCommandResponse = dc.get(DasCommands.TEMP_F);
