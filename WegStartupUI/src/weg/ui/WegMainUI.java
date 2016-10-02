@@ -8,6 +8,9 @@ package weg.ui;
 import java.awt.Color;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import weg.das.Gps;
 
 /**
@@ -17,13 +20,13 @@ import weg.das.Gps;
 public class WegMainUI extends javax.swing.JFrame {
 
     private Gps gps = null;
+    private DateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy HH:mm:ss");
     
     /**
      * Creates new form WegMainUI
      */
     public WegMainUI() {
-        initComponents();
-               
+        initComponents();          
     }
 
     public void updateUV(String sUvData) {
@@ -101,9 +104,7 @@ public class WegMainUI extends javax.swing.JFrame {
     public void updatePressureTrend(String sPresTrend) {
         jLabelBaroChangeStatus.setText(sPresTrend);
     }
-    
-
-    
+      
     /**
      * 
      * @return 
@@ -144,6 +145,14 @@ public class WegMainUI extends javax.swing.JFrame {
      */
     public boolean isDasConnectSelected() {
         return jTB_ConnectToDAS.isSelected();
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public void updateSystemTime() {
+        jLSystemTime.setText(dateFormat.format(Calendar.getInstance().getTime()));
     }
     
        
@@ -187,6 +196,7 @@ public class WegMainUI extends javax.swing.JFrame {
         jPanel4 = new javax.swing.JPanel();
         jLabelUTC = new javax.swing.JLabel();
         jLabelUTCData = new javax.swing.JLabel();
+        jLSystemTime = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -229,7 +239,7 @@ public class WegMainUI extends javax.swing.JFrame {
         });
 
         jTextFieldInetAddress.setEditable(false);
-        jTextFieldInetAddress.setText("10.1.10.16");
+        jTextFieldInetAddress.setText("10.1.10.27");
         jTextFieldInetAddress.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldInetAddressActionPerformed(evt);
@@ -343,7 +353,7 @@ public class WegMainUI extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/weg/ui/small_sat.jpg"))); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setText("Stataliites Locked");
+        jLabel4.setText("Satellites Locked");
 
         javax.swing.GroupLayout jPanelGPSLayout = new javax.swing.GroupLayout(jPanelGPS);
         jPanelGPS.setLayout(jPanelGPSLayout);
@@ -494,15 +504,25 @@ public class WegMainUI extends javax.swing.JFrame {
         jLabelUTCData.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabelUTCData.setText("------.---");
 
+        jLSystemTime.setToolTipText("");
+        jLSystemTime.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                jLSystemTimePropertyChange(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelUTC)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabelUTCData)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jLSystemTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabelUTC)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabelUTCData)))
                 .addContainerGap(27, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
@@ -512,6 +532,8 @@ public class WegMainUI extends javax.swing.JFrame {
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelUTC)
                     .addComponent(jLabelUTCData))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLSystemTime)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -595,6 +617,10 @@ public class WegMainUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jTB_ConnectToDASActionPerformed
 
+    private void jLSystemTimePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_jLSystemTimePropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jLSystemTimePropertyChange
+
     /**
      * @param args the command line arguments
      */
@@ -631,6 +657,7 @@ public class WegMainUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLSystemTime;
     private javax.swing.JLabel jLUvIdxStatus;
     private javax.swing.JLabel jLUvIndex;
     private javax.swing.JLabel jLabel1;

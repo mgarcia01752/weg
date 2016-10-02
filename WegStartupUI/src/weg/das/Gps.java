@@ -58,7 +58,7 @@ public class Gps {
      * @return 
      */
     public String getUTC() {
-        return lsGpsDataGGAFormat.get(UTC);
+        return utcToClock(lsGpsDataGGAFormat.get(UTC));
     }
     
     /**
@@ -191,6 +191,32 @@ public class Gps {
         double secsValue = (minuteValue - minutes) * 60;
         result = degrees + "\u00B0" + " " + minutes + "' " + String.format("%.1f", secsValue) + "\" ";
         return result;
+    }
+    
+    /**
+     * 
+     * UTC Time 064951.000 hhmmss.sss 
+     * 
+     * @param sUTC
+     * @return 
+     */
+    public static String utcToClock(String sUTC) {
+        
+        Pattern pattern = Pattern.compile("(\\d\\d)(\\d\\d)(\\d\\d)\\.(\\d+)");
+        
+        String sUtcClockFormat = "";
+        
+        Matcher matcher = pattern.matcher(sUTC);
+        if (matcher.find()) {
+            System.out.println("MATCH: " + matcher.group(0)); //prints /{item}/
+            
+            sUtcClockFormat = matcher.group(1)+ ":" + matcher.group(2) + ":" + matcher.group(3); 
+            
+        } else {
+            System.out.println("Match not found");
+        }
+        
+        return sUtcClockFormat;
     }
     
     

@@ -38,8 +38,13 @@ public class WegStartupUI {
             
             while(true) {
                 
+                wmu.updateSystemTime();
+                
                 /*Wait till Connect Button is selected */
                 while (!this.wmu.isDasConnectSelected()) {
+                    
+                    wmu.updateSystemTime();
+                    
                     try {
                         Thread.sleep(1000);
                     } catch (InterruptedException ex) {
@@ -64,6 +69,8 @@ public class WegStartupUI {
                   }
               
                   while (true) {
+                      
+                      wmu.updateSystemTime();
 
                       String sCommandResponse = dc.get(DasCommands.GPS);
 
