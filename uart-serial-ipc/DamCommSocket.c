@@ -235,6 +235,9 @@ int main(int argc, char * argv[]) {
         exit(ERROR_TO_START_WIRED_PI);
     }
 
+	printf("Sending PIC Reset");
+	setResetToPIC();
+		
     if (bDebug) printf("Opening UART Connection of Device: %s\n", DEFAULT_UART_LOCATION);
 
     /*Open Connection*/
@@ -243,9 +246,6 @@ int main(int argc, char * argv[]) {
         exit(ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE);
     }
 
-	printf("Sending PIC Reset");
-	setResetToPIC();
-		
     if (bDebug) printf("Opened UART Connection of Device: %s\n", DEFAULT_UART_LOCATION);
 
     /****************************************************************************
