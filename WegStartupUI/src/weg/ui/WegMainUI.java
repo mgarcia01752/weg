@@ -21,12 +21,14 @@ public class WegMainUI extends javax.swing.JFrame {
 
     private Gps gps = null;
     private DateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy HH:mm:ss");
+    private final String DEFAULT_REMOTE_DAS_INET = "10.1.10.27";
     
     /**
      * Creates new form WegMainUI
      */
     public WegMainUI() {
-        initComponents();          
+        initComponents();
+        jTextFieldInetAddress.setText(DEFAULT_REMOTE_DAS_INET);
     }
 
     public void updateUV(String sUvData) {

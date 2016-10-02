@@ -35,6 +35,7 @@
 #define DEBUG_OFF                             FALSE
 
 /* Data Module Protocol */
+#define CHECK_CONNECTION					  "000:" 	
 #define GPS_COORDINATE                        "101"
 #define UV_SENSOR                             "201"
 #define TEMPERATURE_C                         "301"
@@ -275,10 +276,13 @@ int main(int argc, char * argv[]) {
 			  continue;
 		  }
 		  
-          /* Send command to UART */
-          serialPuts(fd, caRxSocket);
-          
-          delay(UART_TX_TO_RX_DELAY);
+		  
+        /* Send command to UART */
+		serialPuts(fd, caRxSocket);
+			  
+		delay(UART_TX_TO_RX_DELAY);			  
+
+		  
 
           /*********************************************************************** 
           *         Get Result from UART and Concatenate -> caRxUart
