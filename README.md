@@ -114,7 +114,12 @@ Raspberry PI Configuration -> Expanded File System
 	cd /home/pi/weg/uart-serial-ipc
 	
 	make DamCommSocket
+	
+## Install rc.local
 
+	sudo mv /etc/rc.local /etc/rc.local~
+	sudo cp /home/pi/weg/startup/rc.local.txt /etc/rc.local
+	
 ## Test Communication Between PI and DAS
 
 	sudo ./DamCommSocket -h
