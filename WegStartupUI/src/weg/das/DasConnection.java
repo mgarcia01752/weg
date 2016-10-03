@@ -50,6 +50,7 @@ public class DasConnection {
         this.iPort = IPC_PORT;
     }
     
+   
     /**
      * 
      * @return 
@@ -78,6 +79,8 @@ public class DasConnection {
               socket = new Socket(this.iaDAS, this.iPort);
           } catch (IOException ex) {
               Logger.getLogger(DasConnection.class.getName()).log(Level.SEVERE, null, ex);
+              System.out.println("Unable to Connect to -> this.iaDAS.toString()");
+              socket = null;
           }          
         } while (socket == null);
 

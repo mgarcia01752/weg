@@ -43,11 +43,11 @@ void main(void) {
     
     UART1_init(UART_1_BAUD_RATE); //UART1 = GPS module
     UART2_init(UART_2_BAUD_RATE); //UART2 = RPi comm
-    GPS_init();
+    
     init_I2C();
     
     readCoefficients(&_bmp180_coeffs);
-   // __delay_ms(20000);
+  
     
  
     while(1){
