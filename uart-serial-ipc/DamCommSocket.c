@@ -235,8 +235,6 @@ int main(int argc, char * argv[]) {
         fprintf(stdout, "Unable to start wiringPi: %s\n", strerror(errno));
         exit(ERROR_TO_START_WIRED_PI);
     }
-	
-	wiringPiSetupGpio();
 
 	printf("Sending PIC Reset\n");
 	setResetToPICNoWiringPIStartup();
@@ -389,7 +387,6 @@ void strip_CR_NL(char *buf, size_t size) {
 void setResetToPIC() {
 	
 	wiringPiSetup () ;
-	wiringPiSetupGpio();
       			
 	/* Set Pin to Ouput mode */			
 	pinMode(4,LOW);
