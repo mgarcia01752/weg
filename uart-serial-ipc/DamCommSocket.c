@@ -387,6 +387,8 @@ void setResetToPICNoWiringPIStartup() {
 	
 	/* Set Pin High */
 	digitalWrite(4,HIGH);
+	
+	pinMode(4,INPUT); 
 
 }
 
