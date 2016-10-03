@@ -119,6 +119,7 @@ Raspberry PI Configuration -> Expanded File System
 
 	sudo mv /etc/rc.local /etc/rc.local~
 	sudo cp /home/pi/weg/startup/rc.local.txt /etc/rc.local
+	sudo chmod 755 /etc/rc.local
 	
 ## Test Communication Between PI and DAS
 
