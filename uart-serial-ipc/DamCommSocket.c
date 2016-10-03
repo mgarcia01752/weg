@@ -135,12 +135,6 @@ int main(int argc, char * argv[]) {
             cInputCommand = optarg;
             printf("\n\nVersion: %s\n\n", VERSION);
             exit(ERROR_NONE);
-			
-		  case 'r':
-			printf("Reseting PIC via GPIO(23) Pin(%d) \n",GPIO_TO_PIC_RESET);     			
-			setResetToPIC();			
-			exit(ERROR_NONE);
-			break;
             
           case 'G':
             printf("Get GPS Data\n");
