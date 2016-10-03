@@ -14,6 +14,8 @@
 #include <wiringPi.h>
 #include <wiringSerial.h>
 
+#include <gpio.h>
+
 /* DEFAULTS */
 #define DEFAULT_SOCKET_PORT                   5000
 #define MAX_TX_RX_BUFFER_LENGTH               50
