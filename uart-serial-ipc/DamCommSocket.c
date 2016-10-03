@@ -66,7 +66,6 @@ void strip_CR_NL(char *buf, size_t size);
 /*
 *
 */
-void setResetToPIC();
 void setResetToPICNoWiringPIStartup();
 
 
@@ -379,19 +378,6 @@ void strip_CR_NL(char *buf, size_t size) {
 			buf[i] = '\0';
 		}   
 	}
-}
-
-/*
-**	Send Reset to PIC Via GPIO
-*/
-void setResetToPIC() {
-	
-	//wiringPiSetup () ;
-      			
-	/* Set Pin to Ouput mode */			
-	//pinMode(4,OUTPUT);
-	//delay(UART_TX_TO_RX_DELAY);
-	//pinMode(4,HIGH);	
 }
 
 void setResetToPICNoWiringPIStartup() {
