@@ -398,7 +398,7 @@ void setResetToPICNoWiringPIStartup() {
 	     			
 	/* Set Pin to Ouput mode */			
 	pinMode(4,LOW);
-	delay(UART_TX_TO_RX_DELAY);
+	delay(UART_TX_TO_RX_DELAY+5000);
 	pinMode(4,HIGH);	
 }
 
