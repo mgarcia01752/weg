@@ -389,7 +389,7 @@ void setResetToPIC() {
 	wiringPiSetup () ;
       			
 	/* Set Pin to Ouput mode */			
-	pinMode(4,LOW);
+	pinMode(4,OUTPUT);
 	delay(UART_TX_TO_RX_DELAY);
 	pinMode(4,HIGH);	
 }
@@ -397,9 +397,16 @@ void setResetToPIC() {
 void setResetToPICNoWiringPIStartup() {
 	     			
 	/* Set Pin to Ouput mode */			
-	pinMode(4,LOW);
-	delay(UART_TX_TO_RX_DELAY+5000);
-	pinMode(4,HIGH);	
+	pinMode(4,OUTPUT);
+	
+	/* Set Pin Low */
+	doWrite(4,LOW);
+	
+	delay(UART_TX_TO_RX_DELAY+5000);	
+	
+	/* Set Pin High */
+	doWrite(4,HIGH);
+
 }
 
 void usage(void) {
