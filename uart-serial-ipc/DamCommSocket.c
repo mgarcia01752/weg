@@ -388,12 +388,12 @@ void setResetToPICNoWiringPIStartup() {
 	pinMode(4,OUTPUT);
 	
 	/* Set Pin Low */
-	doWrite(4,LOW);
+	digitalWrite(4,LOW);
 	
 	delay(UART_TX_TO_RX_DELAY+5000);	
 	
 	/* Set Pin High */
-	doWrite(4,HIGH);
+	digitalWrite(4,HIGH);
 
 }
 
