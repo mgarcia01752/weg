@@ -270,7 +270,7 @@ int main(int argc, char * argv[]) {
 		  /* end Reset to PIC */
 		  if (strcmp(caRxSocket,PIC_RESET)) {
 			  if (bDebug) printf("Sending PIC Reset Via Socket Command");
-			  setResetToPIC();
+			  //setResetToPIC();
 			  continue;
 		  }
 		  
