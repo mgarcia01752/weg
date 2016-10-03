@@ -266,21 +266,11 @@ int main(int argc, char * argv[]) {
 		  strip_CR_NL(caRxSocket, sizeof(caRxSocket));
           
           if (bDebug) printf("Socket -> UART -> (%s)\n" , caRxSocket);
-          
-		  /* end Reset to PIC */
-		  if (strcmp(caRxSocket,PIC_RESET)) {
-			  if (bDebug) printf("Sending PIC Reset Via Socket Command");
-			  //setResetToPIC();
-			  continue;
-		  }
-		  
-		  
-        /* Send command to UART */
-		serialPuts(fd, caRxSocket);
+          		  
+			/* Send command to UART */
+			serialPuts(fd, caRxSocket);
 			  
-		delay(UART_TX_TO_RX_DELAY);			  
-
-		  
+			delay(UART_TX_TO_RX_DELAY);			  
 
           /*********************************************************************** 
           *         Get Result from UART and Concatenate -> caRxUart
