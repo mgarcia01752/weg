@@ -235,8 +235,10 @@ int main(int argc, char * argv[]) {
         fprintf(stdout, "Unable to start wiringPi: %s\n", strerror(errno));
         exit(ERROR_TO_START_WIRED_PI);
     }
+	
+	wiringPiSetupGpio();
 
-	printf("Sending PIC Reset");
+	printf("Sending PIC Reset\n");
 	setResetToPICNoWiringPIStartup();
 		
     if (bDebug) printf("Opening UART Connection of Device: %s\n", DEFAULT_UART_LOCATION);
@@ -387,19 +389,20 @@ void strip_CR_NL(char *buf, size_t size) {
 void setResetToPIC() {
 	
 	wiringPiSetup () ;
+	wiringPiSetupGpio();
       			
 	/* Set Pin to Ouput mode */			
-	digitalWrite(4,LOW);
+	pinMode(4,LOW);
 	delay(UART_TX_TO_RX_DELAY);
-	digitalWrite(4,HIGH);	
+	pinMode(4,HIGH);	
 }
 
 void setResetToPICNoWiringPIStartup() {
 	     			
 	/* Set Pin to Ouput mode */			
-	digitalWrite(4,LOW);
+	pinMode(4,LOW);
 	delay(UART_TX_TO_RX_DELAY);
-	digitalWrite(4,HIGH);	
+	pinMode(4,HIGH);	
 }
 
 void usage(void) {
