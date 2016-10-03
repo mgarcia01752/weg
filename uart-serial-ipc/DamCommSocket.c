@@ -386,12 +386,12 @@ void strip_CR_NL(char *buf, size_t size) {
 */
 void setResetToPIC() {
 	
-	wiringPiSetup () ;
+	//wiringPiSetup () ;
       			
 	/* Set Pin to Ouput mode */			
-	pinMode(4,OUTPUT);
-	delay(UART_TX_TO_RX_DELAY);
-	pinMode(4,HIGH);	
+	//pinMode(4,OUTPUT);
+	//delay(UART_TX_TO_RX_DELAY);
+	//pinMode(4,HIGH);	
 }
 
 void setResetToPICNoWiringPIStartup() {
