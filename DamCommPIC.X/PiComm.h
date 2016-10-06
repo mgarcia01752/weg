@@ -14,10 +14,9 @@
 #define UV_ERROR "251:ERROR\r\n"
 #define TP_OK "350:OK\r\n"
 #define TP_ERROR "351:ERROR\r\n"
-#define RECEIVE_ERROR "900:"
+#define RECEIVE_ERROR "900:Try Again\n"
 
 void sendPiCommand(char *str);
-int getPiCommand(void);
 
 #endif	/* PICOMM_H */
 

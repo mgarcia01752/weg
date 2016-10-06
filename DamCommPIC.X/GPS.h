@@ -26,21 +26,15 @@
 
 // turn on only the second sentence (GPRMC)
 #define PMTK_SET_NMEA_OUTPUT_RMCONLY "$PMTK314,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*29\r\n"
-
+// turn on only GGA sentence
+#define PMTK_SET_NMEA_OUTPUT_GGAONLY "$PMTK314,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*29\r\n"
 // turn on GPRMC and GGA
 #define PMTK_SET_NMEA_OUTPUT_RMCGGA "$PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*28\r\n"
-
-// turn on GGA
-#define PMTK_SET_NMEA_OUTPUT_GGAONLY "$PMTK314,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*28\r\n"
-
 // turn on ALL THE DATA
 #define PMTK_SET_NMEA_OUTPUT_ALLDATA "$PMTK314,1,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0*28\r\n"
-
 // turn off output
 #define PMTK_SET_NMEA_OUTPUT_OFF "$PMTK314,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0*28\r\n"
 
-// to generate your own sentences, check out the MTK command datasheet and use a checksum calculator
-// such as the awesome http://www.hhhh.org/wiml/proj/nmeaxor.html
 
 #define PMTK_LOCUS_STARTLOG  "$PMTK185,0*22\r\n"
 #define PMTK_LOCUS_STOPLOG "$PMTK185,1*23\r\n"
@@ -64,12 +58,14 @@
 // request for updates on antenna status 
 #define PGCMD_ANTENNA "$PGCMD,33,1*6C\r\n" 
 #define PGCMD_NOANTENNA "$PGCMD,33,0*6D\r\n" 
-#define GGA 1
-#define RMC 2
+#define true 1
+#define false 0
 
+char *GPS_lastNMEA(void);
 void GPS_init(void);
 void sendCommand(char *str);
-void getGPSsentence(char *GPS_String, char sentType);
+char getGPSsentence(void);
+char GPS_newNMEAreceived(void);
 
 #endif	/* GPS_H */
 

@@ -28,8 +28,7 @@ void restart_I2C(void){
     int x = 0;
     
     I2C1CONbits.RSEN = 1;
-    
-    
+       
     while(I2C1CONbits.RSEN){
         
         __delay_us(1);
@@ -68,9 +67,9 @@ void reset_I2C(void){
         
         __delay_us(1);
         x++;
-        if(x > 20) break;
-        
+        if(x > 20) break; 
     }
+    
     I2C1CONbits.RCEN = 0;
     IFS1bits.MI2C1IF = 0;
     I2C1STATbits.IWCOL = 0;
@@ -171,18 +170,22 @@ unsigned char poll_I2C(char addr){
 
 //Reads signed integer over I2C 
 void readSCast(char reg, int *value){
+    
     unsigned int i;
     readCast(reg,&i);
     *value = (int)i;
 }
 
 //Reads unsigned integer over I2C
-void readCast(char reg, unsigned int *value){    
+void readCast(char reg, unsigned int *value){
+    
+    
     read16(reg,(unsigned long*)value);
 }
 
 //Reads signed long value over I2C
 void readS16(char reg,long *value){
+    
     unsigned long i;
     read16(reg, &i);
     *value = (long)i;
@@ -315,38 +318,23 @@ void readUP16(char reg,  unsigned long *value){
     *value = (((unsigned long) msb << 16) + ((unsigned long) lsb << 8) + (unsigned long) xlsb) >> 8;
     reset_I2C();    
 }
-
-void getTempString(char *TempData,struct calib_data *value, char units){
-    
-    if(units == CELSIUS){
-        //char TemData;
-        long temp = getTemp(value);
-
-        double Tdata = (double)temp;
-
-        Tdata = (Tdata/10);
-        //temp = (temp/10); //Temperature in Celsius
-
-        //TemData = (char)temp;
-        sprintf(TempData,"350:%.1f\r\n",Tdata); 
-    
-    } else if(units == FAHRENHEIT){
+//Calculates temperature in Fahrenheit
+double getTempData(struct calib_data *value){
         
         long temp = getTemp(value);
         double Tdata = (double)temp;
-        Tdata = ((Tdata/10) * 1.8) + 32; //Temp in Fahrenheit
+        Tdata = ((Tdata/10) * 1.8) + 32; 
         
-        sprintf(TempData,"350:%.1f\r\n",Tdata);
-    }
+        return Tdata;
 }
-
-void getPressString(char *PressData,struct calib_data *value){
+//Calculates pressure in millibars
+unsigned int getPress(struct calib_data *value){
     
     unsigned int PreData;
     long press = getPressure(value);
     
-    press = (press/100); //Pressure in millibars
+    press = (press/100); 
     
     PreData = (unsigned int)press;
-    sprintf(PressData,"350:%d\r\n",PreData);
+    return PreData;
 }

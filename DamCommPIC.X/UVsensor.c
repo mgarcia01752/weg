@@ -18,7 +18,7 @@ void AD_Init(void){
     AD1CON1bits.ADON = 1; //Turn ADC on
 }
 
-void getUVindex(char *UV_index){
+unsigned int getUVindex(void){
     
     unsigned int ADCValue;
     unsigned int UVindex;
@@ -28,7 +28,7 @@ void getUVindex(char *UV_index){
     while(!AD1CON1bits.DONE); //Wait for conversion to be completed
     ADCValue = ADC1BUF0; //Store ADC value
     UVindex = ((ADCValue * 3.3) / 1024) / 0.1;
-    sprintf(UV_index,"250:%d\r\n",UVindex);
+    return UVindex;
 }
 
 

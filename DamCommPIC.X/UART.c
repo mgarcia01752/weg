@@ -12,6 +12,9 @@ void UART1_init(unsigned long baud){
     U1MODEbits.UARTEN = 0;  //Disable module
     U1MODE = 0; //8-bit data,no parity, one stop bit
     U1STA = 0;  //Reset status register
+    IEC0bits.U1RXIE = 0; //disable receive interrupt
+    IFS0bits.U1RXIF = 0; //clear interrupt flag
+    IPC2bits.U1RXIP = 6; //set interrupt priority
     U1MODEbits.UARTEN = 1; //Enable module
     U1STAbits.UTXEN = 1;  //Enable transmission
 }
@@ -23,6 +26,9 @@ void UART2_init(unsigned long baud){
     U2MODEbits.UARTEN = 0; //Disable module
     U2MODE = 0; //8-bit data,no parity, one stop bit
     U2STA = 0;  //Reset status register
+    IEC1bits.U2RXIE = 0; //disable receive interrupt
+    IFS1bits.U2RXIF = 0; //clear interrupt flag
+    IPC7bits.U2RXIP = 5; //set interrupt priority
     U2MODEbits.UARTEN = 1; //Enable module
     U2STAbits.UTXEN = 1; //Enable transmission
 }
