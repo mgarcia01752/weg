@@ -70,6 +70,7 @@ public class WegStartupUI {
                      dc = new DasConnection(this.wmu.getLocalDasInetAddress(),DasConnection.IPC_PORT); 
                   }
               
+                  
                   while (true) {
                       
                       wmu.updateSystemTime();
@@ -80,7 +81,9 @@ public class WegStartupUI {
                       
                       /* UVindex,Tdata,Pdata,nmea */
                       List<String> lsFullCommand = Arrays.asList(sCommandResponse.split("\\|"));
-                                             
+                           
+                      if (lsFullCommand.size()<4) continue;
+                      
                       if (gps.parse(lsFullCommand.get(4))) {              
                           System.out.println("GPS Raw -> " + sCommandResponse);
                           System.out.println("GPS ToStrig -> " + gps.getCurrentGpsData());
