@@ -41,8 +41,8 @@ public class Gps {
     private final Integer   RMC_DATE =          9;
     private final int       RMC_GPS_LENGTH =   13;
     
-    private final String GPS_MODE_GPRMC = "150:$GPRMC";
-    private final String GPS_MODE_GPGGA = "150:$GPGGA";
+    private final String GPS_MODE_GPRMC = "$GPRMC";
+    private final String GPS_MODE_GPGGA = "$GPGGA";
     
     private String sLastLatGpsDMS = "W 40° 9' 24.4";
     private String sLastLongGpsDMS = "N 74° 52' 0.7";
@@ -52,7 +52,7 @@ public class Gps {
      * @param sGPSDataFormat 
      */
     public boolean parse(String sGPSDataFormat) {
-        this.sGPSDataFormat = sGPSDataFormat;
+        this.sGPSDataFormat = sGPSDataFormat.replace("\\s+", "");
         return processGpsData();
     }
     
@@ -159,6 +159,7 @@ public class Gps {
         boolean boolParseStatus = false;
         
         if (this.sGPSDataFormat == null) {
+            System.out.println("GPS-STRING-NULL");
             return boolParseStatus;
         }
         
@@ -181,6 +182,8 @@ public class Gps {
         
         } else if (this.lsGpsDataFormat.get(GPS_FORMAT).equalsIgnoreCase(GPS_MODE_GPGGA)) {
             
+            System.out.println("GPS-GGA-DATA: " + this.lsGpsDataFormat);
+            
             if (this.lsGpsDataFormat.size() == GPSGGA_LENGTH) {           
                 this.lsGpsDataGGAFormat = new ArrayList<String>();
                 this.lsGpsDataGGAFormat.addAll(this.lsGpsDataFormat);
@@ -190,7 +193,7 @@ public class Gps {
             }
             
         } else {
-            System.out.println("GPS-DATA: " + this.lsGpsDataFormat);
+            System.out.println("GPS-DATA-ELSE: " + this.lsGpsDataFormat);
         }
         
        return boolParseStatus; 

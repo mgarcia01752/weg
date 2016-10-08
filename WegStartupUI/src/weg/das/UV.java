@@ -19,8 +19,8 @@ public class UV {
             return sDefaultRtn;
         }
 
-        if (sUV.matches("\\d\\d\\d\\:\\d+")) {
-          return Integer.parseInt(sUV.split(":")[1]);  
+        if (sUV.matches("\\d+")) {
+          return Integer.parseInt(sUV);  
         } else  {
             return sDefaultRtn;
         }

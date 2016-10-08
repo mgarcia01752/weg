@@ -28,12 +28,12 @@ public class Barometer {
             return iDefaultRtn;
         }
         
-        if (sBarometer.matches("\\d\\d\\d\\:\\d+")) {
+        if (sBarometer.matches("\\d+")) {
         
             if (iLastPressureReading > 0 )
                 iLastPressureReading = iCurrentPressureReading;
             
-            iCurrentPressureReading = Integer.parseInt(sBarometer.split(":")[1]);
+            iCurrentPressureReading = Integer.parseInt(sBarometer);
             
             return iCurrentPressureReading;
         

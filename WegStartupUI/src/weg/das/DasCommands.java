@@ -19,6 +19,7 @@ public class DasCommands {
     public static final Integer TEMP_C            =   301;    
     public static final Integer TEMP_F            =   302;
     public static final Integer BaROMETER         =   303;
+    public static final Integer FULL_SENSOR_DUMP  =   600;  
     public static final Integer RECIEVE_ERROR     =   900;
                      
 }

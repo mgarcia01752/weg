@@ -21,8 +21,8 @@ public class Temperature {
             return sDefaultRtn;
         }
         
-        if (sTemp.matches("\\d\\d\\d\\:\\d+\\.\\d")) { 
-            sLastTempValue = sTemp.split(":")[1];
+        if (sTemp.matches("\\d+\\.\\d")) { 
+            sLastTempValue = sTemp;
             return sLastTempValue + "\u00b0";  
         } else  {
             return sLastTempValue + "\u00b0";

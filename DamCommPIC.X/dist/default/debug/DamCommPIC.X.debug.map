@@ -6,7 +6,7 @@ Tool Name:
 Command:
   -p24F16KA101 \
   -o \
-  dist/default/production/DamCommPIC.X.production.elf \
+  dist/default/debug/DamCommPIC.X.debug.elf \
   -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/.. \
   -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib \
   -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../support/PIC24E/gld \
@@ -15,14 +15,22 @@ Command:
   -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../support/dsPIC30F/gld \
   -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../support/dsPIC33E/gld \
   -Lc:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../support/dsPIC33F/gld \
-  build/default/production/main.o \
-  build/default/production/UART.o \
-  build/default/production/GPS.o \
-  build/default/production/UVsensor.o \
-  build/default/production/TPsensor.o \
-  build/default/production/PiComm.o \
+  build/default/debug/main.o \
+  build/default/debug/UART.o \
+  build/default/debug/GPS.o \
+  build/default/debug/UVsensor.o \
+  build/default/debug/TPsensor.o \
+  build/default/debug/PiComm.o \
+  -TC:\\Users\\Maurice\\AppData\\Local\\Temp\\tmp00003008.00 \
+  -TC:\\Users\\Maurice\\AppData\\Local\\Temp\\tmp00003008.01 \
+  -TC:\\Users\\Maurice\\AppData\\Local\\Temp\\tmp00003008.02 \
+  -TC:\\Users\\Maurice\\AppData\\Local\\Temp\\tmp00003008.03 \
+  -TC:\\Users\\Maurice\\AppData\\Local\\Temp\\tmp00003008.04 \
   --defsym=__MPLAB_BUILD=1 \
-  -Tp24F16KA101.gld.00 \
+  --defsym=__MPLAB_DEBUG=1 \
+  --defsym=__DEBUG=1 \
+  --defsym=__MPLAB_DEBUGGER_PK3=1 \
+  -Tp24F16KA101.gld.05 \
   --stack=16 \
   --check-sections \
   --data-init \
@@ -34,10 +42,10 @@ Command:
   --stackguard=16 \
   --no-force-link \
   --smart-io \
-  -Map=dist/default/production/DamCommPIC.X.production.map \
+  -Map=dist/default/debug/DamCommPIC.X.debug.map \
   --report-mem \
   --memorysummary \
-  dist/default/production/memoryfile.xml \
+  dist/default/debug/memoryfile.xml \
   -start-group \
   --library=lega-pic30-elf \
   --library=m-elf \
@@ -53,19 +61,19 @@ c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
                               c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o) (__data_init_standard)
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
-                              build/default/production/GPS.o (___delay32)
+                              build/default/debug/GPS.o (___delay32)
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(addsf3.eo)
-                              build/default/production/TPsensor.o (___addsf3)
+                              build/default/debug/TPsensor.o (___addsf3)
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(divsf3.eo)
-                              build/default/production/UVsensor.o (___divsf3)
+                              build/default/debug/UVsensor.o (___divsf3)
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(divsi3.eo)
-                              build/default/production/TPsensor.o (___divsi3)
+                              build/default/debug/TPsensor.o (___divsi3)
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fixunssfsi.eo)
-                              build/default/production/UVsensor.o (___fixunssfsi)
+                              build/default/debug/UVsensor.o (___fixunssfsi)
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatsisf.eo)
-                              build/default/production/TPsensor.o (___floatsisf)
+                              build/default/debug/TPsensor.o (___floatsisf)
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatunsisf.eo)
-                              build/default/production/UVsensor.o (___floatunsisf)
+                              build/default/debug/UVsensor.o (___floatunsisf)
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fpack.eo)
                               c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(addsf3.eo) (__fpack)
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(funpack.eo)
@@ -75,15 +83,15 @@ c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(funpack
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(futil.eo)
                               c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(addsf3.eo) (__fPropagateNaN)
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(mulsf3.eo)
-                              build/default/production/UVsensor.o (___mulsf3)
+                              build/default/debug/UVsensor.o (___mulsf3)
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(udivsi3.eo)
-                              build/default/production/UART.o (___udivsi3)
+                              build/default/debug/UART.o (___udivsi3)
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatdisf.eo)
                               c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatsisf.eo) (___floatdisf)
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatundisf.eo)
                               c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatunsisf.eo) (___floatundisf)
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(sprintf_cdfFnopsuxX.XXeo)
-                              build/default/production/main.o (__sprintf_cdfFnopsuxX)
+                              build/default/debug/main.o (__sprintf_cdfFnopsuxX)
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xprintf_cdfFnopsuxX.XXeo)
                               c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(sprintf_cdfFnopsuxX.XXeo) (___Printf_cdfFnopsuxX)
 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xputfld_cdfFnopsuxX.XXeo)
@@ -186,13 +194,13 @@ section                    address   length (PC units)   length (bytes) (dec)
 -------                    -------   -----------------   --------------------
 .text                        0x200              0x193a          0x25d7  (9687)
 .const                      0x1b3a                0x48            0x6c  (108)
-.text                       0x1b82               0x966           0xe19  (3609)
-.dinit                      0x24e8                0x8e            0xd5  (213)
-.text                       0x2576                0x74            0xae  (174)
-.init.delay32               0x25ea                0x1c            0x2a  (42)
-.shared.dinit               0x2606                 0x2             0x3  (3)
+.text                       0x1b82               0x9ac           0xe82  (3714)
+.dinit                      0x252e                0x8e            0xd5  (213)
+.text                       0x25bc                0x74            0xae  (174)
+.init.delay32               0x2630                0x1c            0x2a  (42)
+.shared.dinit               0x264c                 0x2             0x3  (3)
 
-                 Total program memory used (bytes):         0x360c  (13836) 85%
+                 Total program memory used (bytes):         0x3675  (13941) 86%
 
 
 Ivt Memory  [Origin = 0x4, Length = 0xfc]
@@ -207,10 +215,15 @@ Data Memory  [Origin = 0x800, Length = 0x600]
 
 section                    address      alignment gaps    total length  (dec)
 -------                    -------      --------------    -------------------
-.nbss                        0x800                   0           0x102  (258)
-.data                        0x902                   0            0x96  (150)
+reserve_data_0x800           0x800                0x20            0x20  (32)
+reserve_data_0x820           0x820                 0x2             0x2  (2)
+reserve_data_0x822           0x822                 0x2             0x2  (2)
+reserve_data_0x824           0x824                 0x2             0x2  (2)
+reserve_data_0x826           0x826                0x2a            0x2a  (42)
+.nbss                        0x850                   0           0x102  (258)
+.data                        0x952                   0            0x96  (150)
 
-                 Total data memory used (bytes):          0x198  (408) 26%
+                 Total data memory used (bytes):          0x1e8  (488) 31%
 
 
 Dynamic Memory Usage
@@ -218,36 +231,36 @@ Dynamic Memory Usage
 region                     address                      maximum length  (dec)
 ------                     -------                      ---------------------
 heap                             0                                   0  (0)
-stack                        0x998                               0x468  (1128)
+stack                        0x9e8                               0x418  (1048)
 
-                 Maximum dynamic memory (bytes):          0x468  (1128)
+                 Maximum dynamic memory (bytes):          0x418  (1048)
 
 
 External Symbols in Data Memory (by address):
 
-                    0x0800                  _line1
-                    0x0878                  _line2
-                    0x08f0                  _lineidx
-                    0x08f2                  _currentline
-                    0x08f4                  _lastline
-                    0x08f6                  _recvdflag
-                    0x08f8                  _piFlag
-                    0x08fa                  _UVindex
-                    0x08fc                  _Tdata
-                    0x0900                  _Pdata
+                    0x0850                  _line1
+                    0x08c8                  _line2
+                    0x0940                  _lineidx
+                    0x0942                  _currentline
+                    0x0944                  _lastline
+                    0x0946                  _recvdflag
+                    0x0948                  _piFlag
+                    0x094a                  _UVindex
+                    0x094c                  _Tdata
+                    0x0950                  _Pdata
 
 External Symbols in Data Memory (by name):
 
-                    0x0900                  _Pdata
-                    0x08fc                  _Tdata
-                    0x08fa                  _UVindex
-                    0x08f2                  _currentline
-                    0x08f4                  _lastline
-                    0x0800                  _line1
-                    0x0878                  _line2
-                    0x08f0                  _lineidx
-                    0x08f8                  _piFlag
-                    0x08f6                  _recvdflag
+                    0x0950                  _Pdata
+                    0x094c                  _Tdata
+                    0x094a                  _UVindex
+                    0x0942                  _currentline
+                    0x0944                  _lastline
+                    0x0850                  _line1
+                    0x08c8                  _line2
+                    0x0940                  _lineidx
+                    0x0948                  _piFlag
+                    0x0946                  _recvdflag
 
 External Symbols in Program Memory (by address):
 
@@ -290,9 +303,9 @@ External Symbols in Program Memory (by address):
                   0x0011e4                  __Puttxt
                   0x00135c                  __Vacopy
                   0x001360                  __Dnorm
-                  0x0013f8                  ___ledf2
-                  0x0013f8                  ___ltdf2
                   0x0013f8                  ___eqdf2
+                  0x0013f8                  ___ltdf2
+                  0x0013f8                  ___ledf2
                   0x001402                  ___gtdf2
                   0x001402                  ___gedf2
                   0x00140c                  ___divdf3
@@ -306,8 +319,8 @@ External Symbols in Program Memory (by address):
                   0x0015e6                  ___muldf3
                   0x0016d0                  ___subdf3
                   0x0016d4                  ___umodsi3
-                  0x0016da                  ___mulp32eds3
                   0x0016da                  ___mulsi3
+                  0x0016da                  ___mulp32eds3
                   0x0016da                  ___mulp32peds3
                   0x001732                  ___udivmoddi3
                   0x001818                  ___udivdi3
@@ -342,41 +355,43 @@ External Symbols in Program Memory (by address):
                   0x0021ca                  _readUP16
                   0x002224                  _getTempData
                   0x002258                  _getPress
-                  0x002276                  _UART1_init
-                  0x0022a4                  _UART2_init
-                  0x0022d2                  _UART1_PutChar
-                  0x0022ea                  _UART2_PutChar
-                  0x002302                  _UART1_GetChar
-                  0x002324                  _UART2_GetChar
-                  0x002346                  _sendArray
-                  0x002364                  _main
-                  0x0023da                  _init_osc
-                  0x0023ea                  __U1RXInterrupt
-                  0x002412                  __U2RXInterrupt
-                  0x00242e                  _GPS_init
-                  0x00244a                  _GPS_lastNMEA
-                  0x002454                  _GPS_newNMEAreceived
-                  0x00245c                  _getGPSsentence
-                  0x0024ca                  _sendCommand
-                  0x002576                  _AD_Init
-                  0x002590                  _getUVindex
-                  0x0025cc                  _sendPiCommand
-                  0x0025ea                  ___delay32
+                  0x002276                  _main
+                  0x0022f0                  _init_osc
+                  0x002300                  __U1RXInterrupt
+                  0x002328                  __U2RXInterrupt
+                  0x002344                  _CR_NL_CleanUp
+                  0x002386                  _UART1_init
+                  0x0023b4                  _UART2_init
+                  0x0023e2                  _UART1_PutChar
+                  0x0023fa                  _UART2_PutChar
+                  0x002412                  _UART1_GetChar
+                  0x002434                  _UART2_GetChar
+                  0x002456                  _sendArray
+                  0x002474                  _GPS_init
+                  0x002490                  _GPS_lastNMEA
+                  0x00249a                  _GPS_newNMEAreceived
+                  0x0024a2                  _getGPSsentence
+                  0x002510                  _sendCommand
+                  0x0025bc                  _AD_Init
+                  0x0025d6                  _getUVindex
+                  0x002612                  _sendPiCommand
+                  0x002630                  ___delay32
                   0xf80000                  __FBS.sec
                   0xf80004                  __FGS.sec
 
 External Symbols in Program Memory (by name):
 
-                  0x002576                  _AD_Init
-                  0x00242e                  _GPS_init
-                  0x00244a                  _GPS_lastNMEA
-                  0x002454                  _GPS_newNMEAreceived
-                  0x002302                  _UART1_GetChar
-                  0x0022d2                  _UART1_PutChar
-                  0x002276                  _UART1_init
-                  0x002324                  _UART2_GetChar
-                  0x0022ea                  _UART2_PutChar
-                  0x0022a4                  _UART2_init
+                  0x0025bc                  _AD_Init
+                  0x002344                  _CR_NL_CleanUp
+                  0x002474                  _GPS_init
+                  0x002490                  _GPS_lastNMEA
+                  0x00249a                  _GPS_newNMEAreceived
+                  0x002412                  _UART1_GetChar
+                  0x0023e2                  _UART1_PutChar
+                  0x002386                  _UART1_init
+                  0x002434                  _UART2_GetChar
+                  0x0023fa                  _UART2_PutChar
+                  0x0023b4                  _UART2_init
                   0x0002ac                  __DefaultInterrupt
                   0x001360                  __Dnorm
                   0xf80000                  __FBS.sec
@@ -384,8 +399,8 @@ External Symbols in Program Memory (by name):
                   0x000f32                  __LDunscale
                   0x000f86                  __Litob
                   0x0011e4                  __Puttxt
-                  0x0023ea                  __U1RXInterrupt
-                  0x002412                  __U2RXInterrupt
+                  0x002300                  __U1RXInterrupt
+                  0x002328                  __U2RXInterrupt
                   0x00135c                  __Vacopy
                   0x000ca4                  ___Genld_cdfFnopsuxX
                   0x000a54                  ___Ldtob_cdfFnopsuxX
@@ -393,7 +408,7 @@ External Symbols in Program Memory (by name):
                   0x00078a                  ___Putfld_cdfFnopsuxX
                   0x0018ea                  ___adddf3
                   0x0002b2                  ___addsf3
-                  0x0025ea                  ___delay32
+                  0x002630                  ___delay32
                   0x00140c                  ___divdf3
                   0x00182e                  ___divdi3
                   0x00036c                  ___divsf3
@@ -446,18 +461,18 @@ External Symbols in Program Memory (by name):
                   0x000200                  __resetPRI
                   0x000608                  __sprintf_cdfFnopsuxX
                   0x000eac                  _div
-                  0x00245c                  _getGPSsentence
+                  0x0024a2                  _getGPSsentence
                   0x002258                  _getPress
                   0x001e1c                  _getPressure
                   0x001d96                  _getTemp
                   0x002224                  _getTempData
                   0x00211e                  _getUP
                   0x0020fa                  _getUT
-                  0x002590                  _getUVindex
+                  0x0025d6                  _getUVindex
                   0x001b82                  _init_I2C
-                  0x0023da                  _init_osc
+                  0x0022f0                  _init_osc
                   0x000ec2                  _ldiv
-                  0x002364                  _main
+                  0x002276                  _main
                   0x000eec                  _memchr
                   0x000f00                  _memcpy
                   0x001cf8                  _poll_I2C
@@ -472,10 +487,10 @@ External Symbols in Program Memory (by name):
                   0x001cc2                  _read_ack_I2C
                   0x001bfe                  _reset_I2C
                   0x001b9a                  _restart_I2C
-                  0x002346                  _sendArray
+                  0x002456                  _sendArray
                   0x001c34                  _sendByte_I2C
-                  0x0024ca                  _sendCommand
-                  0x0025cc                  _sendPiCommand
+                  0x002510                  _sendCommand
+                  0x002612                  _sendPiCommand
                   0x001bc8                  _start_I2C
                   0x000f0e                  _strchr
                   0x000f26                  _strlen
@@ -503,13 +518,41 @@ FDS              0xf80010           0x000002
 
 Linker script and memory map
 
-LOAD build/default/production/main.o
-LOAD build/default/production/UART.o
-LOAD build/default/production/GPS.o
-LOAD build/default/production/UVsensor.o
-LOAD build/default/production/TPsensor.o
-LOAD build/default/production/PiComm.o
+LOAD build/default/debug/main.o
+LOAD build/default/debug/UART.o
+LOAD build/default/debug/GPS.o
+LOAD build/default/debug/UVsensor.o
+LOAD build/default/debug/TPsensor.o
+LOAD build/default/debug/PiComm.o
+
+reserve_data_0x800
+                    0x0800         0x20
+                    0x0820                  . = 0x20
+ *fill*             0x0800         0x2000
+
+reserve_data_0x820
+                    0x0820          0x2
+                    0x0822                  . = 0x2
+ *fill*             0x0820          0x200
+
+reserve_data_0x822
+                    0x0822          0x2
+                    0x0824                  . = 0x2
+ *fill*             0x0822          0x200
+
+reserve_data_0x824
+                    0x0824          0x2
+                    0x0826                  . = 0x2
+ *fill*             0x0824          0x200
+
+reserve_data_0x826
+                    0x0826         0x2a
+                    0x0850                  . = 0x2a
+ *fill*             0x0826         0x2a00
                     0x0001                  __MPLAB_BUILD = 0x1
+                    0x0001                  __MPLAB_DEBUG = 0x1
+                    0x0001                  __DEBUG = 0x1
+                    0x0001                  __MPLAB_DEBUGGER_PK3 = 0x1
 LOAD pPIC24Fxxx
 LOAD c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libfx-elf.a
                     0xf80000                  __FBS = 0xf80000
@@ -740,50 +783,50 @@ __FDS
 .comment
  *(.comment)
 
-.debug_info       0x000000       0x30e0
+.debug_info       0x000000       0x3147
  *(.debug_info)
- .debug_info      0x000000        0x849 build/default/production/main.o
- .debug_info      0x000849       0x11eb build/default/production/UART.o
- .debug_info      0x001a34        0x309 build/default/production/GPS.o
- .debug_info      0x001d3d        0x3f8 build/default/production/UVsensor.o
- .debug_info      0x002135        0xe52 build/default/production/TPsensor.o
- .debug_info      0x002f87        0x159 build/default/production/PiComm.o
+ .debug_info      0x000000        0x8b0 build/default/debug/main.o
+ .debug_info      0x0008b0       0x11eb build/default/debug/UART.o
+ .debug_info      0x001a9b        0x309 build/default/debug/GPS.o
+ .debug_info      0x001da4        0x3f8 build/default/debug/UVsensor.o
+ .debug_info      0x00219c        0xe52 build/default/debug/TPsensor.o
+ .debug_info      0x002fee        0x159 build/default/debug/PiComm.o
  *(.gnu.linkonce.wi.*)
 
-.debug_abbrev     0x000000        0x5fd
+.debug_abbrev     0x000000        0x619
  *(.debug_abbrev)
- .debug_abbrev    0x000000        0x118 build/default/production/main.o
- .debug_abbrev    0x000118        0x10f build/default/production/UART.o
- .debug_abbrev    0x000227         0xff build/default/production/GPS.o
- .debug_abbrev    0x000326         0xe0 build/default/production/UVsensor.o
- .debug_abbrev    0x000406        0x19a build/default/production/TPsensor.o
- .debug_abbrev    0x0005a0         0x5d build/default/production/PiComm.o
+ .debug_abbrev    0x000000        0x134 build/default/debug/main.o
+ .debug_abbrev    0x000134        0x10f build/default/debug/UART.o
+ .debug_abbrev    0x000243         0xff build/default/debug/GPS.o
+ .debug_abbrev    0x000342         0xe0 build/default/debug/UVsensor.o
+ .debug_abbrev    0x000422        0x19a build/default/debug/TPsensor.o
+ .debug_abbrev    0x0005bc         0x5d build/default/debug/PiComm.o
 
-.debug_line       0x000000        0x457
+.debug_line       0x000000        0x4c0
  *(.debug_line)
- .debug_line      0x000000         0xc6 build/default/production/main.o
- .debug_line      0x0000c6         0xbf build/default/production/UART.o
- .debug_line      0x000185         0x5b build/default/production/GPS.o
- .debug_line      0x0001e0         0xa5 build/default/production/UVsensor.o
- .debug_line      0x000285        0x19a build/default/production/TPsensor.o
- .debug_line      0x00041f         0x38 build/default/production/PiComm.o
+ .debug_line      0x000000        0x12f build/default/debug/main.o
+ .debug_line      0x00012f         0xbf build/default/debug/UART.o
+ .debug_line      0x0001ee         0x5b build/default/debug/GPS.o
+ .debug_line      0x000249         0xa5 build/default/debug/UVsensor.o
+ .debug_line      0x0002ee        0x19a build/default/debug/TPsensor.o
+ .debug_line      0x000488         0x38 build/default/debug/PiComm.o
 
-.debug_frame      0x000000        0x522
+.debug_frame      0x000000        0x53e
  *(.debug_frame)
- .debug_frame     0x000000         0xc8 build/default/production/main.o
- .debug_frame     0x0000c8         0xd8 build/default/production/UART.o
- .debug_frame     0x0001a0         0xa0 build/default/production/GPS.o
- .debug_frame     0x000240         0x4c build/default/production/UVsensor.o
- .debug_frame     0x00028c        0x266 build/default/production/TPsensor.o
- .debug_frame     0x0004f2         0x30 build/default/production/PiComm.o
+ .debug_frame     0x000000         0xe4 build/default/debug/main.o
+ .debug_frame     0x0000e4         0xd8 build/default/debug/UART.o
+ .debug_frame     0x0001bc         0xa0 build/default/debug/GPS.o
+ .debug_frame     0x00025c         0x4c build/default/debug/UVsensor.o
+ .debug_frame     0x0002a8        0x266 build/default/debug/TPsensor.o
+ .debug_frame     0x00050e         0x30 build/default/debug/PiComm.o
 
 .debug_str        0x000000        0x104
  *(.debug_str)
- .debug_str       0x000000         0x24 build/default/production/main.o
- .debug_str       0x000024         0x84 build/default/production/UART.o
- .debug_str       0x0000a8         0x1f build/default/production/GPS.o
- .debug_str       0x0000c7         0x15 build/default/production/UVsensor.o
- .debug_str       0x0000dc         0x28 build/default/production/TPsensor.o
+ .debug_str       0x000000         0x24 build/default/debug/main.o
+ .debug_str       0x000024         0x84 build/default/debug/UART.o
+ .debug_str       0x0000a8         0x1f build/default/debug/GPS.o
+ .debug_str       0x0000c7         0x15 build/default/debug/UVsensor.o
+ .debug_str       0x0000dc         0x28 build/default/debug/TPsensor.o
 
 .debug_loc
  *(.debug_loc)
@@ -792,20 +835,20 @@ __FDS
  *(.debug_macinfo)
 
 .debug_pubnames
-                  0x000000        0x33c
+                  0x000000        0x34e
  *(.debug_pubnames)
  .debug_pubnames
-                  0x000000         0x79 build/default/production/main.o
+                  0x000000         0x8b build/default/debug/main.o
  .debug_pubnames
-                  0x000079         0x86 build/default/production/UART.o
+                  0x00008b         0x86 build/default/debug/UART.o
  .debug_pubnames
-                  0x0000ff         0xb6 build/default/production/GPS.o
+                  0x000111         0xb6 build/default/debug/GPS.o
  .debug_pubnames
-                  0x0001b5         0x2d build/default/production/UVsensor.o
+                  0x0001c7         0x2d build/default/debug/UVsensor.o
  .debug_pubnames
-                  0x0001e2        0x136 build/default/production/TPsensor.o
+                  0x0001f4        0x136 build/default/debug/TPsensor.o
  .debug_pubnames
-                  0x000318         0x24 build/default/production/PiComm.o
+                  0x00032a         0x24 build/default/debug/PiComm.o
 
 .debug_ranges
  *(.debug_ranges)
@@ -813,17 +856,17 @@ __FDS
 .debug_aranges    0x000000         0x90
  *(.debug_aranges)
  .debug_aranges
-                  0x000000         0x18 build/default/production/main.o
+                  0x000000         0x18 build/default/debug/main.o
  .debug_aranges
-                  0x000018         0x18 build/default/production/UART.o
+                  0x000018         0x18 build/default/debug/UART.o
  .debug_aranges
-                  0x000030         0x18 build/default/production/GPS.o
+                  0x000030         0x18 build/default/debug/GPS.o
  .debug_aranges
-                  0x000048         0x18 build/default/production/UVsensor.o
+                  0x000048         0x18 build/default/debug/UVsensor.o
  .debug_aranges
-                  0x000060         0x18 build/default/production/TPsensor.o
+                  0x000060         0x18 build/default/debug/TPsensor.o
  .debug_aranges
-                  0x000078         0x18 build/default/production/PiComm.o
+                  0x000078         0x18 build/default/debug/PiComm.o
                     0x0000                  WREG0 = 0x0
                     0x0000                  _WREG0 = 0x0
                     0x0002                  WREG1 = 0x2
@@ -1229,7 +1272,7 @@ LOAD c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30
 LOAD c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a
 LOAD c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a
 END GROUP
-OUTPUT(dist/default/production/DamCommPIC.X.production.elf elf32-pic30)
+OUTPUT(dist/default/debug/DamCommPIC.X.debug.elf elf32-pic30)
 LOAD FGS
 LOAD FBS
 LOAD jump_table
@@ -1238,198 +1281,198 @@ LOAD data_init
 LOAD shared_data_init
 
 .debug_pubtypes
-                  0x000090        0x2b4
+                  0x000090        0x2ca
  .debug_pubtypes
-                  0x000090         0x95 build/default/production/main.o
+                  0x000090         0xab build/default/debug/main.o
  .debug_pubtypes
-                  0x000125        0x140 build/default/production/UART.o
+                  0x00013b        0x140 build/default/debug/UART.o
  .debug_pubtypes
-                  0x000265         0x12 build/default/production/GPS.o
+                  0x00027b         0x12 build/default/debug/GPS.o
  .debug_pubtypes
-                  0x000277         0x35 build/default/production/UVsensor.o
+                  0x00028d         0x35 build/default/debug/UVsensor.o
  .debug_pubtypes
-                  0x0002ac         0x86 build/default/production/TPsensor.o
+                  0x0002c2         0x86 build/default/debug/TPsensor.o
  .debug_pubtypes
-                  0x000332         0x12 build/default/production/PiComm.o
+                  0x000348         0x12 build/default/debug/PiComm.o
 
 __c30_signature
-                  0x000344        0x162
+                  0x00035a        0x162
  __c30_signature
-                  0x000344          0x6 build/default/production/main.o
+                  0x00035a          0x6 build/default/debug/main.o
  __c30_signature
-                  0x00034a          0x6 build/default/production/UART.o
+                  0x000360          0x6 build/default/debug/UART.o
  __c30_signature
-                  0x000350          0x6 build/default/production/GPS.o
+                  0x000366          0x6 build/default/debug/GPS.o
  __c30_signature
-                  0x000356          0x6 build/default/production/UVsensor.o
+                  0x00036c          0x6 build/default/debug/UVsensor.o
  __c30_signature
-                  0x00035c          0x6 build/default/production/TPsensor.o
+                  0x000372          0x6 build/default/debug/TPsensor.o
  __c30_signature
-                  0x000362          0x6 build/default/production/PiComm.o
+                  0x000378          0x6 build/default/debug/PiComm.o
  __c30_signature
-                  0x000368          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
+                  0x00037e          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(crt0_standard.o)
  __c30_signature
-                  0x00036e          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
+                  0x000384          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(data_init_standard.o)
  __c30_signature
-                  0x000374          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
+                  0x00038a          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
  __c30_signature
-                  0x00037a          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(addsf3.eo)
+                  0x000390          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(addsf3.eo)
  __c30_signature
-                  0x000380          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(divsf3.eo)
+                  0x000396          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(divsf3.eo)
  __c30_signature
-                  0x000386          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(divsi3.eo)
+                  0x00039c          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(divsi3.eo)
  __c30_signature
-                  0x00038c          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fixunssfsi.eo)
+                  0x0003a2          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fixunssfsi.eo)
  __c30_signature
-                  0x000392          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatsisf.eo)
+                  0x0003a8          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatsisf.eo)
  __c30_signature
-                  0x000398          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatunsisf.eo)
+                  0x0003ae          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatunsisf.eo)
  __c30_signature
-                  0x00039e          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fpack.eo)
+                  0x0003b4          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fpack.eo)
  __c30_signature
-                  0x0003a4          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(funpack.eo)
+                  0x0003ba          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(funpack.eo)
  __c30_signature
-                  0x0003aa          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(funpack2.eo)
+                  0x0003c0          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(funpack2.eo)
  __c30_signature
-                  0x0003b0          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(futil.eo)
+                  0x0003c6          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(futil.eo)
  __c30_signature
-                  0x0003b6          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(mulsf3.eo)
+                  0x0003cc          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(mulsf3.eo)
  __c30_signature
-                  0x0003bc          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(udivsi3.eo)
+                  0x0003d2          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(udivsi3.eo)
  __c30_signature
-                  0x0003c2          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatdisf.eo)
+                  0x0003d8          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatdisf.eo)
  __c30_signature
-                  0x0003c8          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatundisf.eo)
+                  0x0003de          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatundisf.eo)
  __c30_signature
-                  0x0003ce          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(sprintf_cdfFnopsuxX.XXeo)
+                  0x0003e4          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(sprintf_cdfFnopsuxX.XXeo)
  __c30_signature
-                  0x0003d4          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xprintf_cdfFnopsuxX.XXeo)
+                  0x0003ea          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xprintf_cdfFnopsuxX.XXeo)
  __c30_signature
-                  0x0003da          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xputfld_cdfFnopsuxX.XXeo)
+                  0x0003f0          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xputfld_cdfFnopsuxX.XXeo)
  __c30_signature
-                  0x0003e0          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xldtob_cdfFnopsuxX.XXeo)
+                  0x0003f6          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xldtob_cdfFnopsuxX.XXeo)
  __c30_signature
-                  0x0003e6          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xgenld_cdfFnopsuxX.XXeo)
+                  0x0003fc          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xgenld_cdfFnopsuxX.XXeo)
  __c30_signature
-                  0x0003ec          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(div.XXeo)
+                  0x000402          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(div.XXeo)
  __c30_signature
-                  0x0003f2          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(ldiv.XXeo)
+                  0x000408          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(ldiv.XXeo)
  __c30_signature
-                  0x0003f8          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(memchr.XXeo)
+                  0x00040e          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(memchr.XXeo)
  __c30_signature
-                  0x0003fe          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(memcpy.XXeo)
+                  0x000414          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(memcpy.XXeo)
  __c30_signature
-                  0x000404          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(strchr.XXeo)
+                  0x00041a          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(strchr.XXeo)
  __c30_signature
-                  0x00040a          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(strlen.XXeo)
+                  0x000420          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(strlen.XXeo)
  __c30_signature
-                  0x000410          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xldunsca.XXeo)
+                  0x000426          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xldunsca.XXeo)
  __c30_signature
-                  0x000416          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xlitob.XXeo)
+                  0x00042c          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xlitob.XXeo)
  __c30_signature
-                  0x00041c          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xputtxt.XXeo)
+                  0x000432          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xputtxt.XXeo)
  __c30_signature
-                  0x000422          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xvacopy.XXeo)
+                  0x000438          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xvacopy.XXeo)
  __c30_signature
-                  0x000428          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xdnorm.XXelo)
+                  0x00043e          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xdnorm.XXelo)
  __c30_signature
-                  0x00042e          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(deqltle.eo)
+                  0x000444          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(deqltle.eo)
  __c30_signature
-                  0x000434          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dgtge.eo)
+                  0x00044a          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dgtge.eo)
  __c30_signature
-                  0x00043a          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(divdf3.eo)
+                  0x000450          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(divdf3.eo)
  __c30_signature
-                  0x000440          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dpack.eo)
+                  0x000456          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dpack.eo)
  __c30_signature
-                  0x000446          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dunpack2.eo)
+                  0x00045c          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dunpack2.eo)
  __c30_signature
-                  0x00044c          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(extendsfdf.eo)
+                  0x000462          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(extendsfdf.eo)
  __c30_signature
-                  0x000452          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fixdfsi.eo)
+                  0x000468          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(fixdfsi.eo)
  __c30_signature
-                  0x000458          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatsidf.eo)
+                  0x00046e          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatsidf.eo)
  __c30_signature
-                  0x00045e          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(muldf3.eo)
+                  0x000474          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(muldf3.eo)
  __c30_signature
-                  0x000464          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(subdf3.eo)
+                  0x00047a          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(subdf3.eo)
  __c30_signature
-                  0x00046a          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(umodsi3.eo)
+                  0x000480          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(umodsi3.eo)
  __c30_signature
-                  0x000470          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(mulsi3.eo)
+                  0x000486          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(mulsi3.eo)
  __c30_signature
-                  0x000476          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(divmoddi3.eo)
+                  0x00048c          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(divmoddi3.eo)
  __c30_signature
-                  0x00047c          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(adddf3.eo)
+                  0x000492          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(adddf3.eo)
  __c30_signature
-                  0x000482          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dcompare.eo)
+                  0x000498          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dcompare.eo)
  __c30_signature
-                  0x000488          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dpropagateNaN.eo)
+                  0x00049e          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dpropagateNaN.eo)
  __c30_signature
-                  0x00048e          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dtype.eo)
+                  0x0004a4          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dtype.eo)
  __c30_signature
-                  0x000494          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dunpack.eo)
+                  0x0004aa          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(dunpack.eo)
  __c30_signature
-                  0x00049a          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatdidf.eo)
+                  0x0004b0          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatdidf.eo)
  __c30_signature
-                  0x0004a0          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatundidf.eo)
+                  0x0004b6          0x6 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\libm-elf.a(floatundidf.eo)
 
-.nbss               0x0800        0x102
- .nbss              0x0800         0xf8 build/default/production/GPS.o
-                    0x0800                  _line1
-                    0x0878                  _line2
-                    0x08f0                  _lineidx
-                    0x08f2                  _currentline
-                    0x08f4                  _lastline
-                    0x08f6                  _recvdflag
- .nbss              0x08f8          0xa build/default/production/main.o
-                    0x08f8                  _piFlag
-                    0x08fa                  _UVindex
-                    0x08fc                  _Tdata
-                    0x0900                  _Pdata
+.nbss               0x0850        0x102
+ .nbss              0x0850         0xf8 build/default/debug/GPS.o
+                    0x0850                  _line1
+                    0x08c8                  _line2
+                    0x0940                  _lineidx
+                    0x0942                  _currentline
+                    0x0944                  _lastline
+                    0x0946                  _recvdflag
+ .nbss              0x0948          0xa build/default/debug/main.o
+                    0x0948                  _piFlag
+                    0x094a                  _UVindex
+                    0x094c                  _Tdata
+                    0x0950                  _Pdata
 
-.data               0x0902         0x96
- .data              0x0902         0x58 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xldtob_cdfFnopsuxX.XXeo)
- .data              0x095a         0x22 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xlitob.XXeo)
- .data              0x097c         0x1a c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xprintf_cdfFnopsuxX.XXeo)
- .data              0x0996          0x2 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xgenld_cdfFnopsuxX.XXeo)
+.data               0x0952         0x96
+ .data              0x0952         0x58 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xldtob_cdfFnopsuxX.XXeo)
+ .data              0x09aa         0x22 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xlitob.XXeo)
+ .data              0x09cc         0x1a c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xprintf_cdfFnopsuxX.XXeo)
+ .data              0x09e6          0x2 c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-c-elf.a(xgenld_cdfFnopsuxX.XXeo)
 
 .config_DSWDTEN
                   0xf80010          0x2
  .config_DSWDTEN
-                  0xf80010          0x2 build/default/production/main.o
+                  0xf80010          0x2 build/default/debug/main.o
 
 .config_BKBUG     0xf8000e          0x2
- .config_BKBUG    0xf8000e          0x2 build/default/production/main.o
+ .config_BKBUG    0xf8000e          0x2 build/default/debug/main.o
 
 .config_MCLRE     0xf8000c          0x2
- .config_MCLRE    0xf8000c          0x2 build/default/production/main.o
+ .config_MCLRE    0xf8000c          0x2 build/default/debug/main.o
 
 .config_FWDTEN    0xf8000a          0x2
  .config_FWDTEN
-                  0xf8000a          0x2 build/default/production/main.o
+                  0xf8000a          0x2 build/default/debug/main.o
 
 .config_FCKSM     0xf80008          0x2
- .config_FCKSM    0xf80008          0x2 build/default/production/main.o
+ .config_FCKSM    0xf80008          0x2 build/default/debug/main.o
 
 .config_IESO      0xf80006          0x2
- .config_IESO     0xf80006          0x2 build/default/production/main.o
+ .config_IESO     0xf80006          0x2 build/default/debug/main.o
 
 .ivt._U1RXInterrupt
                   0x00002a          0x2
  .ivt._U1RXInterrupt
-                  0x00002a          0x2 build/default/production/main.o
+                  0x00002a          0x2 build/default/debug/main.o
 
 .ivt._U2RXInterrupt
                   0x000050          0x2
  .ivt._U2RXInterrupt
-                  0x000050          0x2 build/default/production/main.o
+                  0x000050          0x2 build/default/debug/main.o
 
 .const              0x9b3a         0x48 load address 0x001b3a  
- .const             0x9b3a         0x34 build/default/production/GPS.o
- .const             0x9b6e         0x14 build/default/production/main.o
+ .const             0x9b3a         0x34 build/default/debug/GPS.o
+ .const             0x9b6e         0x14 build/default/debug/main.o
 
-.text             0x001b82        0x966
- .text            0x001b82        0x6f4 build/default/production/TPsensor.o
+.text             0x001b82        0x9ac
+ .text            0x001b82        0x6f4 build/default/debug/TPsensor.o
                   0x001b82                  _init_I2C
                   0x001b9a                  _restart_I2C
                   0x001bc8                  _start_I2C
@@ -1451,39 +1494,40 @@ __c30_signature
                   0x0021ca                  _readUP16
                   0x002224                  _getTempData
                   0x002258                  _getPress
- .text            0x002276         0xee build/default/production/UART.o
-                  0x002276                  _UART1_init
-                  0x0022a4                  _UART2_init
-                  0x0022d2                  _UART1_PutChar
-                  0x0022ea                  _UART2_PutChar
-                  0x002302                  _UART1_GetChar
-                  0x002324                  _UART2_GetChar
-                  0x002346                  _sendArray
- .text            0x002364         0xca build/default/production/main.o
-                  0x002364                  _main
-                  0x0023da                  _init_osc
-                  0x0023ea                  __U1RXInterrupt
-                  0x002412                  __U2RXInterrupt
- .text            0x00242e         0xba build/default/production/GPS.o
-                  0x00242e                  _GPS_init
-                  0x00244a                  _GPS_lastNMEA
-                  0x002454                  _GPS_newNMEAreceived
-                  0x00245c                  _getGPSsentence
-                  0x0024ca                  _sendCommand
+ .text            0x002276        0x110 build/default/debug/main.o
+                  0x002276                  _main
+                  0x0022f0                  _init_osc
+                  0x002300                  __U1RXInterrupt
+                  0x002328                  __U2RXInterrupt
+                  0x002344                  _CR_NL_CleanUp
+ .text            0x002386         0xee build/default/debug/UART.o
+                  0x002386                  _UART1_init
+                  0x0023b4                  _UART2_init
+                  0x0023e2                  _UART1_PutChar
+                  0x0023fa                  _UART2_PutChar
+                  0x002412                  _UART1_GetChar
+                  0x002434                  _UART2_GetChar
+                  0x002456                  _sendArray
+ .text            0x002474         0xba build/default/debug/GPS.o
+                  0x002474                  _GPS_init
+                  0x002490                  _GPS_lastNMEA
+                  0x00249a                  _GPS_newNMEAreceived
+                  0x0024a2                  _getGPSsentence
+                  0x002510                  _sendCommand
 
-.dinit            0x0024e8         0x8e
- .dinit           0x0024e8         0x8e data_init
+.dinit            0x00252e         0x8e
+ .dinit           0x00252e         0x8e data_init
 
-.text             0x002576         0x74
- .text            0x002576         0x56 build/default/production/UVsensor.o
-                  0x002576                  _AD_Init
-                  0x002590                  _getUVindex
- .text            0x0025cc         0x1e build/default/production/PiComm.o
-                  0x0025cc                  _sendPiCommand
+.text             0x0025bc         0x74
+ .text            0x0025bc         0x56 build/default/debug/UVsensor.o
+                  0x0025bc                  _AD_Init
+                  0x0025d6                  _getUVindex
+ .text            0x002612         0x1e build/default/debug/PiComm.o
+                  0x002612                  _sendPiCommand
 
-.init.delay32     0x0025ea         0x1c
- .init.delay32    0x0025ea         0x1c c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
-                  0x0025ea                  ___delay32
+.init.delay32     0x002630         0x1c
+ .init.delay32    0x002630         0x1c c:/program files (x86)/microchip/xc16/v1.26/bin/bin/../../lib\liblega-pic30-elf.a(delay32.Leo)
+                  0x002630                  ___delay32
 
-.shared.dinit     0x002606          0x2
- .shared.dinit    0x002606          0x2 shared_data_init
+.shared.dinit     0x00264c          0x2
+ .shared.dinit    0x00264c          0x2 shared_data_init

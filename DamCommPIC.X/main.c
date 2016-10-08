@@ -58,7 +58,8 @@ void main(void) {
         if(GPS_newNMEAreceived()){
           
             char *nmea = GPS_lastNMEA();
-            sprintf(buf,"600:[%s][%d][%.1f][%d]\n",nmea,UVindex,Tdata,Pdata);
+            
+            sprintf(buf,"600:|%d|%.1f|%d|%s",UVindex,Tdata,Pdata,nmea);
             
             if(piFlag >= 1){
                sendPiCommand(buf);
@@ -89,3 +90,4 @@ void __attribute__((__interrupt__, auto_psv)) _U2RXInterrupt(void)
     char c = U2RXREG;  //Empty buffer to prevent overflow
     IFS1bits.U2RXIF = 0; //clear interrupt flag
 }
+

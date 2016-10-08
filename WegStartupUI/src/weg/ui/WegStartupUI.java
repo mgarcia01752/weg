@@ -6,6 +6,8 @@
 package weg.ui;
 
 import java.net.UnknownHostException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import weg.das.Barometer;
@@ -72,9 +74,14 @@ public class WegStartupUI {
                       
                       wmu.updateSystemTime();
 
-                      String sCommandResponse = dc.get(DasCommands.GPS);
+                      String sCommandResponse = dc.get(DasCommands.FULL_SENSOR_DUMP);
 
-                      if (gps.parse(sCommandResponse)) {              
+                      System.out.println("CMD-RSP: " + sCommandResponse);
+                      
+                      /* UVindex,Tdata,Pdata,nmea */
+                      List<String> lsFullCommand = Arrays.asList(sCommandResponse.split("\\|"));
+                                             
+                      if (gps.parse(lsFullCommand.get(4))) {              
                           System.out.println("GPS Raw -> " + sCommandResponse);
                           System.out.println("GPS ToStrig -> " + gps.getCurrentGpsData());
                           System.out.println("GPS Lat -> " + gps.getLatitude());
@@ -86,18 +93,18 @@ public class WegStartupUI {
                           
                       }
 
-                      sCommandResponse = dc.get(DasCommands.TEMP_F);
+                      //sCommandResponse = dc.get(DasCommands.TEMP_F);
+                      System.out.println("Temp: " + lsFullCommand.get(2));
+                      this.wmu.updateTemperture(Temperature.getTemp(lsFullCommand.get(2)));
 
-                      this.wmu.updateTemperture(Temperature.getTemp(sCommandResponse));
-
-                      sCommandResponse = dc.get(DasCommands.BaROMETER);
-
-                      this.wmu.updateBarometer(Barometer.getBarometer(sCommandResponse).toString());
+                      //sCommandResponse = dc.get(DasCommands.BaROMETER);
+                      System.out.println("Baro: " + lsFullCommand.get(3));
+                      this.wmu.updateBarometer(Barometer.getBarometer(lsFullCommand.get(3)).toString());
                       
-                      sCommandResponse = dc.get(DasCommands.UV);
-
-                      this.wmu.updateUV(UV.getUV(sCommandResponse).toString());
-                      
+                      //sCommandResponse = dc.get(DasCommands.UV);
+                      System.out.println("UV: " + lsFullCommand.get(1));
+                      this.wmu.updateUV(UV.getUV(lsFullCommand.get(1)).toString());
+                    
                       /* When Connect is not selcted exit Loop and wait till it is selected again */
                       if (!this.wmu.isDasConnectSelected())break;
 
