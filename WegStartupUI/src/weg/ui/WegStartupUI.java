@@ -80,6 +80,8 @@ public class WegStartupUI {
                       
                       /* UVindex,Tdata,Pdata,nmea */
                       List<String> lsFullCommand = Arrays.asList(sCommandResponse.split("\\|"));
+                      
+                      if (lsFullCommand.size()<4) continue;
                                              
                       if (gps.parse(lsFullCommand.get(4))) {              
                           System.out.println("GPS Raw -> " + sCommandResponse);
