@@ -78,6 +78,8 @@ public class WegStartupUI {
 
                       System.out.println("CMD-RSP: " + sCommandResponse);
                       
+                      if (sCommandResponse == null) continue;
+                      
                       /* UVindex,Tdata,Pdata,nmea */
                       List<String> lsFullCommand = Arrays.asList(sCommandResponse.split("\\|"));
                       
