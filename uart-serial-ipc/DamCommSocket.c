@@ -14,6 +14,7 @@
 #include <wiringPi.h>
 #include <wiringSerial.h>
 
+
 /* DEFAULTS */
 #define DEFAULT_SOCKET_PORT                   5000
 #define MAX_TX_RX_BUFFER_LENGTH               50
@@ -35,6 +36,7 @@
 #define DEBUG_OFF                             FALSE
 
 /* Data Module Protocol */
+#define CHECK_CONNECTION					  "000:" 	
 #define GPS_COORDINATE                        "101"
 #define UV_SENSOR                             "201"
 #define TEMPERATURE_C                         "301"
@@ -65,7 +67,7 @@ void strip_CR_NL(char *buf, size_t size);
 /*
 *
 */
-void setResetToPIC();
+void setResetToPICNoWiringPIStartup();
 
 
 /* DEBUG GLOBAL */
@@ -133,12 +135,6 @@ int main(int argc, char * argv[]) {
             cInputCommand = optarg;
             printf("\n\nVersion: %s\n\n", VERSION);
             exit(ERROR_NONE);
-			
-		  case 'r':
-			printf("Reseting PIC via GPIO(23) Pin(%d) \n",GPIO_TO_PIC_RESET);     			
-			setResetToPIC();			
-			exit(ERROR_NONE);
-			break;
             
           case 'G':
             printf("Get GPS Data\n");
@@ -193,7 +189,7 @@ int main(int argc, char * argv[]) {
 
         }
     }
-
+	
     /****************************************************************************
      *  This section is setting up the socket for IPC interaction   
      ****************************************************************************/
@@ -234,6 +230,9 @@ int main(int argc, char * argv[]) {
         exit(ERROR_TO_START_WIRED_PI);
     }
 
+	printf("Sending PIC Reset\n");
+	setResetToPICNoWiringPIStartup();
+		
     if (bDebug) printf("Opening UART Connection of Device: %s\n", DEFAULT_UART_LOCATION);
 
     /*Open Connection*/
@@ -267,18 +266,11 @@ int main(int argc, char * argv[]) {
 		  strip_CR_NL(caRxSocket, sizeof(caRxSocket));
           
           if (bDebug) printf("Socket -> UART -> (%s)\n" , caRxSocket);
-          
-		  /* end Reset to PIC */
-		  if (strcmp(caRxSocket,PIC_RESET)) {
-			  if (bDebug) printf("Sending PIC Reset Via Socket Command");
-			  setResetToPIC();
-			  continue;
-		  }
-		  
-          /* Send command to UART */
-          serialPuts(fd, caRxSocket);
-          
-          delay(UART_TX_TO_RX_DELAY);
+          		  
+			/* Send command to UART */
+			serialPuts(fd, caRxSocket);
+			  
+			delay(UART_TX_TO_RX_DELAY);			  
 
           /*********************************************************************** 
           *         Get Result from UART and Concatenate -> caRxUart
@@ -373,17 +365,21 @@ void strip_CR_NL(char *buf, size_t size) {
 	}
 }
 
-/*
-**	Send Reset to PIC Via GPIO
-*/
-void setResetToPIC() {
-	
-	wiringPiSetup () ;
-      			
+void setResetToPICNoWiringPIStartup() {
+	     			
 	/* Set Pin to Ouput mode */			
+	pinMode(4,OUTPUT);
+	
+	/* Set Pin Low */
 	digitalWrite(4,LOW);
-	delay(UART_TX_TO_RX_DELAY);
-	digitalWrite(4,HIGH);	
+	
+	delay(UART_TX_TO_RX_DELAY+1000);	
+	
+	/* Set Pin High */
+	digitalWrite(4,HIGH);
+	
+	pinMode(4,INPUT); 
+
 }
 
 void usage(void) {
