@@ -97,11 +97,13 @@ Java HotSpot(TM) Client VM (build 25.65-b01, mixed mode)
 	sudo chmod 777 /etc/rc.local
 
 
-## Install WEG.sh for Desktop
+## Install WEG.sh and UpdateGUI.sh for Desktop
 	
 	sudo cp /home/pi/weg/startup/WEG.sh /home/pi/Desktop
 	sudo chmod 777 /home/pi/Desktop/WEG.sh
-		
+	
+	sudo cp /home/pi/weg/startup/UpdateGUI.sh /home/pi/Desktop
+	sudo chmod 777 /home/pi/Desktop/UpdateGUI.sh
 			
 ## Update WEG from GitHub
 
