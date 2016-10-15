@@ -258,8 +258,7 @@ public class WegMainUI extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.CROSSHAIR_CURSOR));
         setUndecorated(true);
-        setPreferredSize(new java.awt.Dimension(800, 400));
-        setResizable(false);
+        setPreferredSize(new java.awt.Dimension(800, 450));
 
         jPanelStatus.setBorder(javax.swing.BorderFactory.createTitledBorder("Settings"));
         jPanelStatus.setPreferredSize(new java.awt.Dimension(400, 200));
@@ -657,7 +656,9 @@ public class WegMainUI extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jpCamera, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanelGPS, javax.swing.GroupLayout.PREFERRED_SIZE, 176, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanelGPS, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 46, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
