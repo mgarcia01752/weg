@@ -26,9 +26,9 @@ public class Gps {
     
     private final Integer   GPS_FORMAT =        0;
     private final Integer   UTC =               1;
-    private final Integer   LATITUDE =          2;
+    private final Integer   LONGITUDE =         2;
     private final Integer   NS_INDICATOR =      3;
-    private final Integer   LONGITUDE =         4;
+    private final Integer   LATITUDE =          4; 
     private final Integer   EW_INDICATOR =      5;
     private final Integer   POSITION_FIX =      6;
     private final Integer   SATELLITE_NUM =     7;
@@ -275,12 +275,13 @@ public class Gps {
         }
         
         if (dLongNewSec > dLongLastSec) {
-            sNewLatDir = "W";
+            sNewLongDir = "W";
         } else if (dLongNewSec < dLongLastSec) {
-            sNewLatDir = "E";
+            sNewLongDir = "E";
         } else {
-            sNewLatDir = "-";
+            sNewLongDir = "-";
         }
+               
         sCompassDirection = (sNewLatDir+sNewLongDir);
         
         this.sLastLatGpsDMS = sGetLat;
