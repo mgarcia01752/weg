@@ -270,7 +270,7 @@ public class WegMainUI extends javax.swing.JFrame {
 
         jTB_ConnectToDAS.setBackground(new java.awt.Color(255, 0, 0));
         jTB_ConnectToDAS.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        jTB_ConnectToDAS.setText("CONNECT");
+        jTB_ConnectToDAS.setText("Start");
         jTB_ConnectToDAS.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTB_ConnectToDASActionPerformed(evt);
