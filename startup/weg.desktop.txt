@@ -1,0 +1,7 @@
+[Desktop Entry]
+Type=Application
+Name=weg
+Comment=WEG
+NoDisplay=false
+Exec=sudo java -jar /home/pi/weg/WegStartupUI/dist/WegStartupUI.jar > out.txt
+NotShowIn=GNOME;KDE;XFCE;
