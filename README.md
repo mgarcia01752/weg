@@ -68,100 +68,41 @@ Java(TM) SE Runtime Environment (build 1.8.0_65-b17)
 
 Java HotSpot(TM) Client VM (build 25.65-b01, mixed mode)
 
+
 ## Set RPI for Expanded File System
 
-Raspberry PI Configuration -> Expanded File System
-
-##  Download and Install Tangram-es
-
-	cd /home/pi/weg
-	
-	sudo apt-get install cmake
-	
-	sudo apt-get update
-	
-	sudo apt-get install cmake g++-4.7 libcurl4-openssl-dev
-	
-	git clone https://github.com/tangrams/tangram-es.git
-	
-	export CXX=/usr/bin/g++-4.9
-	
-	cd tangram-es
-	
-	git submodule init && git submodule update
-	
-	git submodule update --init --recursive
-	
-**At this point, the build will take ~30 minutes. You can Skip to the next step and come back later**
-	
-	make rpi
+* Raspberry PI Configuration -> Expanded File System
 
 
 ##  Download and Install WiringPi
 
 	cd /home/pi/weg
-	
 	git clone git://git.drogon.net/wiringPi
-	
 	cd wiringPi
-	
 	git pull origin
 	
 	./build
+	
 
 ##  Install UART Serial IPC
 
 	cd /home/pi/weg/uart-serial-ipc
-	
 	make DamCommSocket
+	
 	
 ## Install rc.local
 
 	sudo mv /etc/rc.local /etc/rc.local~
 	sudo cp /home/pi/weg/startup/rc.local.txt /etc/rc.local
 	sudo chmod 777 /etc/rc.local
+
+
+## Install WEG.sh for Desktop
 	
-## Test Communication Between PI and DAS
-
-	sudo ./DamCommSocket -h
-
-**Response**
-
-	Data Acquisition Module IPC Ver: 1.0-pre
-	Options are:
-	        -b: Set BaudRate <9600|115200>
-	        -i: Serial Input <command>
-	        -l: Loop Input option <Number of Loops for option i>
-	        -r: Send Reset to PIC via GPIO 23
-	        -v: Version
-	        -d: Enable Debug
-	        -G: GPS Data
-	        -U: UltraViolet Data
-	        -T: Temperature Data
-	        -B: Barometer Data
-	        -S: Solar Power Voltage Data
-	        -h: Usage an Exit
-
-**Example: Check GPS**
-
-	sudo ./DamCommSocket -G
-
-**Response**
-	
-	Get GPS Data
-	Input -> 101 Output -> 150:$GPRMC,191927.000,A,4009.3964,N,07452.0041,W,0.17,298.73,300716,,,A*7F
-
-**Example from PI terminal (optional)**
-	
-	sudo apt-get install telnet
-	
-	telnet 127.0.0.1 5000
-	101
-
-**Response**
-
-	150:$GPRMC,190826.000,A,4009.4024,N,07452.0107,W,0.06,357.50,300716,,,A*74
-	
+	sudo cp /home/pi/weg/startup/WEG.sh /home/pi/Desktop
+	sudo chmod 777 /home/pi/Desktop/WEG.sh
+		
+			
 ## Update WEG from GitHub
 
 **Update from Master**
@@ -172,27 +113,16 @@ Raspberry PI Configuration -> Expanded File System
 	
 	git merge origin
 
-**Update from Branch, Example v0.2**
-
-	cd /home/pi/weg
-	
-	git pull
-	
-	git merge origin/v0.2
 	
 ## Starting WEG Manually
 
 **Start DAS IPC**	
-	
-	cd /home/pi/weg/uart-serial-ipc/
-	
-	sudo ./DamCommSocket -d
+
+	sudo /home/pi/weg/uart-serial-ipc/DamCommSocket -d
 	
 **Start WEG GUI**	
-
-	cd /home/pi/weg/WegStartupUI/dist
 	
-	java -jar WegStartupUI.jar
+	sudo java -jar /home/pi/weg/WegStartupUI/dist/WegStartupUI.jar
 
 
 ## PIC Reset Via GPIO via wiringPi
@@ -205,16 +135,5 @@ Wait 3 seconds
 	
 	sudo gpio write 4 1
 
-## Kiosk Screen Instructions
-
-This is needed so not to use the RPI Desktop enviroment.  These steps puts it in Kiosk Mode.
-
-[Online Instructions](https://www.danpurdy.co.uk/web-development/raspberry-pi-kiosk-screen-tutorial/)
-
-These commands will update the package list and upgrade any packages on your device.
-Next we install the chromium browser, x11 server utilities and unclutter(removes the cursor from the screen).
-To do this type in:
-
-	sudo apt-get install chromium x11-xserver-utils unclutter
 
 
