@@ -88,7 +88,7 @@ public class WegStartupUI {
                       /* UVindex,Tdata,Pdata,nmea */
                       List<String> lsFullCommand = Arrays.asList(sCommandResponse.split("\\|"));
                       
-                      if (lsFullCommand.size()<4) {
+                      if (lsFullCommand.size()<5) {
                           System.out.println("+-----------------------------ERROR---------------------------------------------+");
                           System.out.println("lsFullCommand size is less than 4 - Actual: " + lsFullCommand.size());
                           System.out.println("CMD-ERROR: " + lsFullCommand.toString());
