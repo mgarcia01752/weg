@@ -271,7 +271,7 @@ public class Gps {
         } else if (dLatNewSec < dLatLastSec) {
             sNewLatDir = "S";
         } else {
-            sNewLatDir = "-";
+            sNewLatDir = "";
         }
         
         if (dLongNewSec > dLongLastSec) {
@@ -279,7 +279,7 @@ public class Gps {
         } else if (dLongNewSec < dLongLastSec) {
             sNewLongDir = "E";
         } else {
-            sNewLongDir = "-";
+            sNewLongDir = "";
         }
                
         sCompassDirection = (sNewLatDir+sNewLongDir);
