@@ -105,6 +105,8 @@ Java HotSpot(TM) Client VM (build 25.65-b01, mixed mode)
 	sudo cp /home/pi/weg/startup/UpdateGUI.sh /home/pi/Desktop
 	sudo chmod 777 /home/pi/Desktop/UpdateGUI.sh
 
+## WEG Auto Startup on Desktop
+
 	sudo cp /home/pi/weg/startup/weg.desktop.txt /etc/xdg/autostart/weg.desktop
 
 ## Update WEG from GitHub
