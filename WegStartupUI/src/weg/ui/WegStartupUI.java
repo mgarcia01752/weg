@@ -72,20 +72,35 @@ public class WegStartupUI {
               
                   while (true) {
                       
+                      System.out.println("+-----------------------------DAS QUERY---------------------------------------------+");
+                      
                       wmu.updateSystemTime();
 
                       String sCommandResponse = dc.get(DasCommands.FULL_SENSOR_DUMP);
-
-                      System.out.println("CMD-RSP: " + sCommandResponse);
                       
-                      if (sCommandResponse == null) continue;
+                      if (sCommandResponse == null) {
+                          System.out.println("sCommandResponse NULL RESPONSE FOUND");
+                          continue;
+                      }
+                      
+                      System.out.println("CMD-RSP: " + sCommandResponse);
                       
                       /* UVindex,Tdata,Pdata,nmea */
                       List<String> lsFullCommand = Arrays.asList(sCommandResponse.split("\\|"));
                       
-                      if (lsFullCommand.size()<4) continue;
-                                             
-                      if (gps.parse(lsFullCommand.get(4))) {              
+                      if (lsFullCommand.size()<4) {
+                          System.out.println("+-----------------------------ERROR---------------------------------------------+");
+                          System.out.println("lsFullCommand size is less than 4 - Actual: " + lsFullCommand.size());
+                          System.out.println("CMD-ERROR: " + lsFullCommand.toString());
+                          continue;
+                      } else if(!lsFullCommand.get(0).contentEquals("600:")) {
+                          System.out.println("+-----------------------------NO 600 CODE HEADER---------------------------------------------+");
+                          System.out.println("CMD-ERROR: " + lsFullCommand.toString());
+                          continue;
+                      }
+                  
+                      if (gps.parse(lsFullCommand.get(4))) {
+                          System.out.println("+-----------------------------GPS---------------------------------------------+");
                           System.out.println("GPS Raw -> " + sCommandResponse);
                           System.out.println("GPS ToStrig -> " + gps.getCurrentGpsData());
                           System.out.println("GPS Lat -> " + gps.getLatitude());
