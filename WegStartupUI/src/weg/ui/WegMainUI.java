@@ -27,6 +27,8 @@ public class WegMainUI extends javax.swing.JFrame {
     private boolean CELS = Boolean.FALSE;
     private boolean boolTempScale = FARN;
     private String sTempInScope;
+    private int iInitalBarometerSetting = -1;
+    private int iUpdateBarometerSetting = -1;
     
     /**
      * Creates new form WegMainUI
@@ -93,7 +95,31 @@ public class WegMainUI extends javax.swing.JFrame {
      * @param sBarometer 
      */
     public void updateBarometer(String sBarometer) {
+        
+        if (this.iInitalBarometerSetting == -1) {
+          this.iInitalBarometerSetting =  Integer.parseInt(sBarometer); 
+        }      
         this.jLabelBarometer.setText(sBarometer+" mB");
+        
+        updateBarometerTrend(sBarometer);
+    }
+    
+    /**
+     * 
+     * @param sBarometer 
+     */
+    public void updateBarometerTrend(String sBarometer) {
+       
+        int iBaroSet = Integer.parseInt(sBarometer);
+        
+        if (iInitalBarometerSetting > iBaroSet) {
+            jLabelBaroChangeStatus.setText("FALLING");
+        } else if (iInitalBarometerSetting < iBaroSet) {
+            jLabelBaroChangeStatus.setText("RISING");
+        } else {
+            jLabelBaroChangeStatus.setText("STEADY");
+        }
+        
     }
     
     /**
