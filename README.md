@@ -104,42 +104,13 @@ Java HotSpot(TM) Client VM (build 25.65-b01, mixed mode)
 	
 	sudo cp /home/pi/weg/startup/UpdateGUI.sh /home/pi/Desktop
 	sudo chmod 777 /home/pi/Desktop/UpdateGUI.sh
-
+	
+	
 ## WEG Auto Startup on Desktop
 
 	sudo cp /home/pi/weg/startup/weg.desktop.txt /etc/xdg/autostart/weg.desktop
 
-## Update WEG from GitHub
 
-**Update from Master**
-
-	cd /home/pi/weg
-	
-	git pull
-	
-	git merge origin
-
-	
-## Starting WEG Manually
-
-**Start DAS IPC**	
-
-	sudo /home/pi/weg/uart-serial-ipc/DamCommSocket -d
-	
-**Start WEG GUI**	
-	
-	sudo java -jar /home/pi/weg/WegStartupUI/dist/WegStartupUI.jar
-
-
-## PIC Reset Via GPIO via wiringPi
-
-	sudo gpio mode 4 out
-	
-	sudo gpio write 4 0
-	
-Wait 3 seconds
-	
-	sudo gpio write 4 1
 
 
 
