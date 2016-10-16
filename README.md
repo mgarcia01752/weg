@@ -48,6 +48,10 @@ Start Putty and login into RPI using SSH
 
 Raspberry PI Configuration -> Interface -> Disable Serial
 
+## Enable Camera
+
+Raspberry PI Configuration -> Interface -> Enable Camera
+
 ## Java Oracle Hotspot
 
 	sudo apt-get --purge remove openjdk-7-jre 
