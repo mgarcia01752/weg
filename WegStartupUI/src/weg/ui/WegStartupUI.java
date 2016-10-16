@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import weg.das.Barometer;
+import weg.das.Camera;
 import weg.das.DasCommands;
 import weg.das.DasConnection;
 import weg.das.Gps;
@@ -147,6 +148,8 @@ public class WegStartupUI {
         Thread threadDAS = new Thread(new DataAqusitionSystem(wmu));
         threadDAS.start();
         
+        Camera cam = new Camera();
+        cam.start();
     }
     
 }
