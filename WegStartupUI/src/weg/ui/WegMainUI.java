@@ -26,8 +26,8 @@ public class WegMainUI extends javax.swing.JFrame {
 
     private Gps gps = null;
     private DateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy HH:mm:ss");
-    private Camera camera = new Camera();
-    private int iCameraView = Camera.PREVIEW_SCREEN;
+    private Camera camera = new Camera(Camera.FULL_SCREEN);
+    private int iCameraView = Camera.FULL_SCREEN;
     
     private boolean FARN = Boolean.TRUE;
     private boolean CELS = Boolean.FALSE;
