@@ -41,7 +41,7 @@ public class Camera implements Runnable {
             }       
         } else if (iCameraView == PREVIEW_SCREEN) {
             try {
-                this.procCamera = Runtime.getRuntime().exec("sudo raspivid -t 0 -p 220,280,700,175");
+                this.procCamera = Runtime.getRuntime().exec("sudo raspivid -t 0 -p 225,280,700,175");
             } catch (IOException ex) {
                 Logger.getLogger(WegMainUI.class.getName()).log(Level.SEVERE, null, ex);
             }        
