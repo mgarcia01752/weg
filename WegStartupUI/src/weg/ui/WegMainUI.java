@@ -611,11 +611,6 @@ public class WegMainUI extends javax.swing.JFrame {
         );
 
         jpCamera.setBorder(javax.swing.BorderFactory.createTitledBorder("Camera Preview"));
-        jpCamera.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jpCameraMouseClicked(evt);
-            }
-        });
 
         javax.swing.GroupLayout jpCameraLayout = new javax.swing.GroupLayout(jpCamera);
         jpCamera.setLayout(jpCameraLayout);
@@ -749,22 +744,6 @@ public class WegMainUI extends javax.swing.JFrame {
             Logger.getLogger(WegMainUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jpCameraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpCameraMouseClicked
-        
-        if (iCameraView == Camera.PREVIEW_SCREEN) {
-            iCameraView = Camera.FULL_SCREEN;
-            this.camera.killProcess();
-            this.camera = new Camera(Camera.FULL_SCREEN);
-            this.camera.start();
-        } else {
-            iCameraView = Camera.PREVIEW_SCREEN;
-            this.camera.killProcess();
-            this.camera = new Camera(Camera.PREVIEW_SCREEN);
-            this.camera.start();
-        }
-        
-    }//GEN-LAST:event_jpCameraMouseClicked
 
     /**
      * @param args the command line arguments
