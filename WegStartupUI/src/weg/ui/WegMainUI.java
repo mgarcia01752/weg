@@ -611,6 +611,11 @@ public class WegMainUI extends javax.swing.JFrame {
         );
 
         jpCamera.setBorder(javax.swing.BorderFactory.createTitledBorder("Camera Preview"));
+        jpCamera.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jpCameraMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpCameraLayout = new javax.swing.GroupLayout(jpCamera);
         jpCamera.setLayout(jpCameraLayout);
@@ -664,13 +669,13 @@ public class WegMainUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE)
                             .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jPanel4TempBaro, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)
-                            .addComponent(jPanelBarometer, javax.swing.GroupLayout.PREFERRED_SIZE, 106, Short.MAX_VALUE)))
-                    .addComponent(jPanelStatus, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                            .addComponent(jPanelBarometer, javax.swing.GroupLayout.DEFAULT_SIZE, 106, Short.MAX_VALUE)))
+                    .addComponent(jPanelStatus, javax.swing.GroupLayout.DEFAULT_SIZE, 0, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jpCamera, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -744,6 +749,20 @@ public class WegMainUI extends javax.swing.JFrame {
             Logger.getLogger(WegMainUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jpCameraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpCameraMouseClicked
+        if (iCameraView == Camera.PREVIEW_SCREEN) {
+            iCameraView = Camera.FULL_SCREEN;
+            this.camera.killProcess();
+            this.camera = new Camera(Camera.FULL_SCREEN);
+            this.camera.start();
+        } else {
+            iCameraView = Camera.PREVIEW_SCREEN;
+            this.camera.killProcess();
+            this.camera = new Camera(Camera.PREVIEW_SCREEN);
+            this.camera.start();
+        }
+    }//GEN-LAST:event_jpCameraMouseClicked
 
     /**
      * @param args the command line arguments
