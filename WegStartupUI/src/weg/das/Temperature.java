@@ -68,7 +68,7 @@ public class Temperature {
             HIGH_TEMP = dTemp;
         }
         
-        if (dTemp < LOW_TEMP) {HIGH_TEMP = dTemp;}
+        if (dTemp < LOW_TEMP) {LOW_TEMP = dTemp;}
         if (dTemp > HIGH_TEMP) {HIGH_TEMP = dTemp;}
         
     }
