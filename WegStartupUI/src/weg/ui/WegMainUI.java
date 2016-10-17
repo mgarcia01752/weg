@@ -756,10 +756,12 @@ public class WegMainUI extends javax.swing.JFrame {
             iCameraView = Camera.FULL_SCREEN;
             this.camera.killProcess();
             this.camera = new Camera(Camera.FULL_SCREEN);
+            this.camera.start();
         } else {
             iCameraView = Camera.PREVIEW_SCREEN;
             this.camera.killProcess();
-            this.camera = new Camera(Camera.PREVIEW_SCREEN);       
+            this.camera = new Camera(Camera.PREVIEW_SCREEN);
+            this.camera.start();
         }
         
     }//GEN-LAST:event_jpCameraMouseClicked
