@@ -15,9 +15,13 @@ public class Temperature {
     
     private static String sLastTempValue = "---.- -";
     
+    public static double  LOW_TEMP = -999.0;
+    public static double  HIGH_TEMP = -999.0;
+    
     public static String getTemp(String sTemp) {
         
         String sDefaultRtn = "---.- -";
+        String sLastTempValue = "";
          
         if (sTemp == null) {
             return sDefaultRtn;
@@ -25,8 +29,10 @@ public class Temperature {
         
         if (sTemp.matches("\\d+\\.\\d")) { 
             sLastTempValue = sTemp;
+            updateTemp(sTemp);
             return sLastTempValue;  
         } else  {
+            updateTemp(sTemp);
             return sLastTempValue;
         }
           
@@ -51,7 +57,20 @@ public class Temperature {
         DecimalFormat df = new DecimalFormat(pattern);
         
         return df.format(fTemp);
+          
+    }
+    
+    private static void updateTemp(String sTemp) {
+        double dTemp = Double.parseDouble(sTemp);
         
+        if (LOW_TEMP == -999.0) {
+            LOW_TEMP = dTemp;
+            HIGH_TEMP = dTemp;
+        }
+        
+        if (dTemp < LOW_TEMP) {HIGH_TEMP = dTemp;}
+        if (dTemp > HIGH_TEMP) {HIGH_TEMP = dTemp;}
         
     }
+    
 }

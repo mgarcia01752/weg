@@ -103,8 +103,12 @@ public class WegMainUI extends javax.swing.JFrame {
         
         if (boolTempScale) {
             this.jLabelTemerature.setText(sTemp + "\u00b0" + "F");
+            this.jLLowTemp.setText(Temperature.LOW_TEMP  + "\u00b0" + "F");
+            this.jLHighTemp.setText(Temperature.HIGH_TEMP  + "\u00b0" + "F");
         } else {
             this.jLabelTemerature.setText(Temperature.FahrenheitToCelsius(sTemp) + "\u00b0" + "C");
+            this.jLLowTemp.setText(Temperature.FahrenheitToCelsius(Double.toString(Temperature.LOW_TEMP))  + "\u00b0" + "C");
+            this.jLHighTemp.setText(Temperature.FahrenheitToCelsius(Double.toString(Temperature.HIGH_TEMP))  + "\u00b0" + "C");
         }
     }
     
@@ -252,6 +256,8 @@ public class WegMainUI extends javax.swing.JFrame {
         jLPace = new javax.swing.JLabel();
         jPanel4TempBaro = new javax.swing.JPanel();
         jLabelTemerature = new javax.swing.JLabel();
+        jLLowTemp = new javax.swing.JLabel();
+        jLHighTemp = new javax.swing.JLabel();
         jPanelBarometer = new javax.swing.JPanel();
         jLabelBarometer = new javax.swing.JLabel();
         jLabelBaroChangeStatus = new javax.swing.JLabel();
@@ -513,18 +519,32 @@ public class WegMainUI extends javax.swing.JFrame {
         jLabelTemerature.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabelTemerature.setText("000.0°F");
 
+        jLLowTemp.setText("0.0");
+        jLLowTemp.setToolTipText("");
+
+        jLHighTemp.setText("0.0");
+
         javax.swing.GroupLayout jPanel4TempBaroLayout = new javax.swing.GroupLayout(jPanel4TempBaro);
         jPanel4TempBaro.setLayout(jPanel4TempBaroLayout);
         jPanel4TempBaroLayout.setHorizontalGroup(
             jPanel4TempBaroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabelTemerature, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+            .addGroup(jPanel4TempBaroLayout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLLowTemp)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLHighTemp)
+                .addGap(29, 29, 29))
         );
         jPanel4TempBaroLayout.setVerticalGroup(
             jPanel4TempBaroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4TempBaroLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabelTemerature, javax.swing.GroupLayout.DEFAULT_SIZE, 57, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jLabelTemerature, javax.swing.GroupLayout.DEFAULT_SIZE, 48, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel4TempBaroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLLowTemp)
+                    .addComponent(jLHighTemp)))
         );
 
         jPanelBarometer.setBorder(javax.swing.BorderFactory.createTitledBorder("Barometer"));
@@ -824,6 +844,8 @@ public class WegMainUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLCompassDirection;
+    private javax.swing.JLabel jLHighTemp;
+    private javax.swing.JLabel jLLowTemp;
     private javax.swing.JLabel jLPace;
     private javax.swing.JLabel jLPaceNotation;
     private javax.swing.JLabel jLSystemTime;
