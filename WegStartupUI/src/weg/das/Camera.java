@@ -53,7 +53,7 @@ public class Camera implements Runnable {
      * 
      */
     public void killProcess() {
-        this.procCamera.destroyForcibly();
+        this.procCamera.destroy();
     }
     
 }
