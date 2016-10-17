@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import weg.das.Camera;
 import weg.das.Gps;
 import weg.das.Temperature;
 
@@ -25,6 +26,8 @@ public class WegMainUI extends javax.swing.JFrame {
 
     private Gps gps = null;
     private DateFormat dateFormat = new SimpleDateFormat("MM.dd.yyyy HH:mm:ss");
+    private Camera camera = new Camera();
+    private int iCameraView = Camera.PREVIEW_SCREEN;
     
     private boolean FARN = Boolean.TRUE;
     private boolean CELS = Boolean.FALSE;
@@ -37,7 +40,10 @@ public class WegMainUI extends javax.swing.JFrame {
      * Creates new form WegMainUI
      */
     public WegMainUI() {
-        initComponents();          
+        initComponents();
+        
+        /* Start Camera Preview */
+        this.camera.start();
     }
 
     public void updateUV(String sUvData) {
@@ -605,6 +611,11 @@ public class WegMainUI extends javax.swing.JFrame {
         );
 
         jpCamera.setBorder(javax.swing.BorderFactory.createTitledBorder("Camera Preview"));
+        jpCamera.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jpCameraMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout jpCameraLayout = new javax.swing.GroupLayout(jpCamera);
         jpCamera.setLayout(jpCameraLayout);
@@ -671,7 +682,7 @@ public class WegMainUI extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanelGPS, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)))
+                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 53, Short.MAX_VALUE)))
                 .addContainerGap())
         );
 
@@ -738,6 +749,20 @@ public class WegMainUI extends javax.swing.JFrame {
             Logger.getLogger(WegMainUI.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jpCameraMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jpCameraMouseClicked
+        
+        if (iCameraView == Camera.PREVIEW_SCREEN) {
+            iCameraView = Camera.FULL_SCREEN;
+            this.camera.killProcess();
+            this.camera = new Camera(Camera.FULL_SCREEN);
+        } else {
+            iCameraView = Camera.PREVIEW_SCREEN;
+            this.camera.killProcess();
+            this.camera = new Camera(Camera.PREVIEW_SCREEN);       
+        }
+        
+    }//GEN-LAST:event_jpCameraMouseClicked
 
     /**
      * @param args the command line arguments

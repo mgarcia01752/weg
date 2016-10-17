@@ -148,8 +148,8 @@ public class WegStartupUI {
         Thread threadDAS = new Thread(new DataAqusitionSystem(wmu));
         threadDAS.start();
         
-        Camera cam = new Camera();
-        cam.start();
+        //Camera cam = new Camera();
+        //cam.start();
     }
     
 }
