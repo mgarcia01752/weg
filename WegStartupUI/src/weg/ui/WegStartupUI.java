@@ -127,6 +127,8 @@ public class WegStartupUI {
                     
                       /* When Connect is not selcted exit Loop and wait till it is selected again */
                       if (!this.wmu.isDasConnectSelected())break;
+                      
+                      this.wmu.updatePace();
 
                   }
               } catch (UnknownHostException ex) {
@@ -147,9 +149,7 @@ public class WegStartupUI {
      
         Thread threadDAS = new Thread(new DataAqusitionSystem(wmu));
         threadDAS.start();
-        
-        //Camera cam = new Camera();
-        //cam.start();
+
     }
     
 }

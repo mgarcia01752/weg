@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.logging.Level;
@@ -70,6 +71,14 @@ public class WegMainUI extends javax.swing.JFrame {
         }        
     }
     
+    public void updatePace() {
+        
+        String pattern = "##.#";
+        DecimalFormat df = new DecimalFormat(pattern);
+        
+       jLPace.setText(df.format(gps.updatePace(  gps.getLatitudeDecimal(),
+                                                 gps.getLongitudeDecimal())));
+    }
     
     public void updateGPS(Gps gps) {
         
@@ -239,6 +248,8 @@ public class WegMainUI extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLCompassDirection = new javax.swing.JLabel();
+        jLPaceNotation = new javax.swing.JLabel();
+        jLPace = new javax.swing.JLabel();
         jPanel4TempBaro = new javax.swing.JPanel();
         jLabelTemerature = new javax.swing.JLabel();
         jPanelBarometer = new javax.swing.JPanel();
@@ -405,7 +416,6 @@ public class WegMainUI extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/weg/ui/small_sat.jpg"))); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setText("Satellites Locked");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -414,6 +424,14 @@ public class WegMainUI extends javax.swing.JFrame {
         jLCompassDirection.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLCompassDirection.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLCompassDirection.setText("--");
+
+        jLPaceNotation.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLPaceNotation.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLPaceNotation.setText("Pace (MPH)");
+
+        jLPace.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLPace.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLPace.setText("0.0");
 
         javax.swing.GroupLayout jPanelGPSLayout = new javax.swing.GroupLayout(jPanelGPS);
         jPanelGPS.setLayout(jPanelGPSLayout);
@@ -441,15 +459,16 @@ public class WegMainUI extends javax.swing.JFrame {
                         .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabelGpsFixIndicator)
                             .addComponent(jLabel4))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jPanelGPSLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(82, 82, 82))
-                    .addGroup(jPanelGPSLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jLCompassDirection, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(jLPace, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLPaceNotation, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLCompassDirection, javax.swing.GroupLayout.PREFERRED_SIZE, 66, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelGPSLayout.setVerticalGroup(
             jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -465,13 +484,16 @@ public class WegMainUI extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabelGPSFix)
-                    .addComponent(jLabelGpsFixIndicator, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jLabelGpsFixIndicator, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jLPaceNotation)))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(jPanelGPSLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(jLabelNumSatData, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel4)))
+                        .addComponent(jLabel4)
+                        .addComponent(jLPace)))
                 .addGap(58, 58, 58))
             .addGroup(jPanelGPSLayout.createSequentialGroup()
                 .addComponent(jLabel5)
@@ -802,6 +824,8 @@ public class WegMainUI extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLCompassDirection;
+    private javax.swing.JLabel jLPace;
+    private javax.swing.JLabel jLPaceNotation;
     private javax.swing.JLabel jLSystemTime;
     private javax.swing.JLabel jLUvIdxStatus;
     private javax.swing.JLabel jLUvIndex;

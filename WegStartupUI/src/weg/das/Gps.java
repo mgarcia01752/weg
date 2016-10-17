@@ -47,6 +47,12 @@ public class Gps {
     private String sLastLatGpsDMS = "W 40° 9' 24.4";
     private String sLastLongGpsDMS = "N 74° 52' 0.7";
     
+    private long lLastPaceTime = System.currentTimeMillis();
+    private final int PACE_INTERVAL_CHECK = 10;
+    
+    private double dPaceLastLong = 0;
+    private double dPaceLastLat = 0;
+    
     /**
      * Format: 
      * @param sGPSDataFormat 
@@ -107,6 +113,36 @@ public class Gps {
                                 decimalToDMS(Double.parseDouble(sDMSDec));
         
         return sLastLogGpsDMS;
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public double getLongitudeDecimal() {
+        
+        double dDMSDec = 0.0;
+        
+        if (!lsGpsDataGGAFormat.get(LONGITUDE).isEmpty()) {
+            dDMSDec = Double.parseDouble(lsGpsDataGGAFormat.get(LONGITUDE));
+        } 
+        
+        return dDMSDec;
+    }
+    
+    /**
+     * 
+     * @return 
+     */
+    public double getLatitudeDecimal() {
+        
+        double dDMSDec = 0.0;
+        
+        if (!lsGpsDataGGAFormat.get(LONGITUDE).isEmpty()) {
+            dDMSDec = Double.parseDouble(lsGpsDataGGAFormat.get(LONGITUDE));
+        } 
+        
+        return dDMSDec;
     }
     
     /**
@@ -198,7 +234,7 @@ public class Gps {
         
        return boolParseStatus; 
     }
-    
+        
     /**
      * https://community.oracle.com/thread/3619431
      * 
@@ -310,6 +346,88 @@ public class Gps {
         }
         
         return dGpsDmsSecond;
+    }
+    
+    /**
+     * 
+     * @param dUpdateLat
+     * @param dUpdateLong
+     * @return 
+     */
+    public Double updatePace(double dUpdateLat, double dUpdateLong) {
+        
+        Double dPace = 0.0;
+        
+        /* update inital value */
+        if (this.dPaceLastLat == 0) {
+            this.dPaceLastLat = dUpdateLat;
+            this.dPaceLastLong = dUpdateLong;
+            return dPace;
+        }
+        
+        long lDeltaSeconds = (System.currentTimeMillis() - this.lLastPaceTime)/1000;
+        
+        System.out.println("DELTA: " + lDeltaSeconds);
+      
+        if (lDeltaSeconds >= this.PACE_INTERVAL_CHECK) {
+            
+            double dDistance = distance(this.dPaceLastLat, this.dPaceLastLong, dUpdateLat, dUpdateLong, "M");
+            
+            System.out.println("DISTACE: : " + dDistance);
+            
+            dPace = (dDistance/lDeltaSeconds) * 3600.0;
+            
+            this.lLastPaceTime = System.currentTimeMillis();
+            this.dPaceLastLat = dUpdateLat;
+            this.dPaceLastLong = dUpdateLong;
+        }
+        
+        /* Pace */
+        return dPace;
+        
+    }
+    
+    /**
+     * 
+     * http://www.geodatasource.com/developers/java
+     * 
+     * @param lat1
+     * @param lon1
+     * @param lat2
+     * @param lon2
+     * @param unit M = Miles, K = Kilometer, N = Nautical Miles
+     * @return 
+     */
+    public static double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
+            double theta = lon1 - lon2;
+            double dist =   Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + 
+                            Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+            dist = Math.acos(dist);
+            dist = rad2deg(dist);
+            dist = dist * 60 * 1.1515;
+            if (unit == "K") {
+                    dist = dist * 1.609344;
+            } else if (unit == "N") {
+                    dist = dist * 0.8684;
+            }
+
+            return (dist);
+    }
+
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::	This function converts decimal degrees to radians
+    http://www.geodatasource.com/developers/java
+    :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    private static double deg2rad(double deg) {
+            return (deg * Math.PI / 180.0);
+    }
+
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::	This function converts radians to decimal degrees
+    http://www.geodatasource.com/developers/java
+    :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    private static double rad2deg(double rad) {
+            return (rad * 180 / Math.PI);
     }
     
     
