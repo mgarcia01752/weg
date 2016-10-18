@@ -26,9 +26,9 @@ public class Gps {
     
     private final Integer   GPS_FORMAT =        0;
     private final Integer   UTC =               1;
-    private final Integer   LONGITUDE =         2;
+    private final Integer   LATITUDE =          2;
     private final Integer   NS_INDICATOR =      3;
-    private final Integer   LATITUDE =          4; 
+    private final Integer   LONGITUDE =         4; 
     private final Integer   EW_INDICATOR =      5;
     private final Integer   POSITION_FIX =      6;
     private final Integer   SATELLITE_NUM =     7;
@@ -91,10 +91,28 @@ public class Gps {
             sDMSDec = lsGpsDataGGAFormat.get(LATITUDE);
         }
         
-        String sLastLtGpsDMS =   lsGpsDataGGAFormat.get(EW_INDICATOR) + " " +
+        String sLastLtGpsDMS =   lsGpsDataGGAFormat.get(NS_INDICATOR) + " " +
                                 decimalToDMS(Double.parseDouble(sDMSDec));
         
         return sLastLtGpsDMS;
+    }
+    
+        /**
+     * 
+     * @return 
+     */
+    public double getLatitudeDecimal() {
+        
+        double dDMSDec = 0.0;
+
+        
+        if (!lsGpsDataGGAFormat.get(LATITUDE).isEmpty()) {
+            dDMSDec = Double.parseDouble(lsGpsDataGGAFormat.get(LATITUDE));
+        }
+        
+        System.out.println("LatDec: " +(dDMSDec/100));
+        
+        return (dDMSDec/100);
     }
     
     /**
@@ -109,7 +127,7 @@ public class Gps {
             sDMSDec = lsGpsDataGGAFormat.get(LONGITUDE);
         }
         
-        String sLastLogGpsDMS =   lsGpsDataGGAFormat.get(NS_INDICATOR) + " " +
+        String sLastLogGpsDMS =   lsGpsDataGGAFormat.get(EW_INDICATOR) + " " +
                                 decimalToDMS(Double.parseDouble(sDMSDec));
         
         return sLastLogGpsDMS;
@@ -122,28 +140,22 @@ public class Gps {
     public double getLongitudeDecimal() {
         
         double dDMSDec = 0.0;
+        double dNegate = 1.0;
         
         if (!lsGpsDataGGAFormat.get(LONGITUDE).isEmpty()) {
             dDMSDec = Double.parseDouble(lsGpsDataGGAFormat.get(LONGITUDE));
         } 
         
-        return dDMSDec;
+        if (lsGpsDataGGAFormat.get(EW_INDICATOR).contains("W")){
+            dNegate = -1.0;
+        }
+        
+        System.out.println("LngDec: " + (dDMSDec/100)*dNegate);
+        
+        return (dDMSDec/100)*dNegate;
     }
     
-    /**
-     * 
-     * @return 
-     */
-    public double getLatitudeDecimal() {
-        
-        double dDMSDec = 0.0;
-        
-        if (!lsGpsDataGGAFormat.get(LONGITUDE).isEmpty()) {
-            dDMSDec = Double.parseDouble(lsGpsDataGGAFormat.get(LONGITUDE));
-        } 
-        
-        return dDMSDec;
-    }
+
     
     /**
      * 
