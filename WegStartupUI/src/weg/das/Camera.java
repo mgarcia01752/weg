@@ -35,13 +35,13 @@ public class Camera implements Runnable {
         
         if (iCameraView == FULL_SCREEN) {
             try {
-                this.procCamera = Runtime.getRuntime().exec("sudo raspivid -t 0 -f");
+                this.procCamera = Runtime.getRuntime().exec("sudo raspivid -t 0 -f -vf");
             } catch (IOException ex) {
                 Logger.getLogger(WegMainUI.class.getName()).log(Level.SEVERE, null, ex);
             }       
         } else if (iCameraView == PREVIEW_SCREEN) {
             try {
-                this.procCamera = Runtime.getRuntime().exec("sudo raspivid -t 0 -p 225,280,700,175");
+                this.procCamera = Runtime.getRuntime().exec("sudo raspivid -vf -t 0 -p 225,280,700,175");
             } catch (IOException ex) {
                 Logger.getLogger(WegMainUI.class.getName()).log(Level.SEVERE, null, ex);
             }        
