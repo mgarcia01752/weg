@@ -42,6 +42,7 @@ void main(void) {
     init_I2C();
     
     char buf[255];
+    char nmeaCopy[120];
     struct calib_data _bmp180_coeffs;
 
     readCoefficients(&_bmp180_coeffs);
@@ -57,14 +58,26 @@ void main(void) {
     
         if(GPS_newNMEAreceived()){
           
-            char *nmea = GPS_lastNMEA();
-            
-            sprintf(buf,"600:|%d|%.1f|%d|%s",UVindex,Tdata,Pdata,nmea);
-            
-            if(piFlag >= 1){
-               sendPiCommand(buf);
-               piFlag--;
+            /* Snapshot the ISR-owned buffer before formatting a response. */
+            IEC0bits.U1RXIE = 0;
+            const char *nmea = GPS_lastNMEA();
+            unsigned int index = 0;
+            while (index < sizeof(nmeaCopy) - 1 && nmea[index]) {
+                nmeaCopy[index] = nmea[index];
+                index++;
             }
+            nmeaCopy[index] = '\0';
+            IEC0bits.U1RXIE = 1;
+            
+            snprintf(buf, sizeof(buf), "600:|%u|%.1f|%u|%s",
+                     UVindex, Tdata, Pdata, nmeaCopy);
+            
+            /* Consume a pending request atomically before transmission. */
+            IEC1bits.U2RXIE = 0;
+            unsigned char requested = piFlag;
+            piFlag = 0;
+            IEC1bits.U2RXIE = 1;
+            if (requested) sendPiCommand(buf);
         }   
     }  
 }
@@ -86,8 +99,19 @@ void __attribute__((__interrupt__, auto_psv)) _U1RXInterrupt(void)
 //Interrupt handler for command from RPi
 void __attribute__((__interrupt__, auto_psv)) _U2RXInterrupt(void)
 {  
-    piFlag = 2;
-    char c = U2RXREG;  //Empty buffer to prevent overflow
+    static unsigned int command = 0;
+    static unsigned char digits = 0;
+    if (U2STAbits.OERR) U2STAbits.OERR = 0;
+    while (U2STAbits.URXDA) {
+        char c = U2RXREG;
+        if (c >= '0' && c <= '9') {
+            command = command * 10 + (unsigned int)(c - '0');
+            if (++digits == 3) {
+                if (command == 600) piFlag = 1;
+                digits = 0; command = 0;
+            }
+        } else { digits = 0; command = 0; }
+    }
     IFS1bits.U2RXIF = 0; //clear interrupt flag
 }
 

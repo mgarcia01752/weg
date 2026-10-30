@@ -1,403 +1,190 @@
-
-#include <stdio.h>
-#include <string.h>
-#include <unistd.h>
-#include <errno.h>
-
-#include <sys/socket.h>
-#include <netinet/in.h>
+#define _POSIX_C_SOURCE 200809L
 #include <arpa/inet.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <getopt.h>
+#include <limits.h>
+#include <poll.h>
+#include <signal.h>
+#include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
-#include <sys/types.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <sys/file.h>
+#include <termios.h>
 #include <time.h>
+#include <unistd.h>
 
-#include <wiringPi.h>
-#include <wiringSerial.h>
-
-
-/* DEFAULTS */
-#define DEFAULT_SOCKET_PORT                   5000
-#define MAX_TX_RX_BUFFER_LENGTH               50
-#define DEFAULT_BAUD                          9600
-#define DEFAULT_IPv4_LOOPBACK                 "127.0.0.1"
-#define VERSION                               "1.1"
-#define DEFAULT_UART_LOCATION                 "/dev/ttyS0"
-#define UART_TX_TO_RX_DELAY                   1000
-#define GPIO_TO_PIC_RESET					  4					/* Broadcom GPIO = 23 - WiringPI = 4 */
-
-/* Error Codes */
-#define ERROR_NONE                             0
-#define ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE    -1
-#define ERROR_TO_START_WIRED_PI               -2
-#define ERROR_CLI_ARG_MISSING_OPTION          -3
-
-/* DEBUG */
-#define DEBUG_ON                              TRUE  
-#define DEBUG_OFF                             FALSE
-
-/* Data Module Protocol */
-#define CHECK_CONNECTION					  "000:" 	
-#define GPS_COORDINATE                        "101"
-#define UV_SENSOR                             "201"
-#define TEMPERATURE_C                         "301"
-#define TEMPERATURE_F                         "302"
-#define BAROMETER                             "303"
-#define SOLAR_POWER_VOLTAGE                   "400"
-#define PIC_RESET							  "800:"
-                                     
-
-
-                    /* Function Declarations */
-
-/*
-**  Loads Array with Nulls
-*/
-void initBuffer(char *buf, size_t size);
-
-/*
-**  Prints STDOUT usage of Program
-*/
-void usage(void);
-
-/*
-**	String Carriage Returns and NewLine
-*/
-void strip_CR_NL(char *buf, size_t size);
-
-/*
-*
-*/
-void setResetToPICNoWiringPIStartup();
-
-
-/* DEBUG GLOBAL */
-int bDebug = DEBUG_OFF;
-
-int main(int argc, char * argv[]) {
-
-    /* CLI Options */
-    int bInputCLICheck = FALSE;
-    
-	int iLoopCliCount = 1;        //MUST BE = 1
-    char *cLoopCliCount = '\0';
-    
-	int iBaudRate = DEFAULT_BAUD;
-    char *cBaudRate;
-	
-	char *cSocketPort;
-	int iSocketPort = DEFAULT_SOCKET_PORT;
-    
-    int listenfd = 0, connfd = 0 , n = 0;
-    struct sockaddr_in serv_addr;
-
-    char sendBuff[MAX_TX_RX_BUFFER_LENGTH];
-    char caRxSocket[MAX_TX_RX_BUFFER_LENGTH];
-    char caRxUart[MAX_TX_RX_BUFFER_LENGTH];
-
-    int iOpt = 0;
-    
-    char * cInputCommand = '\0';
-
-    /*http://www.gnu.org/software/libc/manual/html_node/Using-Getopt.html#Using-Getopt*/
-    while ((iOpt = getopt(argc, argv, "p::i::l::b::T::GUBSrhvd::")) != -1) {
-
-        switch (iOpt) {
-
-          case 'p':
-            cSocketPort = optarg;
-            iSocketPort = atoi(cSocketPort);
-            break;		
-		
-          case 'i':
-            cInputCommand = optarg;
-            bInputCLICheck = TRUE;
-            break;
-            
-          case 'b':
-            cBaudRate = optarg;
-            iBaudRate = atoi(cBaudRate);
-            break;
-          
-          case 'l':
-            cLoopCliCount = optarg;
-            iLoopCliCount = atoi(cLoopCliCount); 
-            break;          
-            
-          case 'h':           
-            usage();
-            exit(ERROR_NONE);
-          
-          case 'd':           
-            bDebug = DEBUG_ON;
-            break;
-          
-          case 'v':
-            cInputCommand = optarg;
-            printf("\n\nVersion: %s\n\n", VERSION);
-            exit(ERROR_NONE);
-            
-          case 'G':
-            printf("Get GPS Data\n");
-            bInputCLICheck = TRUE;
-            cInputCommand = GPS_COORDINATE;
-			iLoopCliCount = 1;
-            break;
-
-          case 'U':
-            printf("Get Ultra Violet Data\n");
-            bInputCLICheck = TRUE;
-            cInputCommand = UV_SENSOR;
-            iLoopCliCount = 1;
-			break;
-            
-          case 'B':
-            printf("Get Barometer Data\n");
-            bInputCLICheck = TRUE;
-            cInputCommand = BAROMETER;
-            iLoopCliCount = 1;
-			break;
-          
-          case 'T':  
-			printf("Get Temperature Data\n");
-			cInputCommand = TEMPERATURE_F;
-            bInputCLICheck = TRUE;
-            iLoopCliCount = 1;
-			break;
-            
-          case 'S':
-            printf("Get Solar Data\n");
-            bInputCLICheck = TRUE;
-            cInputCommand = SOLAR_POWER_VOLTAGE;
-            iLoopCliCount = 1;
-			break;                        
-            
-          
-          case '?':
-  
-              if (optopt == 'i') {
-                  printf("\nMissing mandatory input option\n\n");
-  
-              } else {
-                  usage();
-              }
-  
-              exit(ERROR_CLI_ARG_MISSING_OPTION);
-            
-            default:
-              /*nothing to see*/
-              break;
-
-        }
+/* One serial owner; bounded, framed requests. No GPIO reset or elevated privileges. */
+#define FRAME_CAPACITY 513
+static volatile sig_atomic_t stopping;
+static void stop(int sig) { (void)sig; stopping = 1; }
+static long long now_ms(void) {
+    struct timespec t;
+    if (clock_gettime(CLOCK_MONOTONIC, &t) < 0) return 0;
+    return (long long)t.tv_sec * 1000 + t.tv_nsec / 1000000;
+}
+static int wait_fd(int fd, short events, long long deadline) {
+    while (!stopping) {
+        long long left = deadline - now_ms();
+        if (left <= 0) { errno = ETIMEDOUT; return -1; }
+        struct pollfd p = { .fd = fd, .events = events };
+        int result = poll(&p, 1, left > 100 ? 100 : (int)left);
+        if (result < 0) { if (errno == EINTR) continue; return -1; }
+        if (result == 0) continue;
+        if (p.revents & events) return 0;
+        if (p.revents & (POLLHUP | POLLERR | POLLNVAL)) { errno = EIO; return -1; }
     }
-	
-    /****************************************************************************
-     *  This section is setting up the socket for IPC interaction   
-     ****************************************************************************/
-    if (bInputCLICheck == FALSE) {
-      
-      printf("Starting Socket IPC -> use '-d' option for debuging\n");
-    
-      listenfd = socket(AF_INET, SOCK_STREAM, 0);
-      memset( & serv_addr, '0', sizeof(serv_addr));
-      memset(sendBuff, '0', sizeof(sendBuff));
-  
-      serv_addr.sin_family = AF_INET;
-      
-      /* Use all ALL IP Address found on PI*/
-      serv_addr.sin_addr.s_addr = htonl(INADDR_ANY);
-      
-      /* Socket Port 5000 = DEFAULT */
-      serv_addr.sin_port = htons(iSocketPort);
-  
-      bind(listenfd, (struct sockaddr * ) & serv_addr, sizeof(serv_addr));
-  
-      listen(listenfd, 10);
-      
-      if (bDebug) printf("Starting Socket IPC Listening on Port: %d\n", iSocketPort);
+    errno = EINTR;
+    return -1;
+}
+static int write_all(int fd, const char *data, size_t size, long long deadline) {
+    while (size > 0) {
+        if (wait_fd(fd, POLLOUT, deadline) < 0) return -1;
+        ssize_t n = write(fd, data, size);
+        if (n < 0) { if (errno == EINTR || errno == EAGAIN) continue; return -1; }
+        if (n == 0) { errno = EIO; return -1; }
+        data += n; size -= (size_t)n;
     }
-
-    /****************************************************************************
-     *            This section is setting up communicating to the UART 
-     ****************************************************************************/
-
-    int fd;
-
-    if (bDebug) printf("Starting WiredPI API\n");
-    
-    /*Verify that WireingPI is Working*/
-    if (wiringPiSetup() == -1) {
-        fprintf(stdout, "Unable to start wiringPi: %s\n", strerror(errno));
-        exit(ERROR_TO_START_WIRED_PI);
-    }
-
-	printf("Sending PIC Reset\n");
-	setResetToPICNoWiringPIStartup();
-		
-    if (bDebug) printf("Opening UART Connection of Device: %s\n", DEFAULT_UART_LOCATION);
-
-    /*Open Connection*/
-    if ((fd = serialOpen(DEFAULT_UART_LOCATION, iBaudRate)) < 0) {
-        fprintf(stderr, "Unable to open serial device: %s\n", strerror(errno));
-        exit(ERROR_UNABLE_TO_OPEN_SERIAL_DEVICE);
-    }
-
-    if (bDebug) printf("Opened UART Connection of Device: %s\n", DEFAULT_UART_LOCATION);
-
-    /****************************************************************************
-     *             Start Socket monitoring or execute CLI 
-     ****************************************************************************/
-
-    while(!bInputCLICheck) {
-    
-        if (bDebug) printf("+-------------------------Listening Socket---------------------------+\n");
-    
-        /* Blocking - Waiting for Connection */
-        connfd = accept(listenfd, (struct sockaddr*)NULL, NULL); 
-
-        if (bDebug) printf("Incomming Connection Open\n");
-
-        /* Clear Buffer */
-        initBuffer(caRxSocket, sizeof(caRxSocket));
-
-        /* Get Command from Client */
-        while ((n = read(connfd, caRxSocket, sizeof(caRxSocket)-1)) > 0) {
-          
-          /* Strip CR and NL */
-		  strip_CR_NL(caRxSocket, sizeof(caRxSocket));
-          
-          if (bDebug) printf("Socket -> UART -> (%s)\n" , caRxSocket);
-          		  
-			/* Send command to UART */
-			serialPuts(fd, caRxSocket);
-			  
-			delay(UART_TX_TO_RX_DELAY);			  
-
-          /*********************************************************************** 
-          *         Get Result from UART and Concatenate -> caRxUart
-          ************************************************************************/         
-          int iIndex = 0;
-          
-          initBuffer(caRxUart, sizeof(caRxUart));
-          while (serialDataAvail(fd)) {
-          
-            /* Load Charcaters into Array */
-            caRxUart[iIndex++] =  serialGetchar(fd);
-      
-          }
-          
-          if (bDebug) printf("Response From UART -> Index: %d -> %s -> SizeOf: %d \n", iIndex , caRxUart,(int)strlen(caRxUart));
-          
-          /* Send back to Socket Client */
-          write(connfd, caRxUart, strlen(caRxUart)); 
-          
-          if (bDebug) printf("UART -> Socket-> %s\n" , caRxUart);
-          
-          /* Close Connection */
-          close(connfd);
-          
-          /* Wait a second */
-          sleep(1);
-        
-        } 
-
-     }
-
-    /* If command is sent via CLI */
-    if (bInputCLICheck) {
-    
-      while (iLoopCliCount>0) {
-      
-        printf("\nInput -> %s", cInputCommand);
-     
-	    /* Strip CR and NL */
-		strip_CR_NL(cInputCommand, sizeof(cInputCommand));
-	 
-        serialPuts(fd, cInputCommand);
-        fflush (stdout);
-        
-        delay(UART_TX_TO_RX_DELAY);
-    
-        printf(" Output -> ");
-    
-        while (serialDataAvail(fd)) {
-            printf("%c", serialGetchar(fd));
-            fflush(stdout);
-        }
-    
-        printf("\n");
-        
-        iLoopCliCount--;
-      }
-      
-      serialClose(fd);
-      
-      if (bDebug) printf("Closed UART Connection of Device: %s\n", DEFAULT_UART_LOCATION);
-    }
-
     return 0;
 }
-
-/*
-*	Init Array with NULL elements
-*/
-void initBuffer(char *buf, size_t size){
-  int i;
-  for(i=0; i<size; i++){
-    buf[i] = '\0';     
-  }
+/* Both the original PIC's NUL framing and newline framing are accepted. */
+static int read_frame(int fd, char *buffer, size_t capacity, long long deadline) {
+    size_t length = 0;
+    while (!stopping) {
+        if (wait_fd(fd, POLLIN, deadline) < 0) return -1;
+        unsigned char c;
+        ssize_t n = read(fd, &c, 1);
+        if (n < 0) { if (errno == EINTR || errno == EAGAIN) continue; return -1; }
+        if (n == 0) { errno = ECONNRESET; return -1; }
+        if (c == '\r') continue;
+        if (c == '\n' || c == '\0') {
+            if (length == 0) continue;
+            buffer[length] = '\0'; return 0;
+        }
+        if (c < 32 || c > 126) { errno = EPROTO; return -1; }
+        if (length + 1 >= capacity) { errno = EMSGSIZE; return -1; }
+        buffer[length++] = (char)c;
+    }
+    errno = EINTR; return -1;
 }
-
-/*
-*	Remove CR and NL from Character Array
-*/
-void strip_CR_NL(char *buf, size_t size) {
-
-	int i = 0;
-	
-	for(i=0; i<size; i++){
-		if ((buf[i] == '\r') || (buf[i] == '\n')) {
-			
-			if (bDebug) printf("FOUND CR or NL at Index (%d)\n",i);
-			
-			/*Replace with NULL*/
-			buf[i] = '\0';
-		}   
-	}
+static int serial_open(const char *device, int baud) {
+    int fd = open(device, O_RDWR | O_NOCTTY | O_NONBLOCK);
+    if (fd < 0) return -1;
+    if (flock(fd, LOCK_EX | LOCK_NB) < 0) { close(fd); return -1; }
+    struct termios tty;
+    if (tcgetattr(fd, &tty) < 0) { close(fd); return -1; }
+    tty.c_iflag = 0; tty.c_oflag = 0; tty.c_lflag = 0;
+    tty.c_cflag = CS8 | CLOCAL | CREAD;
+    tty.c_cc[VMIN] = 0; tty.c_cc[VTIME] = 0;
+    speed_t speed = baud == 115200 ? B115200 : B9600;
+    if (cfsetispeed(&tty, speed) < 0 || cfsetospeed(&tty, speed) < 0 || tcsetattr(fd, TCSANOW, &tty) < 0) {
+        close(fd); return -1;
+    }
+    return fd;
 }
-
-void setResetToPICNoWiringPIStartup() {
-	     			
-	/* Set Pin to Ouput mode */			
-	pinMode(4,OUTPUT);
-	
-	/* Set Pin Low */
-	digitalWrite(4,LOW);
-	
-	delay(UART_TX_TO_RX_DELAY+1000);	
-	
-	/* Set Pin High */
-	digitalWrite(4,HIGH);
-	
-	pinMode(4,INPUT); 
-
+static int query(int fd, char *frame, int timeout) {
+    if (tcflush(fd, TCIFLUSH) < 0) return -1;
+    long long deadline = now_ms() + timeout;
+    if (write_all(fd, "600", 3, deadline) < 0) return -1;
+    if (read_frame(fd, frame, FRAME_CAPACITY, deadline) < 0) return -1;
+    if (strncmp(frame, "600:|", 5) != 0) { errno = EPROTO; return -1; }
+    return 0;
 }
-
-void usage(void) {
-  
-  printf("\n\n\nData Acquisition Module IPC Ver: %s\n"
-         "Options are:\n"
-             "\t-b: Set BaudRate <9600|115200> DEFAULT: 9600 \n"
-             "\t-i: Serial Input <command>\n"
-             "\t-l: Loop Input option <Number of Loops for option i>\n"
-			 "\t-p: Socket Port DEFAULT = 5000\n"
-			 "\t-r: Send Reset to PIC via GPIO 23\n"
-             "\t-v: Version\n"
-             "\t-d: Enable Debug\n"
-             "\t-G: GPS Data\n"
-             "\t-U: UltraViolet Data\n"
-             "\t-T: Temperature Data <c|f> Default: Fahrenheit\n"
-             "\t-B: Barometer Data\n"
-             "\t-S: Solar Power Voltage Data\n"
-             "\t-h: Usage an Exit\n\n\n\n",VERSION);
-
+static int number(const char *text, int min, int max) {
+    char *end;
+    errno = 0;
+    long n = strtol(text, &end, 10);
+    if (errno || *text == '\0' || *end || n < min || n > max) {
+        fprintf(stderr, "Invalid numeric argument: %s\n", text); exit(2);
+    }
+    return (int)n;
+}
+static void usage(void) {
+    puts("WEG serial bridge 2.0\n"
+         "Usage: DamCommSocket [options]\n"
+         "  --device PATH     Serial device (default /dev/serial0)\n"
+         "  --bind IPV4       Listen address (default 127.0.0.1)\n"
+         "  --port PORT       TCP port (default 5000)\n"
+         "  --baud RATE       9600 or 115200 (default 9600)\n"
+         "  --timeout-ms N    UART deadline, 100..3000 (default 2500)\n"
+         "  --once            Print one sensor frame and exit\n"
+         "  --help            Show help\n"
+         "Protocol: send 600 followed by newline; receive one frame or ERR line.\n"
+         "Remote access: use an SSH tunnel; this bridge does not authenticate clients.");
+}
+int main(int argc, char **argv) {
+    const char *device = "/dev/serial0", *address = "127.0.0.1";
+    int port = 5000, baud = 9600, timeout = 2500;
+    bool once = false;
+    static const struct option options[] = {
+        {"device", required_argument, NULL, 's'}, {"bind", required_argument, NULL, 'a'},
+        {"port", required_argument, NULL, 'p'}, {"baud", required_argument, NULL, 'b'},
+        {"timeout-ms", required_argument, NULL, 't'}, {"once", no_argument, NULL, '1'},
+        {"help", no_argument, NULL, 'h'}, {NULL, 0, NULL, 0}
+    };
+    int opt;
+    while ((opt = getopt_long(argc, argv, "s:a:p:b:t:1h", options, NULL)) != -1) {
+        switch (opt) {
+        case 's': device = optarg; break;
+        case 'a': address = optarg; break;
+        case 'p': port = number(optarg, 1, 65535); break;
+        case 'b': baud = number(optarg, 9600, 115200); break;
+        case 't': timeout = number(optarg, 100, 3000); break;
+        case '1': once = true; break;
+        case 'h': usage(); return 0;
+        default: usage(); return 2;
+        }
+    }
+    if (optind != argc || (baud != 9600 && baud != 115200)) { usage(); return 2; }
+    struct sockaddr_in server = { .sin_family = AF_INET, .sin_port = htons((unsigned short)port) };
+    if (inet_pton(AF_INET, address, &server.sin_addr) != 1) { fputs("Invalid IPv4 bind address\n", stderr); return 2; }
+    struct sigaction action = {0}; action.sa_handler = stop;
+    sigemptyset(&action.sa_mask);
+    sigaction(SIGINT, &action, NULL); sigaction(SIGTERM, &action, NULL);
+    signal(SIGPIPE, SIG_IGN);
+    int serial = serial_open(device, baud);
+    if (serial < 0) { perror("Open serial device"); return 1; }
+    char frame[FRAME_CAPACITY];
+    if (once) {
+        int result = query(serial, frame, timeout);
+        if (result == 0) puts(frame); else perror("Sensor query");
+        close(serial); return result == 0 ? 0 : 1;
+    }
+    int listener = socket(AF_INET, SOCK_STREAM, 0);
+    if (listener < 0) { perror("socket"); close(serial); return 1; }
+    int reuse = 1;
+    if (setsockopt(listener, SOL_SOCKET, SO_REUSEADDR, &reuse, sizeof(reuse)) < 0 ||
+        bind(listener, (struct sockaddr *)&server, sizeof(server)) < 0 || listen(listener, 8) < 0) {
+        perror("Listen"); close(listener); close(serial); return 1;
+    }
+    fprintf(stderr, "WEG bridge: %s:%d -> %s (%d baud)\n", address, port, device, baud);
+    while (!stopping) {
+        if (wait_fd(listener, POLLIN, now_ms() + 1000) < 0) {
+            if (errno == ETIMEDOUT || errno == EINTR) continue;
+            perror("Wait for client"); break;
+        }
+        int client = accept(listener, NULL, NULL);
+        if (client < 0) { if (errno != EINTR) perror("Accept"); continue; }
+        if (fcntl(client, F_SETFL, O_NONBLOCK) < 0) { close(client); continue; }
+        char command[16];
+        const char *error = NULL;
+        if (read_frame(client, command, sizeof(command), now_ms() + 1000) < 0) error = "ERR invalid or timed-out request\n";
+        else if (strcmp(command, "600") != 0) error = "ERR only command 600 is supported\n";
+        else if ((serial < 0 && (serial = serial_open(device, baud)) < 0) || query(serial, frame, timeout) < 0) {
+            fprintf(stderr, "Sensor query: %s\n", strerror(errno));
+            if (serial >= 0) close(serial);
+            serial = -1;
+            error = "ERR sensor timeout or invalid frame\n";
+        }
+        if (error) (void)write_all(client, error, strlen(error), now_ms() + 500);
+        else {
+            if (write_all(client, frame, strlen(frame), now_ms() + 500) == 0)
+                (void)write_all(client, "\n", 1, now_ms() + 500);
+        }
+        close(client);
+    }
+    close(listener); close(serial);
+    return stopping ? 0 : 1;
 }

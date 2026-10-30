@@ -1,120 +1,88 @@
-# WEG - Wearable Excursion Gear
+# WEG · Wearable Excursion Gear
 
-## Getting Started
+WEG was originally developed as a college capstone project in embedded systems.
+It has since been modernized into an offline excursion recorder.
+Run a simulated walk on your computer, replay a saved trip, or connect the original
+PIC sensor board through a Raspberry Pi. No cloud account or network is needed for
+simulation, recording, playback, route plots, or GPX export.
 
-DO NOT USE 5" Display until you get to Java Oracle Hotspot Step
+## Screenshots
 
-### Remote Setup Instructions
+Actual screenshots running simulated sensor data.
 
-Configure the Raspberry PI to connect to your local WiFI or Ethernet Connection
+**Desktop dashboard — 1100×740**
 
-[Download Putty for Remote IP Connection](http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html)
+![WEG dashboard running a simulated excursion](docs/assets/dashboard.png)
 
-Obtain IPv4 address of the RPI
+**Compact layout — 800×480**, with scrolling for the charts.
 
-Start Putty and login into RPI using SSH
+![WEG compact dashboard running simulated sensor data](docs/assets/dashboard-small.png)
 
-**User:** pi
+## Start here
 
-**Password:** raspberry
+Requires a **JDK 17 or newer** and Bash. The graphical dashboard also needs the
+JRE desktop/AWT libraries and a display; a headless-only Java installation can run
+`--headless` mode. Set `JAVA_HOME` to select a project-local full JDK. The desktop app has no third-party runtime
+libraries and builds without downloads, Maven, or NetBeans.
 
-### Obtain Raspbian OS
+```bash
+./scripts/run.sh
+```
 
-[Download Raspbian - Jessie - Build Data: 2016-03-18](http://downloads.raspberrypi.org/raspbian/images/raspbian-2016-03-18/)
+The dashboard starts in **simulation**. It includes distance, speed, elapsed time,
+course over ground, temperature, pressure, UV, elevation, a route trace, and
+selectable temperature/pressure history. Use **Start trip** to record, **Stop trip**
+to save, **Open trip…** to replay, and **Export GPX…** to export a route.
 
-##  Installing Raspbian 
+```bash
+./scripts/run.sh --faults                         # GPS loss and disconnect recovery
+./scripts/run.sh --headless --samples 10          # Record without a display
+./scripts/run.sh --replay tests/fixtures/simulated-walk.csv       # Open a recorded trip
+./scripts/run.sh --mode live --host 127.0.0.1 --port 5000
+./scripts/run.sh --help
+```
 
-[OS Installation](https://www.raspberrypi.org/documentation/installation/installing-images/README.md)
+Live mode requires pressing **Connect**. Playback reads one row per second and
+retains the recorded timestamps. Trips default to `~/.weg/trips`; change the
+location with `--output DIRECTORY`. Simulation trips are for demonstration.
 
-##  Download and Install WEG
+## Raspberry Pi and original hardware
 
-	git clone https://github.com/mgarcia01752/weg.git
-	
-	cd weg
+The bridge builds with a C11 compiler and Make on Linux; it does **not** depend on
+WiringPi or run the Java application as root.
 
-**Backup and Configure for WEG**
+```bash
+make -C uart-serial-ipc
+./uart-serial-ipc/DamCommSocket --device /dev/serial0 --once
+./uart-serial-ipc/DamCommSocket --device /dev/serial0
+```
 
-	sudo su  
-	
-	mv /boot/config.txt /boot/config.txt~
-	
-	mv /boot/cmdline.txt /boot/cmdline.txt~
-	
-	cp /home/pi/weg/RaspberryPiConfig/* /boot
-	
-	init 6
+The serial device must already exist and be accessible to your user. Configure
+the Pi's UART and disable its serial console using the supported OS configuration
+tools. Read [hardware setup](docs/hardware.md) before connecting the original board.
+Do not copy the archived 2016 boot files onto a modern installation.
 
-## Disable Serial Port
+## Develop and test
 
-Raspberry PI Configuration -> Interface -> Disable Serial
+```bash
+./scripts/build.sh
+./scripts/test.sh
+```
 
-## Enable Camera
+Tests need Python 3 and a C compiler in addition to Java. They exercise parsing,
+GPS mathematics, missing measurements, recording/replay/export, socket deadlines,
+and the real C bridge against a pseudo-terminal. They do not flash firmware.
 
-Raspberry PI Configuration -> Interface -> Enable Camera
+- [Architecture and data formats](docs/architecture.md)
+- [Hardware setup and validation limits](docs/hardware.md)
+- [Changes and migration](docs/migration.md)
+- [Development record](development/modernization/README.md)
+- [Original installation notes — historical only](docs/legacy-install.md)
 
-## Java Oracle Hotspot
+The source under `DamCommPIC.X/` targets the original PIC24F16KA101. Firmware changes
+require XC16/MPLAB and physical-board verification before deployment. Bundled
+historical JARs and `lib/tangram-es/` are retained for provenance and are not used
+by the new build. Build fresh artifacts with the scripts above.
 
-	sudo apt-get --purge remove openjdk-7-jre 
-	
-	sudo apt-get --purge remove openjdk-7-jdk
-	
-	sudo apt-get install oracle-java7-jdk
-
-**Check Installation**
-
-	java -version
-
-**Response**
-
-java version "1.8.0_65"
-
-Java(TM) SE Runtime Environment (build 1.8.0_65-b17)
-
-Java HotSpot(TM) Client VM (build 25.65-b01, mixed mode)
-
-
-## Set RPI for Expanded File System
-
-* Raspberry PI Configuration -> Expanded File System
-
-
-##  Download and Install WiringPi
-
-	cd /home/pi/weg
-	git clone git://git.drogon.net/wiringPi
-	cd wiringPi
-	git pull origin
-	
-	./build
-	
-
-##  Install UART Serial IPC
-
-	cd /home/pi/weg/uart-serial-ipc
-	make DamCommSocket
-	
-	
-## Install rc.local
-
-	sudo mv /etc/rc.local /etc/rc.local~
-	sudo cp /home/pi/weg/startup/rc.local.txt /etc/rc.local
-	sudo chmod 777 /etc/rc.local
-
-
-## Install WEG.sh and UpdateGUI.sh for Desktop
-	
-	sudo cp /home/pi/weg/startup/WEG.sh /home/pi/Desktop
-	sudo chmod 777 /home/pi/Desktop/WEG.sh
-	
-	sudo cp /home/pi/weg/startup/UpdateGUI.sh /home/pi/Desktop
-	sudo chmod 777 /home/pi/Desktop/UpdateGUI.sh
-	
-	
-## WEG Auto Startup on Desktop
-
-	sudo cp /home/pi/weg/startup/weg.desktop.txt /etc/xdg/autostart/weg.desktop
-
-
-
-
-
+Licensed under Apache-2.0; see [LICENSE](LICENSE). Third-party historical sources
+retain their own license notices.

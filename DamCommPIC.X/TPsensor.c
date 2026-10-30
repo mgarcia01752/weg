@@ -180,7 +180,9 @@ void readSCast(char reg, int *value){
 void readCast(char reg, unsigned int *value){
     
     
-    read16(reg,(unsigned long*)value);
+    unsigned long raw;
+    read16(reg, &raw);
+    *value = (unsigned int)raw;
 }
 
 //Reads signed long value over I2C
@@ -199,8 +201,8 @@ void read16(char reg, unsigned long *value){
     sendByte_I2C(reg);
     restart_I2C();
     sendByte_I2C(BMP180_READ);
-    *value = read_ack_I2C();
-    *value = (*value << 8) + (read_I2C());
+    *value = (unsigned char)read_ack_I2C();
+    *value = (*value << 8) + (unsigned char)read_I2C();
     reset_I2C();
     
 }
@@ -211,7 +213,7 @@ long getTemp(struct calib_data *value){
     long X1,X2,B5,T;
     long UT = getUT();
     X1 = ((UT - (long)(value->ac6)) * (long)(value->ac5)) >> 15;
-    X2 = ((long)(value->mc) << 11) / (X1+(long)(value->md));
+    X2 = ((long)(value->mc) * 2048L) / (X1+(long)(value->md));
     B5 = X1 + X2;
     T = (B5+8) >> 4;
     return T;
@@ -226,7 +228,7 @@ long getPressure(struct calib_data *value){
     long UP = getUP();
     
     X1 = ((UT - (long)(value->ac6)) * (long)(value->ac5)) >> 15;
-    X2 = ((long)(value->mc) << 11) / (X1+(long)(value->md));
+    X2 = ((long)(value->mc) * 2048L) / (X1+(long)(value->md));
     B5 = X1 + X2;
     B6 = B5-4000;
     X1 = ((long)(value->b2)*((B6*B6) >> 12)) >> 11;

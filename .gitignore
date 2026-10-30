@@ -1,4 +1,10 @@
 *.o
 *.d
 *.elf
-*.o
+/build/
+WegStartupUI/build/
+WegStartupUI/dist/
+DamCommPIC.X/build/
+DamCommPIC.X/dist/
+uart-serial-ipc/DamCommSocket
+*.log

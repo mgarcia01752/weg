@@ -1,49 +1,12 @@
-ifneq ($V,1)
-Q ?= @
-endif
+CC ?= cc
+CFLAGS ?= -O2 -g
+CFLAGS += -std=c11 -Wall -Wextra -Wpedantic -Werror
 
-#DEBUG	= -g -O0
-DEBUG	= -O3
-CC	= gcc
-INCLUDE	= -I/usr/local/include
-CFLAGS	= $(DEBUG) -Wall $(INCLUDE) -Winline -pipe
-
-LDFLAGS	= -L/usr/local/lib
-LDLIBS    = -lwiringPi -lwiringPiDev -lpthread -lm
-
-# Should not alter anything below this line
-###############################################################################
-
-SRC	=	DamCommSocket.c
-
-OBJ	=	$(SRC:.c=.o)
-
-BINS	=	$(SRC:.c=)
-
-all:	
-	$Q cat README.TXT
-	$Q echo "    $(BINS)" | fmt
-	$Q echo ""
-
-really-all:	$(BINS)
-
-DamCommSocket: DamCommSocket.o
-	$Q echo [link]
-	$Q $(CC) -o $@ DamCommSocket.o $(LDFLAGS) $(LDLIBS)
-
-.c.o:
-	$Q echo [CC] $<
-	$Q $(CC) -c $(CFLAGS) $< -o $@
-
+.PHONY: all clean test
+all: DamCommSocket
+DamCommSocket: DamCommSocket.c
+	$(CC) $(CPPFLAGS) $(CFLAGS) $(LDFLAGS) -o $@ $< $(LDLIBS)
 clean:
-	$Q echo "[Clean]"
-	$Q rm -f $(OBJ) *~ core tags $(BINS)
-
-tags:	$(SRC)
-	$Q echo [ctags]
-	$Q ctags $(SRC)
-
-depend:
-	makedepend -Y $(SRC)
-
-# DO NOT DELETE
+	$(RM) DamCommSocket *.o
+test: DamCommSocket
+	python3 ../tests/test_bridge.py

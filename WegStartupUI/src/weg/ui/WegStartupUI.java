@@ -1,155 +1,46 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package weg.ui;
 
-import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import weg.das.Barometer;
-import weg.das.Camera;
-import weg.das.DasCommands;
-import weg.das.DasConnection;
-import weg.das.Gps;
-import weg.das.Temperature;
-import weg.das.UV;
+import weg.core.*;
+import java.awt.GraphicsEnvironment;
+import java.nio.file.Path;
+import java.time.Instant;
+import javax.swing.SwingUtilities;
 
-/**
- *
- * @author Maurice
- */
-public class WegStartupUI {
-
-        private static class DataAqusitionSystem implements Runnable {
-        
-        private WegMainUI wmu;
-        
-        public DataAqusitionSystem(WegMainUI wmu) {
-            this.wmu = wmu;
-        }
-        
-        /**
-         * 
-         */
-        public void run () {
-            
-            Gps gps = new Gps();
-            
-            while(true) {
-                
-                wmu.updateSystemTime();
-                
-                /*Wait till Connect Button is selected */
-                while (!this.wmu.isDasConnectSelected()) {
-                    
-                    wmu.updateSystemTime();
-                    
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException ex) {
-                        Logger.getLogger(WegStartupUI.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                    
-                    System.out.println("Connect Button Toogled - Disconnected from DAS.....");
-                    
-                }
-                
-                System.out.println("Connect Button Toogled - Connected to DAS.....");
-                
-                DasConnection dc;
-                
-                try {
-                  
-                  /* if useing in remote mode get IP Addresses */
-                  if (this.wmu.isRemoteDasSelected()) {
-                    dc = new DasConnection(this.wmu.getRemoteDasInetAddress(),DasConnection.IPC_PORT);  
-                  } else {
-                     dc = new DasConnection(this.wmu.getLocalDasInetAddress(),DasConnection.IPC_PORT); 
-                  }
-              
-                  while (true) {
-                      
-                      System.out.println("+-----------------------------DAS QUERY---------------------------------------------+");
-                      
-                      wmu.updateSystemTime();
-
-                      String sCommandResponse = dc.get(DasCommands.FULL_SENSOR_DUMP);
-                      
-                      if (sCommandResponse == null) {
-                          System.out.println("sCommandResponse NULL RESPONSE FOUND");
-                          continue;
-                      }
-                      
-                      System.out.println("CMD-RSP: " + sCommandResponse);
-                      
-                      /* UVindex,Tdata,Pdata,nmea */
-                      List<String> lsFullCommand = Arrays.asList(sCommandResponse.split("\\|"));
-                      
-                      if (lsFullCommand.size()<5) {
-                          System.out.println("+-----------------------------ERROR---------------------------------------------+");
-                          System.out.println("lsFullCommand size is less than 4 - Actual: " + lsFullCommand.size());
-                          System.out.println("CMD-ERROR: " + lsFullCommand.toString());
-                          continue;
-                      } else if(!lsFullCommand.get(0).contentEquals("600:")) {
-                          System.out.println("+-----------------------------NO 600 CODE HEADER---------------------------------------------+");
-                          System.out.println("CMD-ERROR: " + lsFullCommand.toString());
-                          continue;
-                      }
-                  
-                      if (gps.parse(lsFullCommand.get(4))) {
-                          System.out.println("+-----------------------------GPS---------------------------------------------+");
-                          System.out.println("GPS Raw -> " + sCommandResponse);
-                          System.out.println("GPS ToStrig -> " + gps.getCurrentGpsData());
-                          System.out.println("GPS Lat -> " + gps.getLatitude());
-                          System.out.println("GPS Lng -> " + gps.getLongitude());
-
-                          this.wmu.updateGPS(gps);
-                          
-                          this.wmu.updateCompass();
-                          
-                      }
-
-                      //sCommandResponse = dc.get(DasCommands.TEMP_F);
-                      System.out.println("Temp: " + lsFullCommand.get(2));
-                      this.wmu.updateTemperture(Temperature.getTemp(lsFullCommand.get(2)));
-
-                      //sCommandResponse = dc.get(DasCommands.BaROMETER);
-                      System.out.println("Baro: " + lsFullCommand.get(3));
-                      this.wmu.updateBarometer(Barometer.getBarometer(lsFullCommand.get(3)).toString());
-                      
-                      //sCommandResponse = dc.get(DasCommands.UV);
-                      System.out.println("UV: " + lsFullCommand.get(1));
-                      this.wmu.updateUV(UV.getUV(lsFullCommand.get(1)).toString());
-                    
-                      /* When Connect is not selcted exit Loop and wait till it is selected again */
-                      if (!this.wmu.isDasConnectSelected())break;
-                      
-                      this.wmu.updatePace();
-
-                  }
-              } catch (UnknownHostException ex) {
-                  Logger.getLogger(WegStartupUI.class.getName()).log(Level.SEVERE, null, ex);
-              }      
-            }            
-        }
-    }
-    
-    /**
-     * @param args the command line arguments
-     */
+public final class WegStartupUI {
+    private WegStartupUI() {}
     public static void main(String[] args) {
-        
-        /* Start of GUI */
-        WegMainUI wmu = new WegMainUI();
-        wmu.setVisible(true);
-     
-        Thread threadDAS = new Thread(new DataAqusitionSystem(wmu));
-        threadDAS.start();
-
+        try {
+            Options options = Options.parse(args);
+            if (options.help()) { System.out.print(Options.usage()); return; }
+            if (options.headless()) { record(options); return; }
+            if (GraphicsEnvironment.isHeadless())
+                throw new IllegalArgumentException("No display available. Use --headless --samples 10.");
+            SwingUtilities.invokeLater(() -> new WegMainUI(options).setVisible(true));
+        } catch (Exception e) {
+            System.err.println("WEG: " + e.getMessage());
+            System.exit(1);
+        }
     }
-    
+    private static void record(Options options) throws Exception {
+        Path file = options.output().resolve(options.mode() + "-trip-" + Instant.now().toString().replace(':', '-') + ".csv");
+        int count = 0;
+        try (SampleSource source = options.source(); TripLog log = new TripLog(file)) {
+            System.out.println(source.description());
+            for (int i = 0; i < options.samples(); i++) {
+                try {
+                    Sample sample = source.read();
+                    if (sample == null) break;
+                    log.append(sample); count++;
+                } catch (java.io.IOException e) {
+                    if (options.mode().equals("replay")) throw e;
+                    log.append(Sample.unavailable(Instant.now()));
+                    System.err.println("Sample unavailable: " + e.getMessage());
+                }
+                if (i + 1 < options.samples()) Thread.sleep(1000);
+            }
+        }
+        if (count == 0) throw new java.io.IOException("No valid samples received; inspect the trip log: " + file);
+        TripLog.exportGpx(file, Path.of(file.toString().replaceFirst("\\.csv$", ".gpx")));
+        System.out.println("Recorded " + count + " samples: " + file.toAbsolutePath());
+    }
 }

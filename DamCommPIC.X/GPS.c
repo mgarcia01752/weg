@@ -70,6 +70,7 @@ char getGPSsentence(void){
 		}
 		lineidx = 0;
 		recvdflag = true;
+        return c;
 	}
 
 	currentline[lineidx++] = c;

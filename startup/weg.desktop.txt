@@ -1,7 +1,3 @@
-[Desktop Entry]
-Type=Application
-Name=weg
-Comment=WEG
-NoDisplay=false
-Exec=sudo java -jar /home/pi/weg/WegStartupUI/dist/WegStartupUI.jar > out.txt
-NotShowIn=GNOME;KDE;XFCE;
+Historical system-wide desktop autostart is retired.
+Launch startup/WEG.sh from this checkout, or scripts/run.sh.
+Do not install this text file as a desktop entry.

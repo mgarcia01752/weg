@@ -1,4 +1,4 @@
-#!/bin/sh -e
-
-sudo java -jar /home/pi/weg/WegStartupUI/dist/WegStartupUI.jar > out.txt
-
+#!/usr/bin/env bash
+set -euo pipefail
+root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
+exec "$root/scripts/run.sh" "$@"
