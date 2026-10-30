@@ -45,6 +45,7 @@ to save, **Open trip…** to replay, and **Export GPX…** to export a route.
 Live mode requires pressing **Connect**. Playback reads one row per second and
 retains the recorded timestamps. Trips default to `~/.weg/trips`; change the
 location with `--output DIRECTORY`. Simulation trips are for demonstration.
+Simulation mode requires no Raspberry Pi or sensor board.
 
 ## Raspberry Pi and original hardware
 
