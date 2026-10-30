@@ -8,3 +8,4 @@ DamCommPIC.X/build/
 DamCommPIC.X/dist/
 uart-serial-ipc/DamCommSocket
 *.log
+.vscode/
